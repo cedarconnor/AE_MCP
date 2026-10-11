@@ -224,7 +224,7 @@ describe("pull path", () => {
       suppressDialogs: true,
     });
     expect(await listMail(agent.dir, REQUEST_PREFIX)).toEqual([]);
-    expect(await listMail(agent.dir, RESPONSE_PREFIX)).toEqual([]);
+    expect(await listMail(agent.dir, RESPONSE_PREFIX)).toEqual([`response-${res.requestId}.json`]);
   });
 
   it("finds the instance by the project it has open", async () => {
@@ -269,7 +269,8 @@ describe("pull path", () => {
     expect(res.ok).toBe(false);
     expect(res.errorCode).toBe("NO_INSTANCE");
     expect(res.error).toContain("stopped responding");
-    expect(res.error).toContain("discarded");
+    expect(res.state).toBe("cancelled");
+    expect(res.mayStillRun).toBe(false);
     expect(Date.now() - started).toBeLessThan(5_000);
     expect(await listMail(agent.dir, REQUEST_PREFIX)).toEqual([]);
   });

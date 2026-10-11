@@ -1,4 +1,4 @@
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -39,7 +39,7 @@ export const DISPATCHER_JSX = path.join(PACKAGE_ROOT, "jsx", "dispatcher.jsx");
 // DEFAULT_RUNTIME_DIR identically from the OS temp dir; when AE_MCP_RUNTIME_DIR
 // overrides it, Node drops a pointer file at the default location so the
 // dispatcher can still find the mailbox.
-export const RUNTIME_ROOT = path.join(os.tmpdir(), "mcp-aftereffects");
+export const RUNTIME_ROOT = path.join(os.tmpdir(), "ae-uber-mcp");
 export const DEFAULT_RUNTIME_DIR = path.join(RUNTIME_ROOT, "runtime");
 export const RUNTIME_POINTER_PATH = path.join(RUNTIME_ROOT, "runtime-dir.txt");
 
@@ -79,9 +79,8 @@ export function responsePathFor(id: string): string {
 }
 
 /**
- * Age past which an orphaned request/response file is swept on startup. Long
- * enough that it can never race a legitimately slow call (the longest built-in
- * timeout is the 10-minute project import).
+ * Legacy maintenance threshold. Transport startup no longer sweeps requests,
+ * responses or instance directories; their absence would destroy recovery.
  */
 export const STALE_RUNTIME_FILE_MS = 60 * 60 * 1000;
 
@@ -96,11 +95,18 @@ export const STALE_RUNTIME_FILE_MS = 60 * 60 * 1000;
  * message, or null when the path is fine.
  */
 export function rejectedOutputPath(outPath: string): string | null {
-  const abs = path.resolve(outPath);
-  const roots = [path.resolve(RUNTIME_DIR), path.resolve(RUNTIME_ROOT)];
+  let abs: string;
+  let roots: string[];
+  try {
+    abs = canonicalPath(outPath);
+    roots = [canonicalPath(RUNTIME_DIR), canonicalPath(RUNTIME_ROOT)];
+  } catch {
+    return "refusing output whose existing path components cannot be resolved safely";
+  }
   for (const root of roots) {
     const rel = path.relative(root, abs);
-    const inside = rel === "" || (!rel.startsWith("..") && !path.isAbsolute(rel));
+    const inside =
+      rel === "" || (rel !== ".." && !rel.startsWith(`..${path.sep}`) && !path.isAbsolute(rel));
     if (inside) {
       return (
         `refusing to write inside the mcp-aftereffects IPC mailbox (${root}). ` +
@@ -109,6 +115,25 @@ export function rejectedOutputPath(outPath: string): string | null {
     }
   }
   return null;
+}
+
+/** Resolve existing symlinks/junctions, then append the as-yet absent suffix.
+ * This guards current filesystem aliases, not hostile concurrent link swaps.
+ */
+function canonicalPath(input: string): string {
+  let current = path.resolve(input);
+  const suffix: string[] = [];
+  for (;;) {
+    try {
+      return path.join(realpathSync.native(current), ...suffix);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      const parent = path.dirname(current);
+      if (parent === current) throw error;
+      suffix.unshift(path.basename(current));
+      current = parent;
+    }
+  }
 }
 
 // --- Reporting on where the mailbox lives ------------------------------------
@@ -264,24 +289,23 @@ export const POLL_INTERVAL_MS = 80;
 // The busy lock closes that gap: before spawning the dispatcher, a call
 // acquires BUSY_LOCK_PATH via exclusive create (open "wx" — atomic across
 // processes), holds it for the lifetime of the call while refreshing its
-// mtime, and releases it when the response arrives. A lock whose mtime is
-// older than BUSY_LOCK_STALE_MS has lost its owner (crashed server, killed
-// AE) and may be broken by any waiter.
+// mtime, and releases it when the response arrives. Locks no longer expire
+// on age: a dead server does not prove its host script stopped. The durable
+// per-mailbox pending-request.lock is released only on a terminal outcome.
 //
 // The lock cannot see scripts WE didn't start (user panels, startup scripts,
 // other tooling). That case is covered by relaunching: a request file still
 // unconsumed RELAUNCH_UNCONSUMED_AFTER_MS after a launch means AE refused or
 // dropped the script, so the dispatcher is launched again (the request is
-// still in the mailbox; consume-on-read keeps a duplicate launch harmless),
+// still in the mailbox; claim-before-read keeps a duplicate launch harmless),
 // up to MAX_LAUNCH_ATTEMPTS with linear backoff.
 
 /** Lock file marking a dispatcher call in flight. Lives in the shared mailbox. */
 export const BUSY_LOCK_PATH = path.join(RUNTIME_DIR, "dispatcher-busy.lock");
 
 /**
- * Age past which a busy lock is considered orphaned. Its owner refreshes the
- * mtime every BUSY_LOCK_REFRESH_MS while alive, so this can be far shorter
- * than any legitimate call duration.
+ * Legacy diagnostic threshold, retained for compatibility. No longer grants
+ * permission to steal a lock; a terminal request outcome is required.
  */
 export const BUSY_LOCK_STALE_MS = 90_000;
 
@@ -337,7 +361,7 @@ export const LIVENESS_CHECK_MS = 1_000;
 export const AGENT_JSX = path.join(PACKAGE_ROOT, "jsx", "agent.jsx");
 
 /** Name of the bootstrap stub `install-agent` drops into Scripts/Startup. */
-export const AGENT_STUB_FILENAME = "mcp-aftereffects-agent.jsx";
+export const AGENT_STUB_FILENAME = "ae-uber-mcp-agent.jsx";
 
 export const INSTANCE_ID_MAX_LENGTH = 64;
 

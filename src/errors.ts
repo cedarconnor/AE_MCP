@@ -55,7 +55,9 @@ export type AeErrorCode =
  * Codes where retrying the identical call can plausibly succeed. Everything
  * else needs the model (or the user) to change something first.
  */
-const RETRYABLE = new Set<AeErrorCode>(["TIMEOUT", "TRANSPORT"]);
+// Neither timeout nor transport failure proves a mutation did not run.
+// Recovery is status lookup, never automatic replay based on the error class.
+const RETRYABLE = new Set<AeErrorCode>();
 
 export function isRetryable(code: AeErrorCode): boolean {
   return RETRYABLE.has(code);

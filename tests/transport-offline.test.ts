@@ -95,6 +95,7 @@ describe("mailbox location", () => {
     // cache, Program Files); writing the mailbox there used to crash startup.
     expect(DEFAULT_RUNTIME_DIR.startsWith(os.tmpdir())).toBe(true);
     expect(RUNTIME_DIR).toBe(DEFAULT_RUNTIME_DIR);
+    expect(DEFAULT_RUNTIME_DIR).toBe(path.join(os.tmpdir(), "ae-uber-mcp", "runtime"));
   });
 
   it("names every request and response after its own id", () => {
@@ -193,7 +194,7 @@ describe("busy lock", () => {
     await expect(fs.access(BUSY_LOCK_PATH)).resolves.toBeUndefined();
   });
 
-  itUnlessDarwin("breaks a stale lock and proceeds with the call", async () => {
+  itUnlessDarwin("does not steal a stale lock without proof of host completion", async () => {
     await fs.writeFile(BUSY_LOCK_PATH, JSON.stringify({ pid: 0, id: "orphan" }), "utf8");
     const expired = new Date(Date.now() - BUSY_LOCK_STALE_MS - 60_000);
     await fs.utimes(BUSY_LOCK_PATH, expired, expired);
@@ -205,12 +206,9 @@ describe("busy lock", () => {
       timeoutMs: 400,
     });
 
-    // The stale lock did not block the call: it went through the normal
-    // dispatch path (and timed out only because the stand-in exe never answers).
     expect(res.errorCode).toBe("TIMEOUT");
-    expect(res.error).toContain("never picked up");
-    // Our own lock is released on the way out.
-    await expect(fs.access(BUSY_LOCK_PATH)).rejects.toThrow();
+    expect(res.error).toContain("busy lock");
+    await expect(fs.access(BUSY_LOCK_PATH)).resolves.toBeUndefined();
   });
 
   it("leaves a lock it no longer owns alone on the way out", async () => {

@@ -142,7 +142,7 @@ export type TargetResolution =
   | { mode: "error"; message: string; hint: string };
 
 const INSTALL_HINT =
-  "Each instance needs the resident agent: run `npx @kumoproductions/mcp-aftereffects install-agent` " +
+  "Each instance needs the resident agent: run `ae-uber-mcp install-agent` " +
   "once per After Effects version, then (re)start After Effects — the agent registers about ten " +
   "seconds after launch. To name an instance, set AE_MCP_INSTANCE in the environment that launches it " +
   "(works with `AfterFX.exe -m`); the server-side AE_MCP_INSTANCE can also name the project file it has open.";

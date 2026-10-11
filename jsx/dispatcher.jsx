@@ -81,7 +81,7 @@
         //      var itself is invisible to us: `-r` is delivered to the
         //      already-running AE process, whose environment is not the
         //      spawner's).
-        //   2. <temp>/mcp-aftereffects/runtime — the default both sides compute.
+        //   2. <temp>/ae-uber-mcp/runtime — the default both sides compute.
         //
         // The in-package location (<script>/../runtime) is deliberately NOT a
         // candidate: an install directory is far more likely to be writable by
@@ -97,7 +97,7 @@
             } catch (eInjected) { /* not injected — a Windows `-r` launch */ }
             var tempRoot = null;
             try {
-                tempRoot = normalizePath(Folder.temp.fsName) + "/mcp-aftereffects";
+                tempRoot = normalizePath(Folder.temp.fsName) + "/ae-uber-mcp";
             } catch (eTemp) { /* no temp folder — nothing we are willing to read */ }
 
             if (tempRoot !== null) {

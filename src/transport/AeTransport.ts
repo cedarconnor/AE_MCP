@@ -51,6 +51,9 @@ export interface EvalRequest {
 }
 
 export interface EvalResult {
+  requestId?: string;
+  state?: RequestState;
+  mayStillRun?: boolean;
   ok: boolean;
   /** Serialized return value from the JSX code. Always JSON-safe. */
   result: unknown;
@@ -83,7 +86,24 @@ export interface EvalResult {
   dialogs?: AeDialog[];
 }
 
+export type RequestState =
+  | "queued"
+  | "running"
+  | "unknown"
+  | "cancelled"
+  | "completed"
+  | "failed"
+  | "not_found";
+export interface RequestStatus {
+  requestId: string;
+  state: RequestState;
+  mayStillRun: boolean;
+  result?: EvalResult;
+}
+
 export interface AeTransport {
+  /** Recover a retained outcome by UUID, without executing any host code. */
+  requestStatus?(requestId: string): Promise<RequestStatus>;
   /** Execute a JSX snippet and return the parsed response. Never throws — errors are surfaced via `ok: false`. */
   execute(req: EvalRequest): Promise<EvalResult>;
   /** Optional hook to release resources (e.g. shut down a socket daemon). */

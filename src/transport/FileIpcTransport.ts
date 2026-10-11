@@ -7,7 +7,6 @@ import type { Readable } from "node:stream";
 import {
   BUSY_LOCK_PATH,
   BUSY_LOCK_REFRESH_MS,
-  BUSY_LOCK_STALE_MS,
   DEFAULT_TIMEOUT_MS,
   LIVENESS_CHECK_MS,
   MAX_LAUNCH_ATTEMPTS,
@@ -21,15 +20,16 @@ import {
   RUNTIME_DIR_MODE,
   RUNTIME_POINTER_PATH,
   RUNTIME_ROOT,
-  STALE_RUNTIME_FILE_MS,
   instanceTargetFromEnv,
+  instanceDirFor,
+  sanitizeInstanceId,
   requestPathFor,
   resolveAfterFxPath,
   responsePathFor,
   runtimeDirWarnings,
 } from "../config.js";
 import type { AeErrorCode } from "../errors.js";
-import type { AeTransport, EvalRequest, EvalResult } from "./AeTransport.js";
+import type { AeTransport, EvalRequest, EvalResult, RequestStatus } from "./AeTransport.js";
 import { type AeDialog, dialogBlockMessage, dialogHint, scanAeDialogs } from "./dialogs.js";
 import {
   type InstanceInfo,
@@ -38,7 +38,6 @@ import {
   listInstances,
   readInstance,
   resolveTarget,
-  sweepDeadInstanceDirs,
 } from "./instances.js";
 import { type LaunchPlan, buildLaunchPlan } from "./launcher.js";
 
@@ -97,6 +96,14 @@ interface MailboxRequest {
   undoGroup: boolean;
   suppressDialogs: boolean;
 }
+
+interface OutcomeRecord {
+  instance: string | null;
+  submitted: boolean;
+  cancelled?: boolean;
+}
+const REQUEST_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const outcomesDir = path.join(RUNTIME_DIR, "outcomes");
 
 interface DispatcherResponse {
   id: string | null;
@@ -197,12 +204,104 @@ export class FileIpcTransport implements AeTransport {
       // user gets a readable error from a tool call instead of a dead process.
       this.setupError = `cannot use runtime directory ${RUNTIME_DIR}: ${err instanceof Error ? err.message : String(err)}`;
     }
-    void this.sweepStaleFiles();
+    // Outcomes and unresolved work must survive restarts. No age-based sweep:
+    // silence, an old heartbeat or a dead client is not host completion.
   }
 
   /** Where the next call would go. For ae_context and the startup banner; never throws. */
   async describeTarget(instance?: string): Promise<TargetResolution> {
     return this.resolveTarget(instance);
+  }
+
+  async requestStatus(requestId: string): Promise<RequestStatus> {
+    if (!REQUEST_ID.test(requestId)) throw new Error("requestId must be a UUID, not a path");
+    let record: OutcomeRecord;
+    try {
+      record = JSON.parse(await fs.readFile(path.join(outcomesDir, `${requestId}.json`), "utf8"));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        return { requestId, state: "not_found", mayStillRun: true };
+      }
+      throw error;
+    }
+    if (
+      record.instance !== null &&
+      (typeof record.instance !== "string" ||
+        sanitizeInstanceId(record.instance) !== record.instance)
+    ) {
+      throw new Error("invalid retained request route");
+    }
+    const dir = record.instance === null ? RUNTIME_DIR : instanceDirFor(record.instance);
+    const response = await this.tryReadResponse(
+      path.join(dir, `${RESPONSE_PREFIX}${requestId}.json`),
+    );
+    if (response && response.id === requestId) {
+      return {
+        requestId,
+        state: response.ok ? "completed" : "failed",
+        mayStillRun: false,
+        result: this.toEvalResult(response, 0),
+      };
+    }
+    if (record.cancelled) return { requestId, state: "cancelled", mayStillRun: false };
+    const running = await this.fileExists(path.join(dir, `executing-${requestId}.json`));
+    const queued = await this.fileExists(path.join(dir, `${REQUEST_PREFIX}${requestId}.json`));
+    return {
+      requestId,
+      state: running ? "running" : queued ? "queued" : "unknown",
+      mayStillRun: true,
+    };
+  }
+
+  private async saveOutcome(id: string, record: OutcomeRecord): Promise<void> {
+    await fs.mkdir(outcomesDir, { recursive: true, mode: RUNTIME_DIR_MODE });
+    const dest = path.join(outcomesDir, `${id}.json`);
+    const temp = `${dest}.${randomUUID()}.tmp`;
+    await fs.writeFile(temp, JSON.stringify(record), "utf8");
+    await fs.rename(temp, dest);
+  }
+
+  /** Serialize gate transitions themselves; never steal a transition on age.
+   * A crash in this very short filesystem section requires manual inspection.
+   */
+  private async withGate<T>(dir: string, action: (gate: string) => Promise<T>): Promise<T> {
+    const transition = path.join(dir, "pending-transition.lock");
+    await fs.mkdir(transition);
+    try {
+      return await action(path.join(dir, "pending-request.lock"));
+    } finally {
+      await fs.rmdir(transition);
+    }
+  }
+
+  private async acquireRequestGate(dir: string, id: string): Promise<RequestStatus | null> {
+    return this.withGate(dir, async (gate) => {
+      let owner: string | null = null;
+      try {
+        owner = await fs.readFile(gate, "utf8");
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      }
+      if (owner !== null) {
+        const status = await this.requestStatus(owner);
+        if (status.mayStillRun) return status;
+        await this.releaseBusyLock(owner);
+        // Held transition prevents a second cleaner removing a newer owner.
+        await fs.unlink(gate);
+      }
+      await fs.writeFile(gate, id, { flag: "wx" });
+      return null;
+    });
+  }
+
+  private async releaseRequestGate(dir: string, id: string): Promise<void> {
+    await this.withGate(dir, async (gate) => {
+      try {
+        if ((await fs.readFile(gate, "utf8")) === id) await fs.unlink(gate);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      }
+    });
   }
 
   /**
@@ -276,10 +375,53 @@ export class FileIpcTransport implements AeTransport {
       suppressDialogs: req.suppressDialogs !== false,
     };
 
-    if (target.mode === "pull") {
-      return this.executePull(request, target.instance, started, timeoutMs);
+    const dir = target.mode === "pull" ? target.instance.dir : RUNTIME_DIR;
+    await fs.mkdir(dir, { recursive: true });
+    const blocked = await this.acquireRequestGate(dir, request.id);
+    if (blocked)
+      return {
+        ...failure(
+          "TRANSPORT",
+          "A previous request has no terminal outcome. Query ae_request_status; do not retry the mutation.",
+        ),
+        requestId: blocked.requestId,
+        state: blocked.state,
+        mayStillRun: true,
+      };
+    const record: OutcomeRecord = {
+      instance: target.mode === "pull" ? target.instance.id : null,
+      submitted: false,
+    };
+    await this.saveOutcome(request.id, record);
+    let result: EvalResult;
+    try {
+      result =
+        target.mode === "pull"
+          ? await this.executePull(request, target.instance, started, timeoutMs)
+          : await this.executePush(request, started, timeoutMs);
+    } catch (error) {
+      result = failure("TRANSPORT", error instanceof Error ? error.message : String(error));
     }
-    return this.executePush(request, started, timeoutMs);
+    // Claim-vs-cancel is an atomic filesystem race. Only a successful unlink
+    // of the unclaimed source proves this request cannot execute later.
+    const saved: OutcomeRecord = JSON.parse(
+      await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
+    );
+    if (!saved.submitted || saved.cancelled) {
+      saved.cancelled = true;
+      await this.saveOutcome(request.id, saved);
+    }
+    const status = await this.requestStatus(request.id);
+    if (!status.mayStillRun) {
+      await this.releaseRequestGate(dir, request.id);
+      await this.releaseBusyLock(request.id);
+    }
+    return {
+      ...result,
+      requestId: request.id,
+      state: status.state,
+      mayStillRun: status.mayStillRun,
+    };
   }
 
   // --- Pull: the instance's agent serves its own mailbox ---------------------
@@ -296,17 +438,14 @@ export class FileIpcTransport implements AeTransport {
     await fs.mkdir(dir, { recursive: true });
     await this.writeRequest(dir, requestPath, request);
 
-    // No busy lock and no launch: the agent dequeues one request per tick, so
-    // two server processes aimed at the same instance simply queue in its
-    // directory, and the "second script" refusal that the lock guards against
-    // on the push path cannot happen here.
+    // No launcher lock or launch: the agent serves its own mailbox. The
+    // durable request gate also blocks new calls after an uncertain timeout.
     const deadline = started + timeoutMs;
     let requestConsumed = false;
     let lastLivenessAt = started;
     while (Date.now() < deadline) {
       const parsed = await this.tryReadResponse(responsePath);
       if (parsed) {
-        await this.safeUnlink(responsePath);
         return this.toEvalResult(parsed, Date.now() - started);
       }
       const now = Date.now();
@@ -320,19 +459,22 @@ export class FileIpcTransport implements AeTransport {
           // crashed, or is stuck in a modal — fail now, not at the deadline.
           const current = await readInstance(dir, now);
           if (!current.alive) {
-            await this.safeUnlink(requestPath);
+            const cancelled = await this.safeUnlink(requestPath);
+            const outcome = cancelled
+              ? "the request was cancelled before claim"
+              : "cancellation could not be confirmed; the request may still execute";
             const dialogs = await this.scanDialogs();
             if (dialogs.length > 0) {
               return dialogFailure(
                 dialogs,
-                `After Effects instance '${instance.id}' stopped responding; the request was never picked up and has been discarded`,
+                `After Effects instance '${instance.id}' stopped responding; ${outcome}`,
                 started,
               );
             }
             return failure(
               "NO_INSTANCE",
               `After Effects instance '${instance.id}' stopped responding (${describeInstance(current)}); ` +
-                "the request was never picked up and has been discarded",
+                outcome,
               {
                 durationMs: Date.now() - started,
                 hint:
@@ -392,9 +534,6 @@ export class FileIpcTransport implements AeTransport {
     const requestPath = requestPathFor(id);
     const responsePath = responsePathFor(id);
 
-    // 1. Write the request atomically (tmp + rename).
-    await this.writeRequest(RUNTIME_DIR, requestPath, request);
-
     // 2. Acquire the cross-process busy lock. AE refuses a script delivered
     // while another script runs — with a modal warning that halts all
     // scripting until dismissed — so two server processes must not dispatch
@@ -410,17 +549,17 @@ export class FileIpcTransport implements AeTransport {
         {
           durationMs: Date.now() - started,
           hint:
-            `The lock (${BUSY_LOCK_PATH}) is refreshed while its owner is alive and expires ` +
-            `${Math.round(BUSY_LOCK_STALE_MS / 1000)}s after the owner stops. If this persists, ` +
-            "check AE for a stuck script or a modal dialog, and avoid running two MCP servers against one AE.",
+            `The lock (${BUSY_LOCK_PATH}) does not expire on time alone. ` +
+            "Recover the owning request with ae_request_status; unresolved host work requires inspection.",
         },
       );
     }
     // True when the request was consumed but no response arrived in time: the
     // script may still be running inside AE, so the lock must outlive this
-    // call and expire on its own instead of inviting an immediate collision.
+    // call until completion is established, preventing an immediate collision.
     let leaveLockForRunningScript = false;
     try {
+      await this.writeRequest(RUNTIME_DIR, requestPath, request);
       // 3. Launch the dispatcher (launcher.ts picks the per-platform command).
       // The command returns immediately on Windows; on macOS osascript blocks
       // for the DoScript duration — either way the actual work happens inside
@@ -448,7 +587,6 @@ export class FileIpcTransport implements AeTransport {
       while (Date.now() < deadline) {
         const parsed = await this.tryReadResponse(responsePath);
         if (parsed) {
-          await this.safeUnlink(responsePath);
           return this.toEvalResult(parsed, Date.now() - started);
         }
         if (spawnState.error !== null) {
@@ -478,10 +616,10 @@ export class FileIpcTransport implements AeTransport {
             // alert. Tell the two apart before launching again.
             const dialogs = await this.scanDialogs();
             if (dialogs.length > 0) {
-              await this.safeUnlink(requestPath);
+              const cancelled = await this.safeUnlink(requestPath);
               return dialogFailure(
                 dialogs,
-                `the request was never picked up after ${attempts} launch attempt${attempts === 1 ? "" : "s"} and has been discarded`,
+                `after ${attempts} launch attempt${attempts === 1 ? "" : "s"}; ${cancelled ? "cancelled before claim" : "cancellation unconfirmed; the request may still execute"}`,
                 started,
               );
             }
@@ -542,6 +680,11 @@ export class FileIpcTransport implements AeTransport {
   ): Promise<void> {
     const tmpRequestPath = path.join(dir, `.${REQUEST_PREFIX}${request.id}.json.tmp`);
     await fs.writeFile(tmpRequestPath, serializeRequest(request), "utf8");
+    const record: OutcomeRecord = JSON.parse(
+      await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
+    );
+    record.submitted = true;
+    await this.saveOutcome(request.id, record);
     await fs.rename(tmpRequestPath, requestPath);
   }
 
@@ -615,12 +758,12 @@ export class FileIpcTransport implements AeTransport {
       "no running After Effects instance received the script: the launched AfterFX.exe started booting an " +
         "instance of its own. That happens when no After Effects is running, or when every running one was " +
         "started with `AfterFX.exe -m` — those never receive `-r` scripts. The booting instance was terminated " +
-        "and the request discarded; nothing was executed.",
+        "and cancellation attempted; consult the returned request status before any retry.",
       {
         durationMs: Date.now() - started,
         hint:
           "Either drive one After Effects started WITHOUT -m, or set up multi-instance use: " +
-          "`npx @kumoproductions/mcp-aftereffects install-agent`, restart After Effects, and set AE_MCP_INSTANCE " +
+          "`ae-uber-mcp install-agent`, restart After Effects, and set AE_MCP_INSTANCE " +
           "to the instance to address (see README, 'Multiple After Effects instances').",
       },
     );
@@ -649,15 +792,6 @@ export class FileIpcTransport implements AeTransport {
         }
         return true;
       } catch {
-        try {
-          const stat = await fs.stat(BUSY_LOCK_PATH);
-          if (Date.now() - stat.mtimeMs > BUSY_LOCK_STALE_MS) {
-            await this.safeUnlink(BUSY_LOCK_PATH);
-          }
-        } catch {
-          // Lock vanished between open and stat, or the mailbox itself is
-          // unreadable — fall through to the deadline check either way.
-        }
         if (Date.now() >= deadline) return false;
         await sleep(POLL_INTERVAL_MS);
       }
@@ -759,7 +893,10 @@ export class FileIpcTransport implements AeTransport {
     try {
       const raw = await fs.readFile(responsePath, "utf8");
       if (!raw) return null;
-      return JSON.parse(raw) as DispatcherResponse;
+      const parsed = JSON.parse(raw) as DispatcherResponse;
+      const expectedId = path.basename(responsePath).slice(RESPONSE_PREFIX.length, -5);
+      if (!parsed || parsed.id !== expectedId || typeof parsed.ok !== "boolean") return null;
+      return parsed;
     } catch {
       // Missing (normal, still waiting) or a torn read of a file being renamed
       // into place — either way, poll again.
@@ -771,47 +908,17 @@ export class FileIpcTransport implements AeTransport {
   private async safeUnlink(p: string): Promise<boolean> {
     try {
       await fs.unlink(p);
+      const match = /^request-([0-9a-f-]+)\.json$/i.exec(path.basename(p));
+      if (match && REQUEST_ID.test(match[1])) {
+        const record: OutcomeRecord = JSON.parse(
+          await fs.readFile(path.join(outcomesDir, `${match[1]}.json`), "utf8"),
+        );
+        record.cancelled = true;
+        await this.saveOutcome(match[1], record);
+      }
       return true;
     } catch {
       return false;
-    }
-  }
-
-  /**
-   * Drop request/response files old enough that no caller can still be waiting
-   * on them — leftovers from a crashed server or a killed AE — and instance
-   * directories whose agent has been silent for as long. Best-effort and never
-   * fatal; a shared mailbox means another live client may own files we are
-   * looking at, so only clearly-expired ones are touched.
-   */
-  private async sweepStaleFiles(): Promise<void> {
-    try {
-      const entries = await fs.readdir(RUNTIME_DIR);
-      const cutoff = Date.now() - STALE_RUNTIME_FILE_MS;
-      for (const entry of entries) {
-        const isMail =
-          (entry.startsWith(REQUEST_PREFIX) || entry.startsWith(RESPONSE_PREFIX)) &&
-          entry.endsWith(".json");
-        if (!isMail) continue;
-        const full = path.join(RUNTIME_DIR, entry);
-        try {
-          const stat = await fs.stat(full);
-          if (stat.mtimeMs < cutoff) await fs.unlink(full);
-        } catch {
-          /* raced with another client; leave it alone */
-        }
-      }
-      // An expired busy lock from a crashed run would otherwise make the first
-      // call of this session wait out the stale threshold.
-      try {
-        const lockStat = await fs.stat(BUSY_LOCK_PATH);
-        if (Date.now() - lockStat.mtimeMs > BUSY_LOCK_STALE_MS) await fs.unlink(BUSY_LOCK_PATH);
-      } catch {
-        /* no lock, or raced with its owner */
-      }
-      await sweepDeadInstanceDirs();
-    } catch {
-      /* directory missing or unreadable — setupError already covers it */
     }
   }
 }

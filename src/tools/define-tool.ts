@@ -71,7 +71,12 @@ export function jsxReportedFailure(result: unknown): { error: string } | null {
 export function toMcpResult(result: EvalResult): ToolResult {
   if (!result.ok) {
     return errorResult(result.errorCode ?? "TRANSPORT", result.error ?? "unknown failure", {
-      ...(result.dialogs?.length ? { details: { dialogs: result.dialogs } } : {}),
+      details: {
+        ...(result.requestId
+          ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+          : {}),
+        ...(result.dialogs?.length ? { dialogs: result.dialogs } : {}),
+      },
       stack: result.stack,
       logs: result.logs,
       durationMs: result.durationMs,
@@ -80,12 +85,20 @@ export function toMcpResult(result: EvalResult): ToolResult {
   const reported = jsxReportedFailure(result.result);
   if (reported) {
     return errorResult("OPERATION_FAILED", reported.error, {
-      details: { result: result.result },
+      details: {
+        result: result.result,
+        ...(result.requestId
+          ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+          : {}),
+      },
       logs: result.logs,
       durationMs: result.durationMs,
     });
   }
   return jsonResult({
+    ...(result.requestId
+      ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+      : {}),
     result: result.result,
     logs: result.logs,
     durationMs: result.durationMs,

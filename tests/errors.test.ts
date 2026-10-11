@@ -33,9 +33,9 @@ function structured(res: { structuredContent?: unknown }): {
 }
 
 describe("error envelope", () => {
-  it("marks only transient classes retryable", () => {
-    expect(isRetryable("TIMEOUT")).toBe(true);
-    expect(isRetryable("TRANSPORT")).toBe(true);
+  it("never infers safe replay from a transport error class", () => {
+    expect(isRetryable("TIMEOUT")).toBe(false);
+    expect(isRetryable("TRANSPORT")).toBe(false);
     expect(isRetryable("INVALID_ARGS")).toBe(false);
     expect(isRetryable("AE_NOT_FOUND")).toBe(false);
     expect(isRetryable("FORBIDDEN")).toBe(false);
@@ -75,10 +75,22 @@ describe("jsxReportedFailure", () => {
 describe("toMcpResult", () => {
   it("maps a transport failure onto its error code", () => {
     const res = toMcpResult(
-      evalResult({ ok: false, error: "gave up", errorCode: "TIMEOUT", durationMs: 60_000 }),
+      evalResult({
+        ok: false,
+        error: "gave up",
+        errorCode: "TIMEOUT",
+        durationMs: 60_000,
+        requestId: "test-request",
+        state: "running",
+        mayStillRun: true,
+      }),
     );
     expect(res.isError).toBe(true);
-    expect(structured(res).error).toMatchObject({ code: "TIMEOUT", retryable: true });
+    expect(structured(res).error).toMatchObject({
+      code: "TIMEOUT",
+      retryable: false,
+      details: { requestId: "test-request", state: "running", mayStillRun: true },
+    });
   });
 
   it("does NOT report a { ok: false } return as success", () => {

@@ -187,6 +187,9 @@ export const doTool = defineTool({
       return errorResult(result.errorCode ?? "TRANSPORT", result.error ?? "unknown failure", {
         details: {
           operation: op.name,
+          ...(result.requestId
+            ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+            : {}),
           ...jsxErrorLocation(result.line, wrappedCode, wrapperLinesAboveUserJsx, op.name),
           ...(result.dialogs?.length ? { dialogs: result.dialogs } : {}),
         },
@@ -214,7 +217,14 @@ export const doTool = defineTool({
     const reported = jsxReportedFailure(opResult);
     if (reported) {
       return errorResult("OPERATION_FAILED", `${op.name}: ${reported.error}`, {
-        details: { operation: op.name, result: opResult, context },
+        details: {
+          operation: op.name,
+          result: opResult,
+          context,
+          ...(result.requestId
+            ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+            : {}),
+        },
         logs: result.logs,
         durationMs: result.durationMs,
         ...(isBatchShaped(opResult)
@@ -227,6 +237,9 @@ export const doTool = defineTool({
 
     return jsonResult({
       result: opResult,
+      ...(result.requestId
+        ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
+        : {}),
       context,
       logs: result.logs,
       durationMs: result.durationMs,

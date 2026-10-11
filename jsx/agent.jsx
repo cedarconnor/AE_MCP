@@ -132,7 +132,7 @@
             var pinned = $.global.AE_MCP_AGENT_MAILBOX;
             if (pinned) return normalizePath(String(pinned));
         } catch (ePinned) { /* not pinned */ }
-        return normalizePath(Folder.temp.fsName) + "/mcp-aftereffects/runtime";
+        return normalizePath(Folder.temp.fsName) + "/ae-uber-mcp/runtime";
     }
 
     /** Where the stub's own breadcrumbs go (agent-fatal.log). Not a mailbox. */
@@ -141,7 +141,7 @@
             var injected = $.global.AE_MCP_RUNTIME_ROOT_OVERRIDE;
             if (injected) return normalizePath(String(injected));
         } catch (eInjected) { /* not injected */ }
-        return normalizePath(Folder.temp.fsName) + "/mcp-aftereffects";
+        return normalizePath(Folder.temp.fsName) + "/ae-uber-mcp";
     }
 
     function agentMain() {

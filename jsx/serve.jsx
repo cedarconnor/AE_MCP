@@ -10,7 +10,7 @@
 // in; the response is written next to it. The contract is the same on either
 // path:
 //
-//   - the request is DELETED before it runs (consume-on-read), so no second
+//   - the request is atomically RENAMED before it runs, so no second
 //     dispatcher run or tick can execute it again;
 //   - the id comes from the FILENAME, not the JSON body, so even a corrupt or
 //     unparseable request gets a correlated response instead of stranding the
@@ -212,7 +212,23 @@ AE_MCP.serveRequest = function (requestFile, mailboxDir, logPath) {
         }
     }
 
-    // --- Read request (consume-on-read) --------------------------------
+    // Claim BEFORE opening/reading. A failed rename is never permission to
+    // execute. Retain the claimed input and response as the durable ledger.
+    // Existing records also stop a replayed request with the same identity.
+    var claimedName = "executing-" + requestId + ".json";
+    if ((new File(mailboxDir + "/" + claimedName)).exists || (new File(responsePath)).exists) return;
+    try {
+        if (!requestFile.rename(claimedName)) {
+            appendLog("ERROR: cannot claim " + requestName + "; no code executed");
+            return;
+        }
+    } catch (eClaim) {
+        appendLog("ERROR: claiming " + requestName + " failed: " + describeError(eClaim));
+        return;
+    }
+    requestFile = new File(mailboxDir + "/" + claimedName);
+
+    // --- Read the exclusively claimed request ---------------------------
     var request = null;
     try {
         requestFile.encoding = "UTF-8";
@@ -223,13 +239,6 @@ AE_MCP.serveRequest = function (requestFile, mailboxDir, logPath) {
         }
         var raw = requestFile.read();
         requestFile.close();
-        // Consume so no other queued run can re-execute it. If the delete
-        // fails we proceed anyway (degrades to the old behavior).
-        try {
-            if (!requestFile.remove()) appendLog("WARN: could not consume " + requestName);
-        } catch (eRm2) {
-            appendLog("WARN: consuming " + requestName + " threw: " + describeError(eRm2));
-        }
         request = JSON.parse(raw);
     } catch (eReq) {
         response.error = "failed to read request: " + describeError(eReq);

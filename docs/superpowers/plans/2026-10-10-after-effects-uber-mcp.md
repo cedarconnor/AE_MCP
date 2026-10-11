@@ -76,10 +76,10 @@ Interfaces: `ae_motion_plan` creates normalized spec/hash offline; `ae_motion_bu
 Files: `scripts/smoke-live.mjs`, `scripts/check-protocol.mjs`, `docs/VALIDATION.md`, `README.md`, `docs/SETUP.md`.
 
 - [x] Run offline suite/typechecks/build; fix actual failures before native work.
-- [ ] Connect to installed AE, inspect active project and scripting prerequisite, and use disposable named demo content without replacing existing work.
-- [ ] Build motion graphic, inspect native layers/keyframes, revise via stable layer ID, capture entrance/hold/exit samples, save new AEP if safe. Visually inspect captures.
+- [x] Connect to installed AE, inspect active project and scripting prerequisite, and use disposable named demo content without replacing existing work.
+- [x] Build motion graphic, inspect native layers/keyframes, revise via stable layer ID, capture entrance/hold/exit samples, save new AEP if safe. Visually inspect captures.
 - [x] Test packed package outside checkout with stdio initialize/list/call and verify runtime assets are included.
 - [x] Request independent code review, fix material findings, rerun affected checks.
 - [x] Write validation report with exact passing/untested/blocked boundaries and deliver artifact/setup links.
 
-Native acceptance is pending approval to enable AE's scripting file/network preference. See docs/VALIDATION.md; offline and packed-protocol results do not establish native or visual acceptance.
+Native smoke and sampled-frame inspection passed after explicit user approval to enable AE's scripting file/network preference. See docs/VALIDATION.md for evidence and limits; artist acceptance remains pending.

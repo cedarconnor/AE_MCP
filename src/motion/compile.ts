@@ -24,7 +24,8 @@ function animate(prop, times, values, spatial) {
     prop.setTemporalEaseAtKey(k, [new KeyframeEase(0, 66)], [new KeyframeEase(0, 66)]);
     if (spatial) {
       prop.setSpatialAutoBezierAtKey(k, false);
-      prop.setSpatialTangentsAtKey(k, [0,0], [0,0]);
+      var tangent = prop.value.length === 3 ? [0,0,0] : [0,0];
+      prop.setSpatialTangentsAtKey(k, tangent, tangent);
     }
   }
 }

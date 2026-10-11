@@ -21,22 +21,27 @@
 
  RUN  v4.1.11 C:/Users/Cedar/Documents/AE_MCP
 
- ✓ tests/transport-pull.test.ts (13 tests) 13322ms
-     ✓ fails fast when the instance stops ticking, and takes the request back  1050ms
-     ✓ names the dialog when the instance stopped ticking behind one  1042ms
-     ✓ times out naming the instance and reclaims an unconsumed request  665ms
-     ✓ kills a launcher child that outlives a forwarder and reports NO_INSTANCE  4024ms
-     ✓ treats a child that exits promptly as a forwarder and keeps relaunching  3554ms
-     ✓ stops relaunching once a dialog is what blocks the script  2516ms
- ✓ tests/transport-offline.test.ts (12 tests) 9968ms
-     ✓ returns TIMEOUT and reclaims the unconsumed request  414ms
-     ✓ leaves no response file behind either  388ms
-     ✓ waits for a fresh foreign lock and reports the busy timeout without dispatching  561ms
-     ✓ does not steal a stale lock without proof of host completion  461ms
-     ✓ leaves a lock it no longer owns alone on the way out  671ms
-     ✓ relaunches the dispatcher while the request stays unconsumed  6094ms
+ ✓ tests/transport-pull.test.ts (13 tests) 13332ms
+     ✓ fails fast when the instance stops ticking, and takes the request back  1044ms
+     ✓ names the dialog when the instance stopped ticking behind one  1041ms
+     ✓ times out naming the instance and reclaims an unconsumed request  658ms
+     ✓ kills a launcher child that outlives a forwarder and reports NO_INSTANCE  4019ms
+     ✓ treats a child that exits promptly as a forwarder and keeps relaunching  3574ms
+     ✓ stops relaunching once a dialog is what blocks the script  2519ms
+ ✓ tests/transport-offline.test.ts (12 tests) 10035ms
+     ✓ returns TIMEOUT and reclaims the unconsumed request  497ms
+     ✓ leaves no response file behind either  386ms
+     ✓ waits for a fresh foreign lock and reports the busy timeout without dispatching  560ms
+     ✓ does not steal a stale lock without proof of host completion  467ms
+     ✓ leaves a lock it no longer owns alone on the way out  675ms
+     ✓ relaunches the dispatcher while the request stays unconsumed  6071ms
      ✓ travels to the dispatcher as an explicit field  665ms
      ✓ is sent as true when the caller says nothing  669ms
+ ✓ tests/transport-recovery.test.ts (9 tests) 2378ms
+   ✓ push: retains late results and blocks a second request until completion across transports  319ms
+   ✓ pull: retains late results and blocks a second request until completion across transports  308ms
+   ✓ bounds a stuck transition wait without stealing or submitting a request  1036ms
+ ✓ tests/release-changelog.test.ts (13 tests) 900ms
 [mcp-aftereffects] policy: readonly=off, categories=all, eval.run=disabled
 [mcp-aftereffects] mailbox: C:\Users\Cedar\AppData\Local\Temp\ae-uber-mcp\runtime
 [mcp-aftereffects] instance: none registered yet — calls launch AfterFX.exe -r into the running After Effects (instances started with -m need the agent: `mcp-aftereffects install-agent`)
@@ -45,49 +50,44 @@
 [mcp-aftereffects] mailbox: C:\Users\Cedar\AppData\Local\Temp\ae-uber-mcp\runtime
 [mcp-aftereffects] instance: none registered yet — calls launch AfterFX.exe -r into the running After Effects (instances started with -m need the agent: `mcp-aftereffects install-agent`)
 [mcp-aftereffects] read-only mode — tools withheld: ae_save_project, ae_project_import_json, ae_motion_build; ae_do accepts only operations that cannot modify the project.
- ✓ tests/mcp-server.test.ts (11 tests) 741ms
- ✓ tests/transport-recovery.test.ts (9 tests) 2358ms
-   ✓ push: retains late results and blocks a second request until completion across transports  308ms
-   ✓ pull: retains late results and blocks a second request until completion across transports  311ms
-   ✓ bounds a stuck transition wait without stealing or submitting a request  1025ms
- ✓ tests/release-changelog.test.ts (13 tests) 852ms
- ✓ tests/lint-jsx.test.ts (8 tests) 144ms
- ✓ tests/instances.test.ts (21 tests) 87ms
- ✓ tests/agent-install.test.ts (12 tests) 48ms
+ ✓ tests/mcp-server.test.ts (11 tests) 672ms
+ ✓ tests/lint-jsx.test.ts (8 tests) 150ms
+ ✓ tests/instances.test.ts (21 tests) 96ms
+ ✓ tests/agent-install.test.ts (12 tests) 49ms
  ✓ tests/motion-tools.test.ts (11 tests) 27ms
- ✓ tests/parity-ops.test.ts (71 tests) 23ms
+ ✓ tests/parity-ops.test.ts (71 tests) 22ms
  ✓ tests/instance-ops.test.ts (10 tests) 23ms
  ✓ tests/color.test.ts (9 tests) 21ms
  ✓ tests/motion-compile.test.ts (6 tests) 19ms
  ✓ tests/layer-move.test.ts (14 tests) 18ms
- ✓ tests/sheet.test.ts (7 tests) 18ms
- ✓ tests/policy.test.ts (16 tests) 15ms
+ ✓ tests/sheet.test.ts (7 tests) 19ms
+ ✓ tests/policy.test.ts (16 tests) 14ms
  ✓ tests/motion-spec.test.ts (15 tests) 14ms
- ✓ tests/field-ops.test.ts (24 tests) 12ms
- ✓ tests/mailbox-safety.test.ts (13 tests | 2 skipped) 12ms
+ ✓ tests/field-ops.test.ts (24 tests) 13ms
+ ✓ tests/mailbox-safety.test.ts (13 tests | 2 skipped) 11ms
+ ✓ tests/json-safety.test.ts (14 tests) 9ms
  ✓ tests/project-preservation.test.ts (37 tests) 11ms
- ✓ tests/json-safety.test.ts (14 tests) 11ms
- ✓ tests/dialogs.test.ts (17 tests) 9ms
+ ✓ tests/dialogs.test.ts (17 tests) 10ms
  ✓ tests/errors.test.ts (11 tests) 8ms
  ✓ tests/undo-group.test.ts (14 tests) 8ms
- ✓ tests/opschema.test.ts (14 tests) 8ms
- ✓ tests/error-text.test.ts (19 tests) 8ms
+ ✓ tests/error-text.test.ts (19 tests) 7ms
+ ✓ tests/opschema.test.ts (14 tests) 7ms
  ✓ tests/inspect-ops.test.ts (7 tests) 7ms
  ✓ tests/tools-instance.test.ts (5 tests) 7ms
- ✓ tests/calibration-recovery.test.ts (2 tests) 5ms
  ✓ tests/batch.test.ts (8 tests) 6ms
- ✓ tests/transport-claim.test.ts (2 tests) 5ms
+ ✓ tests/calibration-recovery.test.ts (2 tests) 6ms
+ ✓ tests/transport-claim.test.ts (2 tests) 6ms
  ✓ tests/validate.test.ts (10 tests) 5ms
- ✓ tests/fixtures.test.ts (3 tests) 5ms
- ✓ tests/mailbox-alias.test.ts (1 test) 4ms
  ✓ tests/synthetic.test.ts (2 tests) 5ms
- ✓ tests/registry.test.ts (5 tests) 4ms
- ✓ tests/launcher.test.ts (5 tests) 4ms
+ ✓ tests/fixtures.test.ts (3 tests) 5ms
+ ✓ tests/registry.test.ts (5 tests) 5ms
+ ✓ tests/mailbox-alias.test.ts (1 test) 4ms
+ ✓ tests/launcher.test.ts (5 tests) 5ms
 
  Test Files  37 passed (37)
       Tests  469 passed | 2 skipped (471)
-   Start at  18:59:29
-   Duration  38.02s (transform 994ms, setup 0ms, import 3.63s, tests 27.84s, environment 3ms)
+   Start at  20:43:47
+   Duration  37.75s (transform 957ms, setup 0ms, import 3.48s, tests 27.93s, environment 3ms)
 
 
 > after-effects-uber-mcp@0.1.0 check:protocol

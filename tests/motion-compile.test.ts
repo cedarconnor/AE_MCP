@@ -11,8 +11,14 @@ class Property {
   keys: { time: number; value: any }[] = [];
   eases: any[] = [];
   interpolation: any[] = [];
+  tangents: any[] = [];
   property(name: string): Property {
-    return (this.children[name] ??= new Property());
+    if (!this.children[name]) {
+      this.children[name] = new Property();
+      // AE layer Position retains a three-component spatial value even on 2D layers.
+      if (name === "ADBE Position") this.children[name].value = [0, 0, 0];
+    }
+    return this.children[name];
   }
   addProperty(name: string): Property {
     return this.property(name);
@@ -30,7 +36,12 @@ class Property {
     this.interpolation.push(args);
   }
   setSpatialAutoBezierAtKey() {}
-  setSpatialTangentsAtKey() {}
+  setSpatialTangentsAtKey(key: number, incoming: number[], outgoing: number[]) {
+    if (incoming.length !== this.value.length || outgoing.length !== this.value.length) {
+      throw new Error("Spatial tangent dimensionality must match the native property");
+    }
+    this.tangents.push({ key, incoming, outgoing });
+  }
   get numKeys() {
     return this.keys.length;
   }
@@ -155,6 +166,8 @@ describe("motion compiler", () => {
     expect(opacity.eases).toHaveLength(4);
     expect(opacity.eases[0][1][0]).toMatchObject({ speed: 0, influence: 66 });
     const position = title.property("ADBE Transform Group").property("ADBE Position");
+    expect(position.tangents).toHaveLength(4);
+    expect(position.tangents[0]).toMatchObject({ incoming: [0, 0, 0], outgoing: [0, 0, 0] });
     expect(position.keys[1].value).toEqual(spec.layers[2].position);
     expect(position.keys[0].value).not.toEqual(position.keys[1].value);
     expect(position.keys[3].value).not.toEqual(position.keys[2].value);

@@ -47,23 +47,56 @@ while updating development tools. A one-off npm 11.21.0 invocation completed
 that update; no global npm installation was changed. The locked tree and packed
 runtime then passed the checks above.
 
-## Native boundary
+## Native AE result
 
-After Effects 2026 is installed. The saved AE 26.2 preference has scripting
-file/network access disabled. Enabling it was requested explicitly because it
-is an application security setting. No native smoke result is claimed while
-that decision is pending.
+The user approved enabling scripting file/network access and running the live
+test. The setting was enabled in the saved AE 26.2 preferences while AE was
+closed, after a native guard verified an empty, unchanged, untitled project
+with an empty render queue. The original preference file is backed up under
+`artifacts/native-setup/`. AE was reopened and its own scripting API verified
+the setting is 1. It remains enabled as requested.
 
-`scripts/smoke-live.mjs` is the bounded reproduction entry: it requires an empty
-project, builds three native motion examples, verifies eight animation keys
-per generated layer, changes title text by layer ID, captures six times per
-composition, and saves a new demonstration AEP. It does not close or replace
-an existing project. This script has not yet been native-qualified.
+`npm run smoke:live` passed against **AE 26.2.1x2 on Windows**, using the real
+MCP stdio server and AfterFX file bridge. It started from an empty project:
+
+| Preset | Native layers | Native keyframes | Captured frames | Audit |
+|---|---:|---:|---:|---|
+| Title card | 3 | 24 | 6 | checks_passed |
+| Lower third | 3 | 24 | 6 | checks_passed |
+| Statistic card | 4 | 32 | 6 | checks_passed |
+
+All compositions are 1280 x 720, 30 fps, six seconds long. Samples were captured
+at 0.1, 0.45, 1.3, 3.0, 5.6 and 5.95 seconds. Build warnings were empty. The title
+was revised to `IDEAS. IN MOTION.` through its native layer ID and read back.
+The run saved `artifacts/live-2026-10-11T03-42-33-572Z/` containing the editable
+`Uber-MCP-Motion-Demo.aep` (320,388 bytes), specs, 18 PNGs, three contact sheets,
+hash-bound review manifests and complete call evidence. Run timestamps are UTC;
+the local test date is October 10, 2026.
+
+The first live build revealed that AE layer Position requires three-component
+spatial tangents even on a 2D layer. The compiler now derives tangent length
+from the native property value; the host double reproduces this requirement.
+The regression failed before the fix and passed afterward. That partial build
+was saved separately before starting a fresh empty project; it was not silently
+discarded. The successful run used the corrected compiler.
+
+All three six-frame contact sheets were visually inspected: sampled layout,
+title revision, entrance/hold/exit opacity and position changes are visible,
+with no obvious text clipping. This is assistant inspection of sampled frames,
+not continuous playback or artist acceptance. The capture used working space
+`None`, 16-bit native data converted to 8-bit sRGB-tagged PNG with values unchanged.
+
+Evidence: [native call record](validation/native-evidence.json),
+[title contact sheet](validation/title-card-sheet.png),
+[lower-third contact sheet](validation/lower-third-sheet.png),
+[statistic contact sheet](validation/statistic-card-sheet.png).
+The AEP and full-resolution frames remain in the local artifacts directory and
+are not included in the npm package.
 
 ## Limits
 
-- No current AE runtime, rendered frame or artist acceptance claim until live
-  validation is recorded. Installed software and green mocks are insufficient.
+- Native runtime and sampled-frame checks passed for this bounded smoke;
+  artist acceptance remains pending.
 - Mac, multiple AE instances, third-party effects, RTL shaping, full-animation
   playback, color-critical/HDR/alpha export and universal AEP round-trip fidelity
   are not qualified by this build.

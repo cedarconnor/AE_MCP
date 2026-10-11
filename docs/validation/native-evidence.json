@@ -1,0 +1,4623 @@
+{
+  "startedAt": "2026-10-11T03:42:33.579Z",
+  "directory": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z",
+  "calls": [
+    {
+      "name": "ae_version_info",
+      "arguments": {},
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "3c414cdc-53f4-4353-9050-558870e134a2",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "app": {
+            "version": "26.2.1x2",
+            "buildName": "26.2.1x2",
+            "buildNumber": 2,
+            "language": "en_US",
+            "memoryInUse": 186541032,
+            "availableGPUs": 2
+          },
+          "capabilities": {
+            "saveFrameToPng": true,
+            "appEffects": true,
+            "bridgeTalk": true,
+            "socket": true
+          },
+          "project": {
+            "numItems": 0,
+            "file": null,
+            "dirty": true
+          },
+          "agent": null,
+          "server": {
+            "exportSchemaVersion": 2
+          }
+        },
+        "logs": [],
+        "durationMs": 391
+      }
+    },
+    {
+      "name": "ae_project_info",
+      "arguments": {},
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "01d9e672-9c4b-4dc7-b208-77eceb3726c2",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "file": null,
+          "dirty": true,
+          "numItems": 0,
+          "bitsPerChannel": 16,
+          "timeDisplayType": "2013",
+          "activeItem": null,
+          "items": []
+        },
+        "logs": [],
+        "durationMs": 378
+      }
+    },
+    {
+      "name": "ae_motion_plan",
+      "arguments": {
+        "template": "title-card",
+        "title": "IDEAS IN MOTION",
+        "subtitle": "Editable native layers · After Effects Uber MCP",
+        "name": "Uber MCP — title-card",
+        "width": 1280,
+        "height": 720,
+        "duration": 6,
+        "fps": 30
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — title-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                640,
+                360
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                1049.6,
+                432
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                640,
+                331.2
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "IDEAS IN MOTION",
+              "font": "ArialMT",
+              "fontSize": 54
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                640,
+                417.59999999999997
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Editable native layers · After Effects Uber MCP",
+              "font": "ArialMT",
+              "fontSize": 23.04
+            }
+          ]
+        },
+        "specHash": "912c15c11330256c0ccfe71253d544e7d2f05a400d68c620fd4ee6b408e99e47",
+        "next": "Review/edit spec, then ae_motion_build. Font and layout validation continue in AE."
+      }
+    },
+    {
+      "name": "ae_motion_build",
+      "arguments": {
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — title-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                640,
+                360
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                1049.6,
+                432
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                640,
+                331.2
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "IDEAS IN MOTION",
+              "font": "ArialMT",
+              "fontSize": 54
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                640,
+                417.59999999999997
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Editable native layers · After Effects Uber MCP",
+              "font": "ArialMT",
+              "fontSize": 23.04
+            }
+          ]
+        }
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "18ba59c1-ccd9-4ffa-af17-2483d944a821",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 13,
+          "layers": [
+            {
+              "key": "panel",
+              "id": 25,
+              "name": "Panel"
+            },
+            {
+              "key": "title",
+              "id": 26,
+              "name": "Title"
+            },
+            {
+              "key": "subtitle",
+              "id": 27,
+              "name": "Subtitle"
+            }
+          ],
+          "specHash": "912c15c11330256c0ccfe71253d544e7d2f05a400d68c620fd4ee6b408e99e47",
+          "warnings": []
+        },
+        "logs": [],
+        "durationMs": 560
+      }
+    },
+    {
+      "name": "ae_motion_audit",
+      "arguments": {
+        "compId": 13
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "1714c013-03a9-420c-a6b4-528a9a96c6fd",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 13,
+          "name": "Uber MCP — title-card",
+          "width": 1280,
+          "height": 720,
+          "duration": 6,
+          "fps": 30,
+          "specHash": "912c15c11330256c0ccfe71253d544e7d2f05a400d68c620fd4ee6b408e99e47",
+          "projectFile": null,
+          "layers": [
+            {
+              "id": 27,
+              "name": "Subtitle",
+              "comment": "ae-uber-mcp:layer:subtitle",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 26,
+              "name": "Title",
+              "comment": "ae-uber-mcp:layer:title",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 25,
+              "name": "Panel",
+              "comment": "ae-uber-mcp:layer:panel",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            }
+          ],
+          "issues": [],
+          "truncated": false,
+          "technicalStatus": "checks_passed",
+          "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+          "visualAcceptance": "not_assessed"
+        },
+        "logs": [],
+        "durationMs": 383
+      }
+    },
+    {
+      "name": "ae_do",
+      "arguments": {
+        "operation": "text.set_content",
+        "args": {
+          "comp": 13,
+          "layer": {
+            "id": 26
+          },
+          "text": "IDEAS. IN MOTION."
+        }
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "result": {
+          "ok": true,
+          "text": "IDEAS. IN MOTION."
+        },
+        "requestId": "7d47b8a6-11c3-4906-9e74-e667827b9535",
+        "state": "completed",
+        "mayStillRun": false,
+        "context": {
+          "project": {
+            "numItems": 1,
+            "dirty": true,
+            "file": null
+          },
+          "instance": null,
+          "activeComp": null,
+          "selectedLayers": []
+        },
+        "logs": [],
+        "durationMs": 380
+      }
+    },
+    {
+      "name": "ae_do",
+      "arguments": {
+        "operation": "layer.info",
+        "args": {
+          "comp": 13,
+          "layer": {
+            "id": 26
+          },
+          "detail": "summary"
+        }
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "result": {
+          "index": 2,
+          "id": 26,
+          "name": "Title",
+          "type": "TextLayer",
+          "enabled": true,
+          "solo": false,
+          "shy": false,
+          "locked": false,
+          "inPoint": 0,
+          "outPoint": 6,
+          "startTime": 0,
+          "stretch": 100,
+          "parentIndex": null,
+          "label": 1,
+          "text": "IDEAS. IN MOTION.",
+          "fontSize": 54,
+          "font": "ArialMT",
+          "fillColor": [
+            1,
+            1,
+            1
+          ],
+          "parent": null,
+          "transformGroup": {
+            "name": "Transform",
+            "matchName": "ADBE Transform Group",
+            "properties": [
+              {
+                "name": "Anchor Point",
+                "matchName": "ADBE Anchor Point",
+                "propertyValueType": "ThreeD_SPATIAL",
+                "value": [
+                  0.30322265625,
+                  -19.34033203125,
+                  0
+                ]
+              },
+              {
+                "name": "Position",
+                "matchName": "ADBE Position",
+                "propertyValueType": "ThreeD_SPATIAL",
+                "value": [
+                  640,
+                  360,
+                  0
+                ],
+                "keyframes": [
+                  {
+                    "time": 0,
+                    "value": [
+                      640,
+                      360,
+                      0
+                    ],
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 0.9,
+                    "value": [
+                      640,
+                      331.200012207031,
+                      0
+                    ],
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 5.1,
+                    "value": [
+                      640,
+                      331.200012207031,
+                      0
+                    ],
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 6,
+                    "value": [
+                      640,
+                      302.399993896484,
+                      0
+                    ],
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "X Position",
+                "matchName": "ADBE Position_0",
+                "propertyValueType": "OneD",
+                "value": 0
+              },
+              {
+                "name": "Y Position",
+                "matchName": "ADBE Position_1",
+                "propertyValueType": "OneD",
+                "value": 0
+              },
+              {
+                "name": "Opacity",
+                "matchName": "ADBE Opacity",
+                "propertyValueType": "OneD",
+                "value": 0,
+                "keyframes": [
+                  {
+                    "time": 0,
+                    "value": 0,
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 0.9,
+                    "value": 100,
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 5.1,
+                    "value": 100,
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  },
+                  {
+                    "time": 6,
+                    "value": 0,
+                    "inInterp": 6613,
+                    "outInterp": 6613,
+                    "inInterpName": "bezier",
+                    "outInterpName": "bezier",
+                    "inEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ],
+                    "outEase": [
+                      {
+                        "speed": 0,
+                        "influence": 66
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "groups": []
+          },
+          "effectsGroup": null,
+          "masksGroup": null,
+          "textGroup": {
+            "name": "Text",
+            "matchName": "ADBE Text Properties",
+            "properties": [
+              {
+                "name": "Source Text",
+                "matchName": "ADBE Text Document",
+                "propertyValueType": "TEXT_DOCUMENT",
+                "value": {
+                  "__kind": "TextDocument",
+                  "text": "IDEAS. IN MOTION.",
+                  "font": "ArialMT",
+                  "fontFamily": "Arial",
+                  "fontStyle": "Regular",
+                  "fontSize": 54,
+                  "fillColor": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "strokeColor": null,
+                  "strokeWidth": 1,
+                  "justification": "7415",
+                  "tracking": 0,
+                  "leading": 64.8000030517578,
+                  "baselineShift": 0,
+                  "applyFill": true,
+                  "applyStroke": false,
+                  "boxText": false,
+                  "boxTextSize": null,
+                  "boxTextPos": null
+                }
+              }
+            ],
+            "groups": [
+              {
+                "name": "Path Options",
+                "matchName": "ADBE Text Path Options",
+                "properties": [],
+                "groups": []
+              },
+              {
+                "name": "More Options",
+                "matchName": "ADBE Text More Options",
+                "properties": [],
+                "groups": []
+              },
+              {
+                "name": "Animators",
+                "matchName": "ADBE Text Animators",
+                "properties": [],
+                "groups": []
+              }
+            ]
+          },
+          "ok": true,
+          "found": true
+        },
+        "requestId": "3b42a635-f649-417e-b768-53bec6a4fef3",
+        "state": "completed",
+        "mayStillRun": false,
+        "context": {
+          "project": {
+            "numItems": 1,
+            "dirty": true,
+            "file": null
+          },
+          "instance": null,
+          "activeComp": null,
+          "selectedLayers": []
+        },
+        "logs": [],
+        "durationMs": 382
+      }
+    },
+    {
+      "name": "ae_motion_review",
+      "arguments": {
+        "compId": 13,
+        "times": [
+          0.1,
+          0.45,
+          1.3,
+          3,
+          5.6,
+          5.95
+        ],
+        "directory": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z",
+        "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending."
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6\\review-6710f2c2-78a5-4bfb-8cf5-5da5385a811b.json",
+        "review": {
+          "version": 1,
+          "id": "6710f2c2-78a5-4bfb-8cf5-5da5385a811b",
+          "createdAt": "2026-10-11T03:42:43.257Z",
+          "compId": 13,
+          "specHash": "912c15c11330256c0ccfe71253d544e7d2f05a400d68c620fd4ee6b408e99e47",
+          "frames": [
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_0.png",
+              "time": 0.1,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.012076991136969027,
+                  0.02001398356257461,
+                  0.035941469332158034
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 173,
+                  "width": 1050,
+                  "height": 431
+                },
+                "coverage": 0.4910481770833333,
+                "edges": {
+                  "top": {
+                    "width": 340,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 263,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 399,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 399,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "841cdb4d4a2c978226575e367414cd7ebd8bfc06153654c747ff5e642b44d233",
+              "bytes": 9498
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_1.png",
+              "time": 0.45,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.02630590368522561,
+                  0.03849220309688354,
+                  0.06504167766083935
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 158,
+                  "width": 1050,
+                  "height": 433
+                },
+                "coverage": 0.4933268229166667,
+                "edges": {
+                  "top": {
+                    "width": 158,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 129,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "26aa547337dd5bd46e6afd032f1e5d9df4abce7c9bd6101f90ee9ace78c5a821",
+              "bytes": 19823
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_2.png",
+              "time": 1.3,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.04064567315991044,
+                  0.05709649245266753,
+                  0.09430607432295111
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 144,
+                  "width": 1050,
+                  "height": 432
+                },
+                "coverage": 0.4921875,
+                "edges": {
+                  "top": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "c10855cea31f549d2eff0ca116bf78d65fa3cb191ec68477f6def43d9f755a63",
+              "bytes": 21522
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_3.png",
+              "time": 3,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.04064567315991044,
+                  0.05709649245266753,
+                  0.09430607432295111
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 144,
+                  "width": 1050,
+                  "height": 432
+                },
+                "coverage": 0.4921875,
+                "edges": {
+                  "top": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "c10855cea31f549d2eff0ca116bf78d65fa3cb191ec68477f6def43d9f755a63",
+              "bytes": 21522
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_4.png",
+              "time": 5.6,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.02182987737034338,
+                  0.032679694122859725,
+                  0.055884338037576885
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 125,
+                  "width": 1050,
+                  "height": 433
+                },
+                "coverage": 0.4933268229166667,
+                "edges": {
+                  "top": {
+                    "width": 125,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 163,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "d134521bc05c1b7d91bd7b844a56263a3d1836c464bc79c5389e81103ce5394d",
+              "bytes": 19416
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_5.png",
+              "time": 5.95,
+              "compName": "Uber MCP — title-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.011829994097932544,
+                  0.019703597672332054,
+                  0.03543563944544668
+                ],
+                "uniform": true,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": null,
+                "coverage": 0,
+                "edges": {
+                  "top": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "081f25b4c06c787c434f94c1ce2cda5b79761078bfa4f8c1e3702d0a7944d584",
+              "bytes": 7624
+            }
+          ],
+          "audit": {
+            "ok": true,
+            "compId": 13,
+            "name": "Uber MCP — title-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "specHash": "912c15c11330256c0ccfe71253d544e7d2f05a400d68c620fd4ee6b408e99e47",
+            "projectFile": null,
+            "layers": [
+              {
+                "id": 27,
+                "name": "Subtitle",
+                "comment": "ae-uber-mcp:layer:subtitle",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 26,
+                "name": "Title",
+                "comment": "ae-uber-mcp:layer:title",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 25,
+                "name": "Panel",
+                "comment": "ae-uber-mcp:layer:panel",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              }
+            ],
+            "issues": [],
+            "truncated": false,
+            "technicalStatus": "checks_passed",
+            "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+            "visualAcceptance": "not_assessed"
+          },
+          "capture": {
+            "ok": true,
+            "frames": [
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_0.png",
+                "time": 0.1,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.012076991136969027,
+                    0.02001398356257461,
+                    0.035941469332158034
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 173,
+                    "width": 1050,
+                    "height": 431
+                  },
+                  "coverage": 0.4910481770833333,
+                  "edges": {
+                    "top": {
+                      "width": 340,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 263,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 399,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 399,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_1.png",
+                "time": 0.45,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.02630590368522561,
+                    0.03849220309688354,
+                    0.06504167766083935
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 158,
+                    "width": 1050,
+                    "height": 433
+                  },
+                  "coverage": 0.4933268229166667,
+                  "edges": {
+                    "top": {
+                      "width": 158,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 129,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_2.png",
+                "time": 1.3,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.04064567315991044,
+                    0.05709649245266753,
+                    0.09430607432295111
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 144,
+                    "width": 1050,
+                    "height": 432
+                  },
+                  "coverage": 0.4921875,
+                  "edges": {
+                    "top": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_3.png",
+                "time": 3,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.04064567315991044,
+                    0.05709649245266753,
+                    0.09430607432295111
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 144,
+                    "width": 1050,
+                    "height": 432
+                  },
+                  "coverage": 0.4921875,
+                  "edges": {
+                    "top": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_4.png",
+                "time": 5.6,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.02182987737034338,
+                    0.032679694122859725,
+                    0.055884338037576885
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 125,
+                    "width": 1050,
+                    "height": 433
+                  },
+                  "coverage": 0.4933268229166667,
+                  "edges": {
+                    "top": {
+                      "width": 125,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 163,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_5.png",
+                "time": 5.95,
+                "compName": "Uber MCP — title-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.011829994097932544,
+                    0.019703597672332054,
+                    0.03543563944544668
+                  ],
+                  "uniform": true,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": null,
+                  "coverage": 0,
+                  "edges": {
+                    "top": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "captureKind": "direct",
+            "compName": "Uber MCP — title-card",
+            "workingSpace": "None",
+            "bitsPerChannel": 16,
+            "projectFile": null,
+            "method": "native",
+            "colorPipeline": "untagged 16-bit → 8-bit sRGB-tagged (values unchanged)",
+            "contactSheet": {
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6/frame_sheet.png",
+              "size": [
+                1960,
+                604
+              ],
+              "columns": 4,
+              "rows": 2,
+              "thumbSize": [
+                480,
+                270
+              ],
+              "frames": 6
+            }
+          },
+          "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending.",
+          "coverage": "sampled_frames_only",
+          "artistAcceptance": "pending",
+          "identityNote": "IDs and spec tag describe this capture session. Reinspect after reopening/replacing a project; spec tag is provenance, not a hash of current AE state."
+        }
+      }
+    },
+    {
+      "name": "ae_motion_plan",
+      "arguments": {
+        "template": "lower-third",
+        "title": "CEDAR / MOTION DESIGN",
+        "subtitle": "Native type, shapes and easing",
+        "name": "Uber MCP — lower-third",
+        "width": 1280,
+        "height": 720,
+        "duration": 6,
+        "fps": 30
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — lower-third",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                384,
+                583.2
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                640,
+                165.6
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                384,
+                576
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "CEDAR / MOTION DESIGN",
+              "font": "ArialMT",
+              "fontSize": 32.4
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                384,
+                619.2
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Native type, shapes and easing",
+              "font": "ArialMT",
+              "fontSize": 20.16
+            }
+          ]
+        },
+        "specHash": "4c68bc996ad5370814b0d0e38b79392096dff0b2a537829fbc80c62d457ba92b",
+        "next": "Review/edit spec, then ae_motion_build. Font and layout validation continue in AE."
+      }
+    },
+    {
+      "name": "ae_motion_build",
+      "arguments": {
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — lower-third",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                384,
+                583.2
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                640,
+                165.6
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                384,
+                576
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "CEDAR / MOTION DESIGN",
+              "font": "ArialMT",
+              "fontSize": 32.4
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                384,
+                619.2
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Native type, shapes and easing",
+              "font": "ArialMT",
+              "fontSize": 20.16
+            }
+          ]
+        }
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "3d2e070c-5a48-4d6c-baae-0ad0d234b1a6",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 28,
+          "layers": [
+            {
+              "key": "panel",
+              "id": 40,
+              "name": "Panel"
+            },
+            {
+              "key": "title",
+              "id": 41,
+              "name": "Title"
+            },
+            {
+              "key": "subtitle",
+              "id": 42,
+              "name": "Subtitle"
+            }
+          ],
+          "specHash": "4c68bc996ad5370814b0d0e38b79392096dff0b2a537829fbc80c62d457ba92b",
+          "warnings": []
+        },
+        "logs": [],
+        "durationMs": 474
+      }
+    },
+    {
+      "name": "ae_motion_audit",
+      "arguments": {
+        "compId": 28
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "4765b74c-725f-46cf-b5b6-78f13362e845",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 28,
+          "name": "Uber MCP — lower-third",
+          "width": 1280,
+          "height": 720,
+          "duration": 6,
+          "fps": 30,
+          "specHash": "4c68bc996ad5370814b0d0e38b79392096dff0b2a537829fbc80c62d457ba92b",
+          "projectFile": null,
+          "layers": [
+            {
+              "id": 42,
+              "name": "Subtitle",
+              "comment": "ae-uber-mcp:layer:subtitle",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 41,
+              "name": "Title",
+              "comment": "ae-uber-mcp:layer:title",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 40,
+              "name": "Panel",
+              "comment": "ae-uber-mcp:layer:panel",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            }
+          ],
+          "issues": [],
+          "truncated": false,
+          "technicalStatus": "checks_passed",
+          "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+          "visualAcceptance": "not_assessed"
+        },
+        "logs": [],
+        "durationMs": 378
+      }
+    },
+    {
+      "name": "ae_motion_review",
+      "arguments": {
+        "compId": 28,
+        "times": [
+          0.1,
+          0.45,
+          1.3,
+          3,
+          5.6,
+          5.95
+        ],
+        "directory": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z",
+        "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending."
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-41cea8f5-32c6-4c84-b304-26152459ceca\\review-af9f01d1-a780-4f84-9037-dfe57ccaea1d.json",
+        "review": {
+          "version": 1,
+          "id": "af9f01d1-a780-4f84-9037-dfe57ccaea1d",
+          "createdAt": "2026-10-11T03:42:51.096Z",
+          "compId": 28,
+          "specHash": "4c68bc996ad5370814b0d0e38b79392096dff0b2a537829fbc80c62d457ba92b",
+          "frames": [
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_0.png",
+              "time": 0.1,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.011862576878114098,
+                  0.019728717207954397,
+                  0.035471639941910285
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 64,
+                  "top": 529,
+                  "width": 640,
+                  "height": 165
+                },
+                "coverage": 0.11458333333333333,
+                "edges": {
+                  "top": {
+                    "width": 593,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 63,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 185,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 697,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "ca551327a54b6d082a95a0fe86778677dfb945846b8eb265976a11a911e86a0f",
+              "bytes": 8323
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_1.png",
+              "time": 0.45,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.016284076892845934,
+                  0.025178021657297402,
+                  0.043393024620284354
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 64,
+                  "top": 514,
+                  "width": 640,
+                  "height": 167
+                },
+                "coverage": 0.11597222222222223,
+                "edges": {
+                  "top": {
+                    "width": 514,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 39,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 64,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 576,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "0bdc6a49f334e480bce6e6e109e0417253233fe1723cd728037e7fc205c54bdb",
+              "bytes": 15723
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_2.png",
+              "time": 1.3,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.020697614367363382,
+                  0.0306019382468507,
+                  0.05124179546068611
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 64,
+                  "top": 500,
+                  "width": 640,
+                  "height": 167
+                },
+                "coverage": 0.11597222222222223,
+                "edges": {
+                  "top": {
+                    "width": 500,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 54,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 64,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 576,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "88a4a6526bddfb5f5b597c77e4d3cc3f8aa0adb0d189fc88ae72d65a20846a52",
+              "bytes": 17056
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_3.png",
+              "time": 3,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.020697614367363382,
+                  0.0306019382468507,
+                  0.05124179546068611
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 64,
+                  "top": 500,
+                  "width": 640,
+                  "height": 167
+                },
+                "coverage": 0.11597222222222223,
+                "edges": {
+                  "top": {
+                    "width": 500,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 54,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 64,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 576,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "88a4a6526bddfb5f5b597c77e4d3cc3f8aa0adb0d189fc88ae72d65a20846a52",
+              "bytes": 17056
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_4.png",
+              "time": 5.6,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.014897597392930612,
+                  0.02347040123958002,
+                  0.04091312063285943
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 64,
+                  "top": 481,
+                  "width": 640,
+                  "height": 167
+                },
+                "coverage": 0.11597222222222223,
+                "edges": {
+                  "top": {
+                    "width": 481,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 73,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 64,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 576,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "4fa19aa36bd647982837da98b6c4bad1bd20bf1f9de24bfbe42c176f412a0b38",
+              "bytes": 15248
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_5.png",
+              "time": 5.95,
+              "compName": "Uber MCP — lower-third",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.011785760352501047,
+                  0.019636132099189754,
+                  0.03533330634500006
+                ],
+                "uniform": true,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": null,
+                "coverage": 0,
+                "edges": {
+                  "top": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "85affd6ea4b7fa173b27475a9344ccafcd1931787fb3a7065200b2c792774740",
+              "bytes": 6467
+            }
+          ],
+          "audit": {
+            "ok": true,
+            "compId": 28,
+            "name": "Uber MCP — lower-third",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "specHash": "4c68bc996ad5370814b0d0e38b79392096dff0b2a537829fbc80c62d457ba92b",
+            "projectFile": null,
+            "layers": [
+              {
+                "id": 42,
+                "name": "Subtitle",
+                "comment": "ae-uber-mcp:layer:subtitle",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 41,
+                "name": "Title",
+                "comment": "ae-uber-mcp:layer:title",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 40,
+                "name": "Panel",
+                "comment": "ae-uber-mcp:layer:panel",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              }
+            ],
+            "issues": [],
+            "truncated": false,
+            "technicalStatus": "checks_passed",
+            "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+            "visualAcceptance": "not_assessed"
+          },
+          "capture": {
+            "ok": true,
+            "frames": [
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_0.png",
+                "time": 0.1,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.011862576878114098,
+                    0.019728717207954397,
+                    0.035471639941910285
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 64,
+                    "top": 529,
+                    "width": 640,
+                    "height": 165
+                  },
+                  "coverage": 0.11458333333333333,
+                  "edges": {
+                    "top": {
+                      "width": 593,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 63,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 185,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 697,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_1.png",
+                "time": 0.45,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.016284076892845934,
+                    0.025178021657297402,
+                    0.043393024620284354
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 64,
+                    "top": 514,
+                    "width": 640,
+                    "height": 167
+                  },
+                  "coverage": 0.11597222222222223,
+                  "edges": {
+                    "top": {
+                      "width": 514,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 39,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 64,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 576,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_2.png",
+                "time": 1.3,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.020697614367363382,
+                    0.0306019382468507,
+                    0.05124179546068611
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 64,
+                    "top": 500,
+                    "width": 640,
+                    "height": 167
+                  },
+                  "coverage": 0.11597222222222223,
+                  "edges": {
+                    "top": {
+                      "width": 500,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 54,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 64,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 576,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_3.png",
+                "time": 3,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.020697614367363382,
+                    0.0306019382468507,
+                    0.05124179546068611
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 64,
+                    "top": 500,
+                    "width": 640,
+                    "height": 167
+                  },
+                  "coverage": 0.11597222222222223,
+                  "edges": {
+                    "top": {
+                      "width": 500,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 54,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 64,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 576,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_4.png",
+                "time": 5.6,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.014897597392930612,
+                    0.02347040123958002,
+                    0.04091312063285943
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 64,
+                    "top": 481,
+                    "width": 640,
+                    "height": 167
+                  },
+                  "coverage": 0.11597222222222223,
+                  "edges": {
+                    "top": {
+                      "width": 481,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 73,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 64,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 576,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_5.png",
+                "time": 5.95,
+                "compName": "Uber MCP — lower-third",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.011785760352501047,
+                    0.019636132099189754,
+                    0.03533330634500006
+                  ],
+                  "uniform": true,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": null,
+                  "coverage": 0,
+                  "edges": {
+                    "top": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "captureKind": "direct",
+            "compName": "Uber MCP — lower-third",
+            "workingSpace": "None",
+            "bitsPerChannel": 16,
+            "projectFile": null,
+            "method": "native",
+            "colorPipeline": "untagged 16-bit → 8-bit sRGB-tagged (values unchanged)",
+            "contactSheet": {
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-41cea8f5-32c6-4c84-b304-26152459ceca/frame_sheet.png",
+              "size": [
+                1960,
+                604
+              ],
+              "columns": 4,
+              "rows": 2,
+              "thumbSize": [
+                480,
+                270
+              ],
+              "frames": 6
+            }
+          },
+          "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending.",
+          "coverage": "sampled_frames_only",
+          "artistAcceptance": "pending",
+          "identityNote": "IDs and spec tag describe this capture session. Reinspect after reopening/replacing a project; spec tag is provenance, not a hash of current AE state."
+        }
+      }
+    },
+    {
+      "name": "ae_motion_plan",
+      "arguments": {
+        "template": "statistic-card",
+        "title": "218",
+        "subtitle": "Discoverable editing operations",
+        "name": "Uber MCP — statistic-card",
+        "width": 1280,
+        "height": 720,
+        "duration": 6,
+        "fps": 30
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — statistic-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                640,
+                360
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                1049.6,
+                432
+              ]
+            },
+            {
+              "key": "accent",
+              "name": "Accent",
+              "position": [
+                320,
+                324
+              ],
+              "color": [
+                0.2,
+                0.8,
+                0.85
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "ellipse",
+              "size": [
+                57.6,
+                57.6
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                640,
+                331.2
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "218",
+              "font": "ArialMT",
+              "fontSize": 79.2
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                640,
+                417.59999999999997
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Discoverable editing operations",
+              "font": "ArialMT",
+              "fontSize": 23.04
+            }
+          ]
+        },
+        "specHash": "ed7ebba1f7353e0d6029dfbd46388b2d7b3d3b88893f92759c319d0aa52586ec",
+        "next": "Review/edit spec, then ae_motion_build. Font and layout validation continue in AE."
+      }
+    },
+    {
+      "name": "ae_motion_build",
+      "arguments": {
+        "spec": {
+          "version": 1,
+          "comp": {
+            "name": "Uber MCP — statistic-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "background": [
+              0.012,
+              0.018,
+              0.035
+            ]
+          },
+          "layers": [
+            {
+              "key": "panel",
+              "name": "Panel",
+              "position": [
+                640,
+                360
+              ],
+              "color": [
+                0.055,
+                0.08,
+                0.14
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "rect",
+              "size": [
+                1049.6,
+                432
+              ]
+            },
+            {
+              "key": "accent",
+              "name": "Accent",
+              "position": [
+                320,
+                324
+              ],
+              "color": [
+                0.2,
+                0.8,
+                0.85
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "ellipse",
+              "size": [
+                57.6,
+                57.6
+              ]
+            },
+            {
+              "key": "title",
+              "name": "Title",
+              "position": [
+                640,
+                331.2
+              ],
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "218",
+              "font": "ArialMT",
+              "fontSize": 79.2
+            },
+            {
+              "key": "subtitle",
+              "name": "Subtitle",
+              "position": [
+                640,
+                417.59999999999997
+              ],
+              "color": [
+                0.65,
+                0.8,
+                0.9
+              ],
+              "timing": {
+                "start": 0,
+                "in": 0.8999999999999999,
+                "hold": 4.199999999999999,
+                "out": 0.8999999999999999
+              },
+              "type": "text",
+              "text": "Discoverable editing operations",
+              "font": "ArialMT",
+              "fontSize": 23.04
+            }
+          ]
+        }
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "6641d5bc-e98a-41b5-883e-c12ce730d2e4",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 43,
+          "layers": [
+            {
+              "key": "panel",
+              "id": 55,
+              "name": "Panel"
+            },
+            {
+              "key": "accent",
+              "id": 56,
+              "name": "Accent"
+            },
+            {
+              "key": "title",
+              "id": 57,
+              "name": "Title"
+            },
+            {
+              "key": "subtitle",
+              "id": 58,
+              "name": "Subtitle"
+            }
+          ],
+          "specHash": "ed7ebba1f7353e0d6029dfbd46388b2d7b3d3b88893f92759c319d0aa52586ec",
+          "warnings": []
+        },
+        "logs": [],
+        "durationMs": 481
+      }
+    },
+    {
+      "name": "ae_motion_audit",
+      "arguments": {
+        "compId": 43
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "c773e3f5-4aa1-4cb1-8715-8899e7620e69",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "compId": 43,
+          "name": "Uber MCP — statistic-card",
+          "width": 1280,
+          "height": 720,
+          "duration": 6,
+          "fps": 30,
+          "specHash": "ed7ebba1f7353e0d6029dfbd46388b2d7b3d3b88893f92759c319d0aa52586ec",
+          "projectFile": null,
+          "layers": [
+            {
+              "id": 58,
+              "name": "Subtitle",
+              "comment": "ae-uber-mcp:layer:subtitle",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 57,
+              "name": "Title",
+              "comment": "ae-uber-mcp:layer:title",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 56,
+              "name": "Accent",
+              "comment": "ae-uber-mcp:layer:accent",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            },
+            {
+              "id": 55,
+              "name": "Panel",
+              "comment": "ae-uber-mcp:layer:panel",
+              "inPoint": 0,
+              "outPoint": 6,
+              "enabled": true,
+              "keyframes": 8
+            }
+          ],
+          "issues": [],
+          "truncated": false,
+          "technicalStatus": "checks_passed",
+          "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+          "visualAcceptance": "not_assessed"
+        },
+        "logs": [],
+        "durationMs": 373
+      }
+    },
+    {
+      "name": "ae_motion_review",
+      "arguments": {
+        "compId": 43,
+        "times": [
+          0.1,
+          0.45,
+          1.3,
+          3,
+          5.6,
+          5.95
+        ],
+        "directory": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z",
+        "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending."
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d\\review-3afe5017-5f92-4861-b08f-b28570f86310.json",
+        "review": {
+          "version": 1,
+          "id": "3afe5017-5f92-4861-b08f-b28570f86310",
+          "createdAt": "2026-10-11T03:42:58.681Z",
+          "compId": 43,
+          "specHash": "ed7ebba1f7353e0d6029dfbd46388b2d7b3d3b88893f92759c319d0aa52586ec",
+          "frames": [
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_0.png",
+              "time": 0.1,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.012036109078078908,
+                  0.01999042877209471,
+                  0.03591889955656846
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 173,
+                  "width": 1050,
+                  "height": 431
+                },
+                "coverage": 0.4910481770833333,
+                "edges": {
+                  "top": {
+                    "width": 324,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 263,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 291,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 481,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "1e105f584048b6e25f34219321ba7e0236235db8ecd88186a8f8fc09c6d374cd",
+              "bytes": 7908
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_1.png",
+              "time": 0.45,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.024444349605502298,
+                  0.03743565411522363,
+                  0.06405044772407016
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 158,
+                  "width": 1050,
+                  "height": 433
+                },
+                "coverage": 0.4933268229166667,
+                "edges": {
+                  "top": {
+                    "width": 158,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 129,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "85dfe45435ba4a3df5c00b5ad1c81b2634348d528ab37332ab354cd2f612991f",
+              "bytes": 16448
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_2.png",
+              "time": 1.3,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.036964092753385046,
+                  0.055040203881210996,
+                  0.09241972443193767
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 144,
+                  "width": 1050,
+                  "height": 432
+                },
+                "coverage": 0.4921875,
+                "edges": {
+                  "top": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "247a7c05b40b293b044b2cb1c44e195fe5ed113ed0686930401ffe138f6060c8",
+              "bytes": 17217
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_3.png",
+              "time": 3,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.036964092753385046,
+                  0.055040203881210996,
+                  0.09241972443193767
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 144,
+                  "width": 1050,
+                  "height": 432
+                },
+                "coverage": 0.4921875,
+                "edges": {
+                  "top": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 144,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "247a7c05b40b293b044b2cb1c44e195fe5ed113ed0686930401ffe138f6060c8",
+              "bytes": 17217
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_4.png",
+              "time": 5.6,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.020539011007508847,
+                  0.031943374955234236,
+                  0.055188686746269075
+                ],
+                "uniform": false,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": {
+                  "left": 115,
+                  "top": 125,
+                  "width": 1050,
+                  "height": 433
+                },
+                "coverage": 0.4933268229166667,
+                "edges": {
+                  "top": {
+                    "width": 125,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 163,
+                    "kind": "color",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 115,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "23d5a9534ac38dfc4c35e94d6eb9771c16f8d22bef93ac6d9d34639f46b65c28",
+              "bytes": 15866
+            },
+            {
+              "ok": true,
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_5.png",
+              "time": 5.95,
+              "compName": "Uber MCP — statistic-card",
+              "size": [
+                1280,
+                720
+              ],
+              "captureKind": "direct",
+              "analysis": {
+                "width": 1280,
+                "height": 720,
+                "meanRgb": [
+                  0.011820525258919846,
+                  0.019698256153699543,
+                  0.035430438397238036
+                ],
+                "uniform": true,
+                "background": {
+                  "kind": "transparent",
+                  "color": null
+                },
+                "contentBounds": null,
+                "coverage": 0,
+                "edges": {
+                  "top": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "bottom": {
+                    "width": 720,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "left": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  },
+                  "right": {
+                    "width": 1280,
+                    "kind": "transparent",
+                    "color": [
+                      0.011764705882352941,
+                      0.0196078431372549,
+                      0.03529411764705882
+                    ]
+                  }
+                }
+              },
+              "sha256": "cadaabcc4b1bc705bafe6be6b0a3b525beb421834812f4c50044a5a5714fbf10",
+              "bytes": 6283
+            }
+          ],
+          "audit": {
+            "ok": true,
+            "compId": 43,
+            "name": "Uber MCP — statistic-card",
+            "width": 1280,
+            "height": 720,
+            "duration": 6,
+            "fps": 30,
+            "specHash": "ed7ebba1f7353e0d6029dfbd46388b2d7b3d3b88893f92759c319d0aa52586ec",
+            "projectFile": null,
+            "layers": [
+              {
+                "id": 58,
+                "name": "Subtitle",
+                "comment": "ae-uber-mcp:layer:subtitle",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 57,
+                "name": "Title",
+                "comment": "ae-uber-mcp:layer:title",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 56,
+                "name": "Accent",
+                "comment": "ae-uber-mcp:layer:accent",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              },
+              {
+                "id": 55,
+                "name": "Panel",
+                "comment": "ae-uber-mcp:layer:panel",
+                "inPoint": 0,
+                "outPoint": 6,
+                "enabled": true,
+                "keyframes": 8
+              }
+            ],
+            "issues": [],
+            "truncated": false,
+            "technicalStatus": "checks_passed",
+            "coverage": "layer timing, missing footage, keyframe counts, current expression errors; no pixel/layout or full-animation judgement",
+            "visualAcceptance": "not_assessed"
+          },
+          "capture": {
+            "ok": true,
+            "frames": [
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_0.png",
+                "time": 0.1,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.012036109078078908,
+                    0.01999042877209471,
+                    0.03591889955656846
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 173,
+                    "width": 1050,
+                    "height": 431
+                  },
+                  "coverage": 0.4910481770833333,
+                  "edges": {
+                    "top": {
+                      "width": 324,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 263,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 291,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 481,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_1.png",
+                "time": 0.45,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.024444349605502298,
+                    0.03743565411522363,
+                    0.06405044772407016
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 158,
+                    "width": 1050,
+                    "height": 433
+                  },
+                  "coverage": 0.4933268229166667,
+                  "edges": {
+                    "top": {
+                      "width": 158,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 129,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_2.png",
+                "time": 1.3,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.036964092753385046,
+                    0.055040203881210996,
+                    0.09241972443193767
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 144,
+                    "width": 1050,
+                    "height": 432
+                  },
+                  "coverage": 0.4921875,
+                  "edges": {
+                    "top": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_3.png",
+                "time": 3,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.036964092753385046,
+                    0.055040203881210996,
+                    0.09241972443193767
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 144,
+                    "width": 1050,
+                    "height": 432
+                  },
+                  "coverage": 0.4921875,
+                  "edges": {
+                    "top": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 144,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_4.png",
+                "time": 5.6,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.020539011007508847,
+                    0.031943374955234236,
+                    0.055188686746269075
+                  ],
+                  "uniform": false,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": {
+                    "left": 115,
+                    "top": 125,
+                    "width": 1050,
+                    "height": 433
+                  },
+                  "coverage": 0.4933268229166667,
+                  "edges": {
+                    "top": {
+                      "width": 125,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 163,
+                      "kind": "color",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 115,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "ok": true,
+                "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_5.png",
+                "time": 5.95,
+                "compName": "Uber MCP — statistic-card",
+                "size": [
+                  1280,
+                  720
+                ],
+                "captureKind": "direct",
+                "analysis": {
+                  "width": 1280,
+                  "height": 720,
+                  "meanRgb": [
+                    0.011820525258919846,
+                    0.019698256153699543,
+                    0.035430438397238036
+                  ],
+                  "uniform": true,
+                  "background": {
+                    "kind": "transparent",
+                    "color": null
+                  },
+                  "contentBounds": null,
+                  "coverage": 0,
+                  "edges": {
+                    "top": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "bottom": {
+                      "width": 720,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "left": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    },
+                    "right": {
+                      "width": 1280,
+                      "kind": "transparent",
+                      "color": [
+                        0.011764705882352941,
+                        0.0196078431372549,
+                        0.03529411764705882
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "captureKind": "direct",
+            "compName": "Uber MCP — statistic-card",
+            "workingSpace": "None",
+            "bitsPerChannel": 16,
+            "projectFile": null,
+            "method": "native",
+            "colorPipeline": "untagged 16-bit → 8-bit sRGB-tagged (values unchanged)",
+            "contactSheet": {
+              "writtenTo": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d/frame_sheet.png",
+              "size": [
+                1960,
+                604
+              ],
+              "columns": 4,
+              "rows": 2,
+              "thumbSize": [
+                480,
+                270
+              ],
+              "frames": 6
+            }
+          },
+          "notes": "Automated native smoke. Captures require visual inspection; artist acceptance remains pending.",
+          "coverage": "sampled_frames_only",
+          "artistAcceptance": "pending",
+          "identityNote": "IDs and spec tag describe this capture session. Reinspect after reopening/replacing a project; spec tag is provenance, not a hash of current AE state."
+        }
+      }
+    },
+    {
+      "name": "ae_save_project",
+      "arguments": {
+        "path": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\Uber-MCP-Motion-Demo.aep"
+      },
+      "isError": false,
+      "response": {
+        "ok": true,
+        "requestId": "6ec3e1fa-4ff9-43f7-bc2f-09cbe5074108",
+        "state": "completed",
+        "mayStillRun": false,
+        "result": {
+          "ok": true,
+          "saved": true,
+          "path": "C:/Users/Cedar/Documents/AE_MCP/artifacts/live-2026-10-11T03-42-33-572Z/Uber-MCP-Motion-Demo.aep"
+        },
+        "logs": [],
+        "durationMs": 568
+      }
+    }
+  ],
+  "compositions": [
+    {
+      "template": "title-card",
+      "compId": 13,
+      "buildWarnings": [],
+      "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-118b4ca9-2025-42b9-9362-1814f9d9c8b6\\review-6710f2c2-78a5-4bfb-8cf5-5da5385a811b.json"
+    },
+    {
+      "template": "lower-third",
+      "compId": 28,
+      "buildWarnings": [],
+      "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-41cea8f5-32c6-4c84-b304-26152459ceca\\review-af9f01d1-a780-4f84-9037-dfe57ccaea1d.json"
+    },
+    {
+      "template": "statistic-card",
+      "compId": 43,
+      "buildWarnings": [],
+      "reviewPath": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\motion-review-6652e2de-7d38-46d4-b3ff-4d6105b0119d\\review-3afe5017-5f92-4861-b08f-b28570f86310.json"
+    }
+  ],
+  "status": "passed",
+  "host": {
+    "app": {
+      "version": "26.2.1x2",
+      "buildName": "26.2.1x2",
+      "buildNumber": 2,
+      "language": "en_US",
+      "memoryInUse": 186541032,
+      "availableGPUs": 2
+    },
+    "capabilities": {
+      "saveFrameToPng": true,
+      "appEffects": true,
+      "bridgeTalk": true,
+      "socket": true
+    },
+    "project": {
+      "numItems": 0,
+      "file": null,
+      "dirty": true
+    },
+    "agent": null,
+    "server": {
+      "exportSchemaVersion": 2
+    }
+  },
+  "revisedTitle": {
+    "layerId": 26,
+    "response": {
+      "ok": true,
+      "result": {
+        "index": 2,
+        "id": 26,
+        "name": "Title",
+        "type": "TextLayer",
+        "enabled": true,
+        "solo": false,
+        "shy": false,
+        "locked": false,
+        "inPoint": 0,
+        "outPoint": 6,
+        "startTime": 0,
+        "stretch": 100,
+        "parentIndex": null,
+        "label": 1,
+        "text": "IDEAS. IN MOTION.",
+        "fontSize": 54,
+        "font": "ArialMT",
+        "fillColor": [
+          1,
+          1,
+          1
+        ],
+        "parent": null,
+        "transformGroup": {
+          "name": "Transform",
+          "matchName": "ADBE Transform Group",
+          "properties": [
+            {
+              "name": "Anchor Point",
+              "matchName": "ADBE Anchor Point",
+              "propertyValueType": "ThreeD_SPATIAL",
+              "value": [
+                0.30322265625,
+                -19.34033203125,
+                0
+              ]
+            },
+            {
+              "name": "Position",
+              "matchName": "ADBE Position",
+              "propertyValueType": "ThreeD_SPATIAL",
+              "value": [
+                640,
+                360,
+                0
+              ],
+              "keyframes": [
+                {
+                  "time": 0,
+                  "value": [
+                    640,
+                    360,
+                    0
+                  ],
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 0.9,
+                  "value": [
+                    640,
+                    331.200012207031,
+                    0
+                  ],
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 5.1,
+                  "value": [
+                    640,
+                    331.200012207031,
+                    0
+                  ],
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 6,
+                  "value": [
+                    640,
+                    302.399993896484,
+                    0
+                  ],
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "X Position",
+              "matchName": "ADBE Position_0",
+              "propertyValueType": "OneD",
+              "value": 0
+            },
+            {
+              "name": "Y Position",
+              "matchName": "ADBE Position_1",
+              "propertyValueType": "OneD",
+              "value": 0
+            },
+            {
+              "name": "Opacity",
+              "matchName": "ADBE Opacity",
+              "propertyValueType": "OneD",
+              "value": 0,
+              "keyframes": [
+                {
+                  "time": 0,
+                  "value": 0,
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 0.9,
+                  "value": 100,
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 5.1,
+                  "value": 100,
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                },
+                {
+                  "time": 6,
+                  "value": 0,
+                  "inInterp": 6613,
+                  "outInterp": 6613,
+                  "inInterpName": "bezier",
+                  "outInterpName": "bezier",
+                  "inEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ],
+                  "outEase": [
+                    {
+                      "speed": 0,
+                      "influence": 66
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "groups": []
+        },
+        "effectsGroup": null,
+        "masksGroup": null,
+        "textGroup": {
+          "name": "Text",
+          "matchName": "ADBE Text Properties",
+          "properties": [
+            {
+              "name": "Source Text",
+              "matchName": "ADBE Text Document",
+              "propertyValueType": "TEXT_DOCUMENT",
+              "value": {
+                "__kind": "TextDocument",
+                "text": "IDEAS. IN MOTION.",
+                "font": "ArialMT",
+                "fontFamily": "Arial",
+                "fontStyle": "Regular",
+                "fontSize": 54,
+                "fillColor": [
+                  1,
+                  1,
+                  1
+                ],
+                "strokeColor": null,
+                "strokeWidth": 1,
+                "justification": "7415",
+                "tracking": 0,
+                "leading": 64.8000030517578,
+                "baselineShift": 0,
+                "applyFill": true,
+                "applyStroke": false,
+                "boxText": false,
+                "boxTextSize": null,
+                "boxTextPos": null
+              }
+            }
+          ],
+          "groups": [
+            {
+              "name": "Path Options",
+              "matchName": "ADBE Text Path Options",
+              "properties": [],
+              "groups": []
+            },
+            {
+              "name": "More Options",
+              "matchName": "ADBE Text More Options",
+              "properties": [],
+              "groups": []
+            },
+            {
+              "name": "Animators",
+              "matchName": "ADBE Text Animators",
+              "properties": [],
+              "groups": []
+            }
+          ]
+        },
+        "ok": true,
+        "found": true
+      },
+      "requestId": "3b42a635-f649-417e-b768-53bec6a4fef3",
+      "state": "completed",
+      "mayStillRun": false,
+      "context": {
+        "project": {
+          "numItems": 1,
+          "dirty": true,
+          "file": null
+        },
+        "instance": null,
+        "activeComp": null,
+        "selectedLayers": []
+      },
+      "logs": [],
+      "durationMs": 382
+    }
+  },
+  "project": "C:\\Users\\Cedar\\Documents\\AE_MCP\\artifacts\\live-2026-10-11T03-42-33-572Z\\Uber-MCP-Motion-Demo.aep",
+  "finishedAt": "2026-10-11T03:42:59.267Z"
+}

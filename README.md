@@ -97,5 +97,9 @@ run them against artist work. The bounded smoke entry is `npm run smoke:live`
 and requires an empty AE project before creating a demonstration.
 
 See [VALIDATION.md](docs/VALIDATION.md) for actual results and outstanding limits.
+The bounded live smoke passed on Windows / AE 26.2.1: three presets, ten editable
+layers, eighty native keyframes, a title revision, eighteen sampled frames and
+an AEP save. Sampled contact sheets were inspected; artist acceptance remains
+separate.
 Review history is in [docs/research](docs/research/), source notices in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

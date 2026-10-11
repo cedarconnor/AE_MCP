@@ -6,4 +6,5 @@ artifacts/
 *.tgz
 *.log
 coverage/
+/NotchLC-log.txt
 

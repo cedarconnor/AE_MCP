@@ -8,5 +8,6 @@
 - Added request claims, retained outcome lookup and blocking of unresolved requests; removed automatic timeout retry hints.
 - Added canonical mailbox output checks and explicit unsaved-project replacement protection.
 - Added protocol, packaging and bounded native smoke entry points.
+- Fixed native Position spatial-tangent dimensionality after the AE 26.2.1 live test; all three motion presets now pass native build, audit, revision, sampled capture and AEP save.
 
 Original foundation history is retained in docs/research/UPSTREAM_CHANGELOG.md.

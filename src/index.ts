@@ -12,6 +12,7 @@ import { FileIpcTransport } from "./transport/FileIpcTransport.js";
 // Load all operations into the registry (must run before catalog/do handle calls).
 import "./operations/index.js";
 import { ALL_TOOLS, type AnyTool } from "./tools/index.js";
+import { registerWorkflow } from "./mcp-workflow.js";
 
 // Read the real package version at runtime so the server never self-reports a
 // stale literal. dist/index.js sits one level below package.json in both the
@@ -22,7 +23,7 @@ const { version } = require("../package.json") as { version: string };
 const transport = new FileIpcTransport();
 
 const server = new McpServer({
-  name: "mcp-aftereffects",
+  name: "after-effects-uber-mcp",
   version,
 });
 
@@ -69,6 +70,7 @@ function register(tool: AnyTool): void {
 }
 
 const skipped: string[] = [];
+registerWorkflow(server);
 for (const tool of ALL_TOOLS) {
   const denial = denyTool(tool.name, tool.blockedInReadOnly);
   if (denial) {

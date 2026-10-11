@@ -131,7 +131,7 @@ describe("AE_MCP_READONLY", () => {
     const withheld = ALL_TOOLS.filter((t) => denyTool(t.name, t.blockedInReadOnly) !== null).map(
       (t) => t.name,
     );
-    expect(withheld.toSorted()).toEqual(["ae_project_import_json", "ae_save_project"]);
+    expect(withheld.toSorted()).toEqual(["ae_motion_build", "ae_project_import_json", "ae_save_project"]);
     const kept = ALL_TOOLS.filter((t) => denyTool(t.name, t.blockedInReadOnly) === null).map(
       (t) => t.name,
     );

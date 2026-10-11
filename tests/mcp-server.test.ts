@@ -12,10 +12,15 @@ const EXPECTED_TOOLS = [
   "ae_context",
   "ae_do",
   "ae_layer_info",
+  "ae_motion_plan",
+  "ae_motion_build",
+  "ae_motion_audit",
+  "ae_motion_review",
   "ae_project_export_json",
   "ae_project_import_json",
   "ae_project_info",
   "ae_render_frame",
+  "ae_request_status",
   "ae_save_project",
   "ae_version_info",
 ];
@@ -31,7 +36,7 @@ describe("mcp server over stdio (offline)", () => {
     await client.close();
   });
 
-  it("tools/list returns exactly the 11 ae_* tools", async () => {
+  it("tools/list returns the complete consolidated surface", async () => {
     const res = await client.listTools();
     const names = res.tools.map((t) => t.name).toSorted();
     expect(names).toEqual(EXPECTED_TOOLS.toSorted());

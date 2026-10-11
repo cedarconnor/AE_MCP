@@ -16,6 +16,8 @@ import { projectInfoTool } from "./project-info.js";
 import { renderFrameTool } from "./render-frame.js";
 import { saveProjectTool } from "./save-project.js";
 import { versionInfoTool } from "./version-info.js";
+import { MOTION_TOOLS } from "./motion.js";
+import { requestStatusTool } from "./request-status.js";
 
 export type AnyTool = {
   name: string;
@@ -45,7 +47,7 @@ export const INSTANCE_PARAM = z
   );
 
 /** Tools that never contact After Effects have no instance to pick. */
-const INSTANCE_FREE_TOOLS = new Set(["ae_catalog"]);
+const INSTANCE_FREE_TOOLS = new Set(["ae_catalog", "ae_motion_plan", "ae_request_status"]);
 
 /**
  * A view of `transport` whose calls go to `instance` unless a call names one
@@ -57,6 +59,7 @@ export function bindTransportToInstance(transport: AeTransport, instance: string
     execute: (req) => transport.execute({ instance, ...req }),
     describeTarget: () => resolveTarget(instance),
     ...(transport.close ? { close: () => transport.close!() } : {}),
+    ...(transport.requestStatus ? { requestStatus: (requestId: string) => transport.requestStatus!(requestId) } : {}),
   };
 }
 
@@ -86,4 +89,6 @@ export const ALL_TOOLS: AnyTool[] = [
   catalogTool,
   doTool,
   contextTool,
+  ...MOTION_TOOLS,
+  requestStatusTool,
 ].map((tool) => withInstanceParam(tool as AnyTool));

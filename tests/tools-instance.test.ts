@@ -19,7 +19,7 @@ describe("instance argument", () => {
   it("is declared on every tool that talks to After Effects, and only those", () => {
     for (const t of ALL_TOOLS) {
       const declared = "instance" in t.inputShape;
-      expect(declared, `${t.name} instance param`).toBe(t.name !== "ae_catalog");
+      expect(declared, `${t.name} instance param`).toBe(!["ae_catalog", "ae_motion_plan", "ae_request_status"].includes(t.name));
     }
   });
 

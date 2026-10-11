@@ -266,7 +266,18 @@ export class FileIpcTransport implements AeTransport {
    */
   private async withGate<T>(dir: string, action: (gate: string) => Promise<T>): Promise<T> {
     const transition = path.join(dir, "pending-transition.lock");
-    await fs.mkdir(transition);
+    const deadline = Date.now() + 1000;
+    for (;;) {
+      try {
+        await fs.mkdir(transition);
+        break;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+        if (Date.now() >= deadline)
+          throw new Error("Timed out waiting for the request gate transition; no lock was stolen");
+        await sleep(20);
+      }
+    }
     try {
       return await action(path.join(dir, "pending-request.lock"));
     } finally {
@@ -375,53 +386,80 @@ export class FileIpcTransport implements AeTransport {
       suppressDialogs: req.suppressDialogs !== false,
     };
 
-    const dir = target.mode === "pull" ? target.instance.dir : RUNTIME_DIR;
-    await fs.mkdir(dir, { recursive: true });
-    const blocked = await this.acquireRequestGate(dir, request.id);
-    if (blocked)
+    let knownStatus: RequestStatus = {
+      requestId: request.id,
+      state: "cancelled",
+      mayStillRun: false,
+    };
+    try {
+      const dir = target.mode === "pull" ? target.instance.dir : RUNTIME_DIR;
+      await fs.mkdir(dir, { recursive: true });
+      const blocked = await this.acquireRequestGate(dir, request.id);
+      if (blocked)
+        return {
+          ...failure(
+            "TRANSPORT",
+            "A previous request has no terminal outcome. Query ae_request_status; do not retry the mutation.",
+          ),
+          requestId: blocked.requestId,
+          state: blocked.state,
+          mayStillRun: true,
+        };
+      const record: OutcomeRecord = {
+        instance: target.mode === "pull" ? target.instance.id : null,
+        submitted: false,
+      };
+      await this.saveOutcome(request.id, record);
+      let result: EvalResult;
+      knownStatus = { requestId: request.id, state: "unknown", mayStillRun: true };
+      try {
+        result =
+          target.mode === "pull"
+            ? await this.executePull(request, target.instance, started, timeoutMs)
+            : await this.executePush(request, started, timeoutMs);
+      } catch (error) {
+        result = failure("TRANSPORT", error instanceof Error ? error.message : String(error));
+      }
+      if (result.ok || result.errorCode === "DISPATCHER" || result.errorCode === "JSX_THROW") {
+        knownStatus = {
+          requestId: request.id,
+          state: result.ok ? "completed" : "failed",
+          mayStillRun: false,
+        };
+      }
+      // Claim-vs-cancel is an atomic filesystem race. Only a successful unlink
+      // of the unclaimed source proves this request cannot execute later.
+      const saved: OutcomeRecord = JSON.parse(
+        await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
+      );
+      if (!saved.submitted || saved.cancelled) {
+        saved.cancelled = true;
+        await this.saveOutcome(request.id, saved);
+      }
+      const status = await this.requestStatus(request.id);
+      knownStatus = status;
+      if (!status.mayStillRun) {
+        await this.releaseRequestGate(dir, request.id);
+        await this.releaseBusyLock(request.id);
+      }
+      return {
+        ...result,
+        requestId: request.id,
+        state: status.state,
+        mayStillRun: status.mayStillRun,
+      };
+    } catch (error) {
       return {
         ...failure(
           "TRANSPORT",
-          "A previous request has no terminal outcome. Query ae_request_status; do not retry the mutation.",
+          `Request bookkeeping failed: ${error instanceof Error ? error.message : String(error)}. Query ae_request_status before retrying.`,
+          { durationMs: Date.now() - started },
         ),
-        requestId: blocked.requestId,
-        state: blocked.state,
-        mayStillRun: true,
+        requestId: request.id,
+        state: knownStatus.state,
+        mayStillRun: knownStatus.mayStillRun,
       };
-    const record: OutcomeRecord = {
-      instance: target.mode === "pull" ? target.instance.id : null,
-      submitted: false,
-    };
-    await this.saveOutcome(request.id, record);
-    let result: EvalResult;
-    try {
-      result =
-        target.mode === "pull"
-          ? await this.executePull(request, target.instance, started, timeoutMs)
-          : await this.executePush(request, started, timeoutMs);
-    } catch (error) {
-      result = failure("TRANSPORT", error instanceof Error ? error.message : String(error));
     }
-    // Claim-vs-cancel is an atomic filesystem race. Only a successful unlink
-    // of the unclaimed source proves this request cannot execute later.
-    const saved: OutcomeRecord = JSON.parse(
-      await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
-    );
-    if (!saved.submitted || saved.cancelled) {
-      saved.cancelled = true;
-      await this.saveOutcome(request.id, saved);
-    }
-    const status = await this.requestStatus(request.id);
-    if (!status.mayStillRun) {
-      await this.releaseRequestGate(dir, request.id);
-      await this.releaseBusyLock(request.id);
-    }
-    return {
-      ...result,
-      requestId: request.id,
-      state: status.state,
-      mayStillRun: status.mayStillRun,
-    };
   }
 
   // --- Pull: the instance's agent serves its own mailbox ---------------------

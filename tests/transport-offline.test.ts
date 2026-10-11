@@ -15,9 +15,9 @@ import * as path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  RUNTIME_ROOT,
   BUSY_LOCK_PATH,
   BUSY_LOCK_STALE_MS,
-  DEFAULT_RUNTIME_DIR,
   REQUEST_PREFIX,
   RESPONSE_PREFIX,
   RUNTIME_DIR,
@@ -26,6 +26,14 @@ import {
 } from "../src/config.js";
 import { FileIpcTransport } from "../src/transport/FileIpcTransport.js";
 import { setOsascriptRunner, setPowerShellRunner } from "../src/transport/dialogs.js";
+
+vi.mock("../src/config.js", async (importOriginal) => {
+  const { isolatedTransportConfig } = await import("./helpers/isolated-transport-config.js");
+  return isolatedTransportConfig(await importOriginal<typeof import("../src/config.js")>());
+});
+afterAll(async () => {
+  await fs.rm(RUNTIME_ROOT, { recursive: true, force: true });
+});
 
 // The transport scans for After Effects dialogs on its failure paths. Never
 // let that reach the real desktop from a unit test.
@@ -90,12 +98,13 @@ async function readOwnRequest(label: string): Promise<Record<string, unknown> | 
 }
 
 describe("mailbox location", () => {
-  it("defaults to a machine-wide directory under the OS temp dir, not the package", () => {
+  it("defaults to a machine-wide directory under the OS temp dir, not the package", async () => {
     // The package directory is routinely read-only (global npm install, npx
     // cache, Program Files); writing the mailbox there used to crash startup.
-    expect(DEFAULT_RUNTIME_DIR.startsWith(os.tmpdir())).toBe(true);
-    expect(RUNTIME_DIR).toBe(DEFAULT_RUNTIME_DIR);
-    expect(DEFAULT_RUNTIME_DIR).toBe(path.join(os.tmpdir(), "ae-uber-mcp", "runtime"));
+    const config = await vi.importActual<typeof import("../src/config.js")>("../src/config.js");
+    expect(config.DEFAULT_RUNTIME_DIR.startsWith(os.tmpdir())).toBe(true);
+    expect(config.RUNTIME_DIR).toBe(config.DEFAULT_RUNTIME_DIR);
+    expect(config.DEFAULT_RUNTIME_DIR).toBe(path.join(os.tmpdir(), "ae-uber-mcp", "runtime"));
   });
 
   it("names every request and response after its own id", () => {
@@ -113,7 +122,7 @@ describe("mailbox location", () => {
     process.env.AE_MCP_RUNTIME_DIR = custom;
     try {
       vi.resetModules();
-      const mod = await import("../src/config.js");
+      const mod = await vi.importActual<typeof import("../src/config.js")>("../src/config.js");
       expect(mod.RUNTIME_DIR).toBe(path.resolve(custom));
       expect(mod.RUNTIME_DIR_IS_CUSTOM).toBe(true);
     } finally {

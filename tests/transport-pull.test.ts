@@ -13,9 +13,10 @@ import { EventEmitter } from "node:events";
 import { promises as fs } from "node:fs";
 import { randomUUID } from "node:crypto";
 import * as path from "node:path";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  RUNTIME_ROOT,
   BUSY_LOCK_PATH,
   HEARTBEAT_FILENAME,
   HEARTBEAT_STALE_MS,
@@ -34,6 +35,14 @@ import {
   setOsascriptRunner,
   setPowerShellRunner,
 } from "../src/transport/dialogs.js";
+
+vi.mock("../src/config.js", async (importOriginal) => {
+  const { isolatedTransportConfig } = await import("./helpers/isolated-transport-config.js");
+  return isolatedTransportConfig(await importOriginal<typeof import("../src/config.js")>());
+});
+afterAll(async () => {
+  await fs.rm(RUNTIME_ROOT, { recursive: true, force: true });
+});
 
 // The transport scans for After Effects dialogs on its failure paths. Never
 // let that reach the real desktop from a unit test.

@@ -27,6 +27,9 @@ previous request has a terminal outcome. A subsequent call checks retained
 completion and releases the previous gate. Neither this gate nor the legacy
 push dispatcher lock is stolen because it is old. A separate short filesystem
 transition lock serializes gate creation and cleanup across MCP processes.
+Brief transition contention is retried for up to one second without stealing
+the lock. Request-scoped recovery metadata survives bookkeeping failures; a
+known host completion remains terminal even if gate cleanup fails.
 
 The default mailbox is `%TEMP%/ae-uber-mcp/runtime` (the equivalent OS temp
 directory on macOS). Node, dispatcher, and resident-agent fallbacks agree;

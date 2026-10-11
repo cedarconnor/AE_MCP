@@ -20,12 +20,17 @@
   },
   "files": [
     "dist",
+    "src",
     "jsx",
     "fixtures",
     "docs",
     "examples",
     "scripts/smoke-live.mjs",
     "scripts/check-protocol.mjs",
+    "scripts/generate-reference-docs.mjs",
+    "scripts/generate-tools-doc.mjs",
+    "scripts/doc-examples.mjs",
+    "scripts/check-docs.mjs",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "README.md"
@@ -44,16 +49,18 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:jsx": "vitest run tests/lint-jsx.test.ts",
-    "docs:tools": "npm run build && node scripts/generate-tools-doc.mjs",
-    "check": "npm run typecheck && npm run typecheck:test && npm run build && npm test && npm run check:protocol",
+    "docs:tools": "npm run docs:generate",
+    "docs:generate": "npm run build && node scripts/generate-reference-docs.mjs",
+    "docs:check": "npm run build && node scripts/generate-reference-docs.mjs --check && node scripts/check-docs.mjs",
+    "check": "npm run typecheck && npm run typecheck:test && npm run build && npm test && npm run check:protocol && node scripts/generate-reference-docs.mjs --check && node scripts/check-docs.mjs",
     "prepublishOnly": "npm run build",
     "test:live": "vitest run tests/e2e",
     "check:protocol": "node scripts/check-protocol.mjs",
     "smoke:live": "node scripts/smoke-live.mjs"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "zod": "^4.3.6"
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

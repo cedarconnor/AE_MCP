@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "comp": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 30000
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 30000
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10800
+        },
+        "fps": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "background": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "width",
+        "height",
+        "duration",
+        "fps",
+        "background"
+      ],
+      "additionalProperties": false
+    },
+    "layers": {
+      "minItems": 1,
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "position": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  }
+                ]
+              },
+              "color": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                ]
+              },
+              "timing": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "in": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "hold": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "out": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "start",
+                  "in",
+                  "hold",
+                  "out"
+                ],
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "const": "text"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "font": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "fontSize": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 1296
+              }
+            },
+            "required": [
+              "key",
+              "name",
+              "position",
+              "color",
+              "timing",
+              "type",
+              "text",
+              "font",
+              "fontSize"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "position": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  }
+                ]
+              },
+              "color": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                ]
+              },
+              "timing": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "in": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "hold": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "out": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "start",
+                  "in",
+                  "hold",
+                  "out"
+                ],
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "const": "rect"
+              },
+              "size": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 30000
+                  },
+                  {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 30000
+                  }
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "name",
+              "position",
+              "color",
+              "timing",
+              "type",
+              "size"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "position": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -30000,
+                    "maximum": 60000
+                  }
+                ]
+              },
+              "color": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                ]
+              },
+              "timing": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "in": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "hold": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "out": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "start",
+                  "in",
+                  "hold",
+                  "out"
+                ],
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "const": "ellipse"
+              },
+              "size": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 30000
+                  },
+                  {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 30000
+                  }
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "name",
+              "position",
+              "color",
+              "timing",
+              "type",
+              "size"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "version",
+    "comp",
+    "layers"
+  ],
+  "additionalProperties": false
+}

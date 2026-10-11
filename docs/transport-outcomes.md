@@ -47,9 +47,11 @@ directory on macOS). Node, dispatcher, and resident-agent fallbacks agree;
   the short transition section can leave calls blocked. Confirm host execution
   has stopped and inspect the project before manually repairing that mailbox;
   age or heartbeat silence alone is insufficient. No force-unlock tool exists.
-- Filesystem claims and the ES3 server were tested with a simulated host, not
-  native After Effects. Native execution, NTFS/ExtendScript rename behavior,
-  multiple host sessions, and long-running host interruption need live checks.
+- Filesystem failure/claim scenarios were tested with a simulated host. The
+  bounded native motion smoke subsequently exercised ordinary execution and
+  retained responses on Windows/AE 26.2.1 (see [validation](VALIDATION.md)).
+  Duplicate native delivery, interrupted NTFS/ExtendScript publication, multiple
+  host sessions and long-running host interruption remain unqualified.
 - Mailbox output checks resolve existing symlinks/junctions and missing suffix
   components. They do not defeat an attacker swapping links concurrently, and
   cannot constrain raw scripts. Mailbox write access remains host code access.

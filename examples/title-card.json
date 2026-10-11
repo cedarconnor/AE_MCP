@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "comp": {
+    "name": "Demo - title-card",
+    "width": 1920,
+    "height": 1080,
+    "duration": 6,
+    "fps": 30,
+    "background": [0.012, 0.018, 0.035]
+  },
+  "layers": [
+    {
+      "key": "panel",
+      "name": "Panel",
+      "position": [960, 540],
+      "color": [0.055, 0.08, 0.14],
+      "timing": {
+        "start": 0,
+        "in": 0.8999999999999999,
+        "hold": 4.199999999999999,
+        "out": 0.8999999999999999
+      },
+      "type": "rect",
+      "size": [1574.3999999999999, 648]
+    },
+    {
+      "key": "title",
+      "name": "Title",
+      "position": [960, 496.8],
+      "color": [1, 1, 1],
+      "timing": {
+        "start": 0,
+        "in": 0.8999999999999999,
+        "hold": 4.199999999999999,
+        "out": 0.8999999999999999
+      },
+      "type": "text",
+      "text": "Editable Motion",
+      "font": "ArialMT",
+      "fontSize": 81
+    },
+    {
+      "key": "subtitle",
+      "name": "Subtitle",
+      "position": [960, 626.4],
+      "color": [0.65, 0.8, 0.9],
+      "timing": {
+        "start": 0,
+        "in": 0.8999999999999999,
+        "hold": 4.199999999999999,
+        "out": 0.8999999999999999
+      },
+      "type": "text",
+      "text": "Native text, shapes and keyframes",
+      "font": "ArialMT",
+      "fontSize": 34.56
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.research/
+.superpowers/
+artifacts/
+*.tgz
+*.log
+coverage/
+

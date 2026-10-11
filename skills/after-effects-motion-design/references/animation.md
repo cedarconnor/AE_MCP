@@ -34,6 +34,11 @@ coordinate. For a 100-pixel travel and 5%, pass 5 pixels beyond the target. Scal
 overshoot needs its own definition: 105% scale is 5 percentage points above 100%.
 Never use the two interchangeably. Repeated bounce is optional, not a quality marker.
 
+Make the anticipation visible. If opacity rises over the whole entrance, the reverse
+move may finish while the object is almost transparent. Reveal it briefly before the
+anticipation, or choose a pose that remains legible during the fade. Inspect those
+specific frames; keyframes alone do not establish that the gesture can be seen.
+
 ## AE easing
 
 `keyframe.apply` supports native key values, interpolation, speed and influence.
@@ -61,6 +66,20 @@ Use stagger to establish reading order. Calculate the last sibling's arrival as
 whole group reveal, not just each member's duration. Multiple objects may move
 together when they are one semantic unit. Parent a shared gesture to a null where
 appropriate instead of separately drifting every child.
+
+An attached label must share its carrier's transform and timing, including scale,
+rotation and exit. A later independent bounce can make the label slide off its badge.
+Use a shared rig or matching transforms; a separate opacity reveal can still establish
+reading order. Check the relationship through the move, not only at the settled pose.
+
+Do not reuse arrival easing blindly for departures. Strong arrival deceleration can
+make an exit disappear abruptly near its first frame. Shape exit spacing and opacity
+separately, and inspect adjacent frames through the entire departure.
+
+Match semantic state to the visual event. A READY badge or completion message should
+arrive after its progress indicator completes; a shared hold frame cannot reveal a
+contradiction earlier in the sequence. Inspect the frame immediately before and after
+each state change.
 
 Hold duration starts when essential information is actually readable. As an initial
 estimate use `max(minimumHold, wordCount / readingWordsPerSecond)`, then check the

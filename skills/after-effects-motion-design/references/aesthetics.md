@@ -52,6 +52,11 @@ Stroke thickness, corner radius and shadows should describe the same material.
 Inspect thin rules and small text at final output resolution. Grain and glow cannot
 repair weak spacing, insufficient contrast or an unclear reading order.
 
+An offset silhouette is a hard graphic shadow, not a blurred lighting simulation.
+Choose its fill from a deliberate shadow color; reusing the light text swatch can
+produce a distracting duplicate card. Move it with its carrier and compare against
+the untreated panel at both entrance and hold.
+
 ## Multi-format
 
 Recompute margins and size limits for landscape, square and portrait. Preserve the

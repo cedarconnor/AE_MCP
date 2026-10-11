@@ -1,0 +1,168 @@
+{
+  "workDate": "2026-10-10",
+  "host": "Windows / After Effects 26.2.1x2",
+  "artifactDirectory": "styles-2026-10-11T06-39-08-230Z",
+  "format": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "seconds": 8
+  },
+  "qualification": {
+    "native": "passed",
+    "orderedFrameReview": "completed",
+    "realTimePlayback": "not_assessed",
+    "artistAcceptance": "pending",
+    "audioAlphaManagedColor": "not_assessed"
+  },
+  "compositions": [
+    {
+      "profile": "editorial-calm",
+      "nativeCompId": 25,
+      "layers": 10,
+      "keyframes": 68,
+      "audit": "checks_passed",
+      "movieSha256": "ccf01d2820f9d67d677e7df5b290f6299d18503bb728620fd8e18416052bc1d8",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 226,
+      "holdMaxMeanAbsoluteRgbChange": 0.010920138888888889
+    },
+    {
+      "profile": "product-precise",
+      "nativeCompId": 49,
+      "layers": 17,
+      "keyframes": 122,
+      "audit": "checks_passed",
+      "movieSha256": "426220d98e0cb9d3e9df5d93c7945d12f8cdc12511391887eabb7089231500b2",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 224,
+      "holdMaxMeanAbsoluteRgbChange": 0.013172743055555556
+    },
+    {
+      "profile": "kinetic-bold",
+      "nativeCompId": 79,
+      "layers": 10,
+      "keyframes": 68,
+      "audit": "checks_passed",
+      "movieSha256": "4677d4fce26f1658c57c74134784a4e0484c5c223d6b85ecb8deffa117e7ba79",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 222,
+      "holdMaxMeanAbsoluteRgbChange": 0.011215277777777777
+    },
+    {
+      "profile": "playful-tactile",
+      "nativeCompId": 102,
+      "layers": 11,
+      "keyframes": 128,
+      "audit": "checks_passed",
+      "movieSha256": "3a0cea2bba91867aaa11eb712775c65c4cd3fc15f541e04b1785c7c4dae3f90d",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 226,
+      "holdMaxMeanAbsoluteRgbChange": 0.01062789351851852
+    },
+    {
+      "profile": "technical-data",
+      "nativeCompId": 126,
+      "layers": 22,
+      "keyframes": 150,
+      "audit": "checks_passed",
+      "movieSha256": "eb74cb8f52f1b17e9e1cd2c074d9de1734bf3c3854c03aa7316118e82f1e6ff4",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 227,
+      "holdMaxMeanAbsoluteRgbChange": 0.011390335648148148
+    },
+    {
+      "profile": "cinematic-spatial",
+      "nativeCompId": 161,
+      "layers": 11,
+      "keyframes": 63,
+      "audit": "checks_passed",
+      "movieSha256": "f5ee4864626d7b8be1f62d06e4063b1174de50453eeadde1ba9fe3896f7a2841",
+      "decodedFrames": 240,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "audioStreams": 0,
+      "peakFrameChange": 230,
+      "holdMaxMeanAbsoluteRgbChange": 0.016108217592592594
+    }
+  ],
+  "numericChecks": {
+    "labelMatchedFrames": 240,
+    "chartMaxScaleErrorPercentagePoints": 3.2862601528904634e-13,
+    "cameraSamples": [
+      {
+        "ADBE Transform Group/ADBE Position": [
+          655,
+          360,
+          -1800
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          648.859982926803,
+          360,
+          -1781.57994878041
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          642.507203977256,
+          360,
+          -1762.52161193177
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          640.226902702883,
+          360,
+          -1755.68070810865
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          640,
+          360,
+          -1755
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          640,
+          360,
+          -1755
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      },
+      {
+        "ADBE Transform Group/ADBE Position": [
+          640,
+          360,
+          -1755
+        ],
+        "ADBE Camera Options Group/ADBE Camera Zoom": 1800
+      }
+    ],
+    "status": "passed"
+  },
+  "projectSha256": "a910c1fca9cbd76525b6e3c8400448e39b9b1c66baf0dca1cb5180dd03e1def0"
+}

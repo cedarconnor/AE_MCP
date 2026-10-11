@@ -35,7 +35,8 @@
     "THIRD_PARTY_NOTICES.md",
     "README.md",
     "skills",
-    "scripts/check-skills.mjs"
+    "scripts/check-skills.mjs",
+    "scripts/render-style-lab.mjs"
   ],
   "type": "module",
   "main": "dist/index.js",

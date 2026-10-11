@@ -40,7 +40,7 @@ function validateCall(value) {
 assert.throws(() => validateCall({name: 'ae_motion_plan', arguments: {template: 'not-a-preset', title: 'x'}}));
 assert.throws(() => validateOperation('comp.create', {name: 'x', unknownField: true}));
 
-const guides = ['README.md', ...['TOOLS','OPERATIONS','SETUP','CONFIGURATION','EXAMPLES','MOTION_SPEC','TROUBLESHOOTING','ARCHITECTURE','DEVELOPMENT','DOCUMENTATION_VALIDATION','SKILLS','SKILLS_VALIDATION'].map(n => `docs/${n}.md`), 'docs/research/MOTION_SKILLS_REVIEW.md'];
+const guides = ['README.md', ...['TOOLS','OPERATIONS','SETUP','CONFIGURATION','EXAMPLES','MOTION_SPEC','TROUBLESHOOTING','ARCHITECTURE','DEVELOPMENT','DOCUMENTATION_VALIDATION','SKILLS','SKILLS_VALIDATION','STYLE_LAB_REPORT'].map(n => `docs/${n}.md`), 'docs/research/MOTION_SKILLS_REVIEW.md'];
 const cache = new Map();
 const read = async p => { if (!cache.has(p)) cache.set(p, await readFile(p, 'utf8')); return cache.get(p); };
 const slug = s => s.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^\p{L}\p{N}\s_-]/gu, '').replace(/ /g, '-');

@@ -8,6 +8,11 @@ Keep type within the readable focal region. Camera and object animation should n
 both dominate the same beat unless that conflict is deliberate. Give camera moves
 an arrival and hold; slow perpetual movement can still distract from reading.
 
+Judge spacing after perspective projection. Different native rectangle sizes at
+different Z depths can project to nearly the same outline, producing crowded parallel
+edges instead of readable depth. Compare the first, arrival and hold frames; adjust
+plane geometry or depth until the intended silhouette separation survives the camera.
+
 `layer.create_camera`, `transform.set` with `threeDLayer`, parenting and inspected
 camera properties provide building blocks. Camera zoom is an AE property value;
 do not paste focal millimeters into it. Establish the filmback/field of view before

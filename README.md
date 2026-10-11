@@ -98,8 +98,10 @@ motion-spec examples**, synthesized from a [41-repository review](docs/research/
 Read it through MCP at `ae-uber://skills/after-effects-motion-design/SKILL.md`, or
 install the portable folder in your agent's skill directory. See [skill setup and
 usage](docs/SKILLS.md). Design parameters guide native operations; they do not add
-new fields to the v1 motion spec. Profile examples are schema-checked, not newly
-rendered or artist-approved.
+new fields to the v1 motion spec. All six profiles now have separate native AE
+demonstrations, rendered and frame-reviewed on Windows/AE 26.2.1. See the
+[style test report](docs/STYLE_LAB_REPORT.md) for fixes, reproduction and limits.
+The three portable spec files remain starting structures; artist acceptance is pending.
 
 ## Tool map
 

@@ -1,7 +1,8 @@
 # Motion design library validation
 
-Work date: 2026-10-10 (user timezone). Validation concerns the bundled instruction
-and data package plus its MCP delivery, not a newly rendered motion-design reel.
+Work date: 2026-10-10 (user timezone). Initial validation covered the bundled
+instruction/data package and MCP delivery. A subsequent native style lab on the
+same local date built, rendered, reviewed and revised all six style demonstrations.
 
 ## Recorded checks
 
@@ -40,9 +41,25 @@ and data package plus its MCP delivery, not a newly rendered motion-design reel.
 This is a structured review of the written guidance, not an independent model
 benchmark or proof that every future agent will follow it.
 
+## Native style lab
+
+All six style profiles were exercised in separate editable native compositions on
+Windows/AE 26.2.1x2: 81 layers and 599 keyframes, with six final H.264 movies at
+1280×720, 30 fps, eight seconds each. The six native structural audits passed.
+All 1,440 final encoded frames were decoded for continuity measurements; selected
+ordered entrance/exit frames and native hold captures were visually inspected.
+The playful label/carrier transforms matched at all 240 frames, chart growth matched
+linear timing, and the real camera's move and settled position were sampled.
+
+The review led to fixes in the scene builder and skill guidance. See the
+[native style report](STYLE_LAB_REPORT.md) for observations, exact coverage and
+reproduction. This is separate evidence from the earlier three-preset smoke test.
+
 ## Remaining qualification
 
-No new native AE build, full playback, audio mix, alpha delivery or artist acceptance
-test was run for these profiles and recipes. The new examples remain schema-checked
-starting structures. Previous MCP native smoke results do not qualify this library's
-aesthetic choices, custom operations, camera recipes or cross-engine conversions.
+These six demonstrations exercise selected parameters with explicit layout/font
+overrides. They do not validate all 75 parameters, every recipe, other formats,
+cross-engine conversions or the three unchanged portable motion-spec example files.
+Real-time playback, audio, alpha delivery, managed-color delivery and artist acceptance
+remain unqualified. Numerical continuity and ordered-frame inspection do not establish
+full-speed perceptual judgment or production acceptance.

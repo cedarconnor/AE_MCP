@@ -4,7 +4,8 @@
 
 - Added an original After Effects motion-design skill based on a pinned 41-repository survey: 75 design parameters, six style profiles, focused craft references, three motion-spec examples and native-edit recipes.
 - Exposed the portable skill as 20 read-only MCP resources and linked it from the motion-graphics workflow prompt; tool and operation counts remain unchanged.
-- Added skill data, example, portability and stdio delivery checks, plus clean-package validation. New profile examples are not yet native-render or artist qualified.
+- Added skill data, example, portability and stdio delivery checks, plus clean-package validation.
+- Built and rendered six native style demonstrations in Windows/AE 26.2.1; corrected anticipation visibility, attached-label timing, shadow treatment, projected depth spacing, departure easing and completion-cue timing after frame review. Added a reproducible native style-lab script and recorded evidence; real-time playback and artist acceptance remain pending.
 
 ## [0.1.0] - 2026-10-10
 

@@ -45,5 +45,9 @@ Do not promote one level into another. The server's RGB captures do not qualify 
 alpha or high-bit-depth color. Source spec hashes identify the original spec, not
 manual edits made afterward; save an edit record with IDs and parameter changes.
 
-The shipped examples are schema-checked starting points. They have not been rendered
-or artist-approved as part of the skill-library research.
+The three portable motion-spec examples remain schema-checked starting points.
+Separate demonstrations of all six profiles were built and rendered in AE 26.2.1
+on Windows at 1280×720/30 fps, then reviewed using native captures, ordered movie
+frames and bounded numerical checks. The demonstrations cover selected parameters
+and deliberate layout/font overrides, not every recipe or all 75 parameters. Real-time
+playback, audio, alpha, other formats and artist acceptance remain separate gates.

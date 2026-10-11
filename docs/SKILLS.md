@@ -104,6 +104,30 @@ skill or another reference. Keep parameter JSON and its human reference aligned.
 When changing native behavior, update the AE mapping and relevant recipes, and verify
 the behavior in the target AE version before claiming native qualification.
 
-The current research/profile examples have not undergone a new AE render or artist
-acceptance pass. Prior MCP native smoke tests remain separate evidence. See
-[validation](SKILLS_VALIDATION.md) for the checks performed on this package.
+Separate native demonstrations of all six profiles have been rendered and frame-reviewed
+in AE 26.2.1 on Windows. See [validation](SKILLS_VALIDATION.md) and the
+[native style test report](STYLE_LAB_REPORT.md) for findings, fixes and coverage limits.
+The three portable v1 example files remain starting structures, not these finished scenes.
+
+To reproduce the six native demonstrations, build the server and generate the operation
+plans without contacting AE:
+
+```powershell
+npm run build
+node scripts/render-style-lab.mjs
+```
+
+For an actual build and render, preserve your work and open an empty AE project, then run:
+
+```powershell
+node scripts/render-style-lab.mjs --execute
+```
+
+The script refuses populated projects, verifies required Arial PostScript fonts, builds
+native scenes through the normal MCP operation surface, captures review frames, saves
+an editable AEP, and renders six eight-second H.264 movies. It requires the host's
+`H.264 - Match Render Settings - 15 Mbps` output template. It writes unique
+`artifacts/styles-<timestamp>` folders containing plans, call evidence, reviews and output.
+It never declares aesthetic approval automatically. A failed or timed-out run may have
+partially modified the project: inspect its retained evidence and reconcile the request
+before continuing; do not blindly rerun it.

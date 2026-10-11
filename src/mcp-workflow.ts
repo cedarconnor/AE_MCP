@@ -1,8 +1,11 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { motionSpecSchema } from './motion/spec.js';
+import { registerSkillLibrary } from './skill-library.js';
 
 export const WORKFLOW_GUIDE=`After Effects Uber MCP — motion graphics
+
+For aesthetics, animation direction and critique, read ae-uber://skills/after-effects-motion-design/SKILL.md and load its relevant references on demand. The library includes design parameters and style profiles, not extra motion-spec-v1 fields. Read ae-uber://skills/after-effects-motion-design/manifest.json for its resource list.
 
 1. Inspect ae_context and ae_project_info. Confirm the intended project/instance; never choose a different target when an explicit one is absent.
 2. Discover operations with ae_catalog. Use native comp IDs and {id: layerId} selectors after creation; refresh references after project reopen/replacement.
@@ -19,6 +22,7 @@ Default raw JSX is disabled. Read-only mode supports inspection and review captu
 `;
 
 export function registerWorkflow(server:McpServer):void {
+  registerSkillLibrary(server);
   server.registerResource('motion-workflow','ae-uber://workflow',{title:'Motion graphics workflow',mimeType:'text/plain'},async uri=>({contents:[{uri:uri.href,mimeType:'text/plain',text:WORKFLOW_GUIDE}]}));
   server.registerResource('motion-spec-schema','ae-uber://motion-spec-schema',{title:'Motion spec JSON schema',mimeType:'application/json'},async uri=>({contents:[{uri:uri.href,mimeType:'application/json',text:JSON.stringify(z.toJSONSchema(motionSpecSchema),null,2)}]}));
   server.registerPrompt('motion-graphics',{title:'Build and review native motion graphics',description:'Plan, build, inspect and revise an editable AE motion graphic.',argsSchema:{brief:z.string().describe('Requested motion graphic and delivery constraints')}},async({brief})=>({messages:[{role:'user',content:{type:'text',text:`Motion brief: ${brief}\n\n${WORKFLOW_GUIDE}`}}]}));

@@ -1,0 +1,1092 @@
+{
+  "version": 1,
+  "id": "ae-motion-design-parameters",
+  "semantics": "Design sidecar only, not ae_motion_build input. Suggested ranges are heuristics, not universal constraints. Native-valid constraints and mappings are documented in meaning and references.",
+  "parameters": [
+    {
+      "key": "layout.marginX",
+      "type": "number",
+      "default": 0.06,
+      "unit": "fraction of width",
+      "suggested": [
+        0.03,
+        0.12
+      ],
+      "route": "design",
+      "operations": [
+        "comp.add_guide"
+      ],
+      "meaning": "Horizontal breathing room; convert to pixels, then verify delivery overlays."
+    },
+    {
+      "key": "layout.marginY",
+      "type": "number",
+      "default": 0.07,
+      "unit": "fraction of height",
+      "suggested": [
+        0.04,
+        0.15
+      ],
+      "route": "design",
+      "operations": [
+        "comp.add_guide"
+      ],
+      "meaning": "Vertical breathing room; independent of platform UI exclusion zones."
+    },
+    {
+      "key": "layout.columns",
+      "type": "number",
+      "default": 12,
+      "unit": "count",
+      "suggested": [
+        4,
+        16
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Conceptual grid; align a small number of blocks, not every object to every column."
+    },
+    {
+      "key": "layout.gutter",
+      "type": "number",
+      "default": 0.018,
+      "unit": "fraction of width",
+      "suggested": [
+        0.01,
+        0.04
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Spacing between conceptual columns."
+    },
+    {
+      "key": "layout.spacingUnit",
+      "type": "number",
+      "default": 0.012,
+      "unit": "fraction of height",
+      "suggested": [
+        0.006,
+        0.025
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Base spacing increment; optical adjustments remain possible."
+    },
+    {
+      "key": "layout.heroX",
+      "type": "number",
+      "default": 0.5,
+      "unit": "fraction of width",
+      "suggested": [
+        0.1,
+        0.9
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Maps to a layer position X after multiplying by comp width."
+    },
+    {
+      "key": "layout.heroY",
+      "type": "number",
+      "default": 0.46,
+      "unit": "fraction of height",
+      "suggested": [
+        0.15,
+        0.85
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Maps to a layer position Y after multiplying by comp height."
+    },
+    {
+      "key": "layout.heroWidth",
+      "type": "number",
+      "default": 0.78,
+      "unit": "fraction of width",
+      "suggested": [
+        0.45,
+        0.9
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Shape width or text layout target; text requires measured fit, not a v1 width field."
+    },
+    {
+      "key": "layout.alignment",
+      "type": "string",
+      "default": "center",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "text.set_style",
+        "layer.set_anchor"
+      ],
+      "meaning": "Text justification and anchor placement must agree.",
+      "choices": [
+        "left",
+        "center",
+        "right"
+      ]
+    },
+    {
+      "key": "type.font",
+      "type": "string",
+      "default": "ArialMT",
+      "unit": "PostScript font name",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "font.list",
+        "font.check_glyphs"
+      ],
+      "meaning": "Fallback example only; resolve the actual brand font and glyph coverage."
+    },
+    {
+      "key": "type.displaySize",
+      "type": "number",
+      "default": 0.08,
+      "unit": "fraction of height",
+      "suggested": [
+        0.05,
+        0.16
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Convert to fontSize pixels; check the actual longest string."
+    },
+    {
+      "key": "type.supportSize",
+      "type": "number",
+      "default": 0.032,
+      "unit": "fraction of height",
+      "suggested": [
+        0.025,
+        0.055
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Supporting-copy size; reflow for output aspect ratio."
+    },
+    {
+      "key": "type.metaSize",
+      "type": "number",
+      "default": 0.024,
+      "unit": "fraction of height",
+      "suggested": [
+        0.018,
+        0.035
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Metadata size starting point; actual legibility can require larger type."
+    },
+    {
+      "key": "type.leading",
+      "type": "number",
+      "default": 1.12,
+      "unit": "multiple of font size",
+      "suggested": [
+        1,
+        1.4
+      ],
+      "route": "ae-do",
+      "operations": [
+        "text.set_style"
+      ],
+      "meaning": "Set leading in pixels and autoLeading false; distinct values per type role may be needed."
+    },
+    {
+      "key": "type.tracking",
+      "type": "number",
+      "default": 0,
+      "unit": "thousandths of em",
+      "suggested": [
+        -30,
+        80
+      ],
+      "route": "ae-do",
+      "operations": [
+        "text.set_style"
+      ],
+      "meaning": "AE tracking units; do not pass a CSS em number unchanged."
+    },
+    {
+      "key": "type.maxLines",
+      "type": "number",
+      "default": 2,
+      "unit": "count",
+      "suggested": [
+        1,
+        4
+      ],
+      "route": "design",
+      "operations": [
+        "text.measure"
+      ],
+      "meaning": "Composition constraint to check against actual copy; no automatic line-count enforcement."
+    },
+    {
+      "key": "type.revealUnit",
+      "type": "string",
+      "default": "line",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "text.add_animator"
+      ],
+      "meaning": "Inspect selector properties for word/character grouping or use separate text layers.",
+      "choices": [
+        "layer",
+        "line",
+        "word",
+        "character"
+      ]
+    },
+    {
+      "key": "type.wordStagger",
+      "type": "number",
+      "default": 3,
+      "unit": "frames at reference fps",
+      "suggested": [
+        1,
+        8
+      ],
+      "route": "ae-do",
+      "operations": [
+        "text.add_animator",
+        "keyframe.apply"
+      ],
+      "meaning": "Offset between words or lines after resolving the chosen grouping."
+    },
+    {
+      "key": "color.ground",
+      "type": "string",
+      "default": "#F4F1E9",
+      "unit": "sRGB hex",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "layer.create_solid"
+      ],
+      "meaning": "Opaque output needs an actual solid/background layer; comp.background is only viewer color."
+    },
+    {
+      "key": "color.surface",
+      "type": "string",
+      "default": "#E1DDD2",
+      "unit": "sRGB hex",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "shape.add_fill"
+      ],
+      "meaning": "Surface fill; swatch byte conversion is not a color-management transform."
+    },
+    {
+      "key": "color.text",
+      "type": "string",
+      "default": "#17242D",
+      "unit": "sRGB hex",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "text.set_style"
+      ],
+      "meaning": "Primary text color against the actual visible ground."
+    },
+    {
+      "key": "color.muted",
+      "type": "string",
+      "default": "#56626B",
+      "unit": "sRGB hex",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "text.set_style"
+      ],
+      "meaning": "Secondary text; inspect contrast rather than assuming this swatch always works."
+    },
+    {
+      "key": "color.accent",
+      "type": "string",
+      "default": "#C45D3A",
+      "unit": "sRGB hex",
+      "suggested": null,
+      "route": "spec",
+      "operations": [
+        "shape.add_fill",
+        "text.set_style_range"
+      ],
+      "meaning": "Use to identify a meaningful feature or word."
+    },
+    {
+      "key": "color.accentArea",
+      "type": "number",
+      "default": 0.08,
+      "unit": "approximate area fraction",
+      "suggested": [
+        0,
+        0.25
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Visual allocation heuristic, not a computed pixel mask or compliance rule."
+    },
+    {
+      "key": "color.interpolation",
+      "type": "string",
+      "default": "native",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Native AE interpolation or externally computed perceptual samples; never inferred from a name.",
+      "choices": [
+        "native",
+        "perceptual-sampled"
+      ]
+    },
+    {
+      "key": "timing.referenceFps",
+      "type": "number",
+      "default": 30,
+      "unit": "frames per second",
+      "suggested": [
+        24,
+        60
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Rate defining the frame-valued design tokens; convert absolute endpoints to target fps."
+    },
+    {
+      "key": "timing.entrance",
+      "type": "number",
+      "default": 18,
+      "unit": "frames at reference fps",
+      "suggested": [
+        6,
+        36
+      ],
+      "route": "spec",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Start to arrival duration, exclusive of anticipation when anticipation is separately added."
+    },
+    {
+      "key": "timing.exit",
+      "type": "number",
+      "default": 12,
+      "unit": "frames at reference fps",
+      "suggested": [
+        4,
+        24
+      ],
+      "route": "spec",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Hold-end to departure duration."
+    },
+    {
+      "key": "timing.minimumHold",
+      "type": "number",
+      "default": 54,
+      "unit": "frames at reference fps",
+      "suggested": [
+        30,
+        150
+      ],
+      "route": "spec",
+      "operations": [],
+      "meaning": "Minimum readable hold, extended for copy and visual complexity."
+    },
+    {
+      "key": "timing.stagger",
+      "type": "number",
+      "default": 3,
+      "unit": "frames at reference fps",
+      "suggested": [
+        0,
+        10
+      ],
+      "route": "spec",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Delay sibling starts; ensure the last sibling still has its full hold."
+    },
+    {
+      "key": "timing.groupRevealMax",
+      "type": "number",
+      "default": 36,
+      "unit": "frames at reference fps",
+      "suggested": [
+        12,
+        60
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Suggested maximum elapsed group entrance; shorten stagger if necessary."
+    },
+    {
+      "key": "timing.readingWordsPerSecond",
+      "type": "number",
+      "default": 2.6,
+      "unit": "words per second",
+      "suggested": [
+        1.5,
+        3.5
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Planning heuristic; validate with audience, language and actual playback."
+    },
+    {
+      "key": "timing.transition",
+      "type": "number",
+      "default": 10,
+      "unit": "frames at reference fps",
+      "suggested": [
+        0,
+        24
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply",
+        "layer.set_timing"
+      ],
+      "meaning": "Zero means an intentional hard cut; otherwise reserve overlap time."
+    },
+    {
+      "key": "motion.travel",
+      "type": "number",
+      "default": 0.035,
+      "unit": "fraction of height",
+      "suggested": [
+        0,
+        0.15
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Distance along the selected direction; not a motion-spec-v1 parameter."
+    },
+    {
+      "key": "motion.direction",
+      "type": "string",
+      "default": "up",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Arrival direction. Still means no position animation.",
+      "choices": [
+        "up",
+        "down",
+        "left",
+        "right",
+        "still"
+      ]
+    },
+    {
+      "key": "motion.anticipation",
+      "type": "number",
+      "default": 0,
+      "unit": "frames at reference fps",
+      "suggested": [
+        0,
+        8
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Optional preparation before entrance; include it in total scene duration."
+    },
+    {
+      "key": "motion.anticipationDistance",
+      "type": "number",
+      "default": 0.06,
+      "unit": "fraction of main travel",
+      "suggested": [
+        0,
+        0.2
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Small reverse move; zero travel means no positional anticipation."
+    },
+    {
+      "key": "motion.overshoot",
+      "type": "number",
+      "default": 0,
+      "unit": "percent of travel distance",
+      "suggested": [
+        0,
+        12
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Distance past destination, not percent of screen coordinate or scale."
+    },
+    {
+      "key": "motion.settle",
+      "type": "number",
+      "default": 6,
+      "unit": "frames at reference fps",
+      "suggested": [
+        3,
+        18
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Time after first arrival to final rest for an overshooting gesture."
+    },
+    {
+      "key": "motion.scaleFrom",
+      "type": "number",
+      "default": 100,
+      "unit": "percent scale",
+      "suggested": [
+        85,
+        105
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Optional start scale. Final baseline is normally 100 percent."
+    },
+    {
+      "key": "motion.rotationFrom",
+      "type": "number",
+      "default": 0,
+      "unit": "degrees",
+      "suggested": [
+        -8,
+        8
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Optional start angle; use sparingly with moving type."
+    },
+    {
+      "key": "motion.path",
+      "type": "string",
+      "default": "straight",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply",
+        "keyframe.set_spatial"
+      ],
+      "meaning": "Temporal easing does not define this spatial path.",
+      "choices": [
+        "straight",
+        "arc"
+      ]
+    },
+    {
+      "key": "motion.entryOutInfluence",
+      "type": "number",
+      "default": 25,
+      "unit": "percent",
+      "suggested": [
+        10,
+        60
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Outgoing temporal influence on the first key; 0.1–100 native valid range."
+    },
+    {
+      "key": "motion.entryInInfluence",
+      "type": "number",
+      "default": 70,
+      "unit": "percent",
+      "suggested": [
+        40,
+        90
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Incoming temporal influence at arrival, tuned with speeds and duration."
+    },
+    {
+      "key": "motion.endpointSpeed",
+      "type": "number",
+      "default": 0,
+      "unit": "property units per second",
+      "suggested": [
+        0,
+        0
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Zero for stop-to-stop endpoints; continuous motion needs separately calculated speeds."
+    },
+    {
+      "key": "choreography.maxDominantActions",
+      "type": "number",
+      "default": 1,
+      "unit": "count",
+      "suggested": [
+        1,
+        3
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Concurrent attention-demanding actions; this is a review target, not automatic enforcement."
+    },
+    {
+      "key": "choreography.supportDelay",
+      "type": "number",
+      "default": 4,
+      "unit": "frames at reference fps",
+      "suggested": [
+        0,
+        12
+      ],
+      "route": "spec",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Offset support relative to the lead beat, independent of internal sibling stagger."
+    },
+    {
+      "key": "choreography.ambientMotion",
+      "type": "boolean",
+      "default": false,
+      "unit": "boolean",
+      "suggested": null,
+      "route": "design",
+      "operations": [],
+      "meaning": "Add background motion only when it has a role."
+    },
+    {
+      "key": "choreography.overlap",
+      "type": "number",
+      "default": 0.2,
+      "unit": "fraction of preceding entrance",
+      "suggested": [
+        0,
+        0.6
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "How much two related gestures overlap; resolve to actual start frames."
+    },
+    {
+      "key": "choreography.transition",
+      "type": "string",
+      "default": "cut",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply",
+        "layer.set_track_matte"
+      ],
+      "meaning": "Choose a continuity mechanism deliberately.",
+      "choices": [
+        "cut",
+        "dissolve",
+        "wipe",
+        "match-move"
+      ]
+    },
+    {
+      "key": "shape.cornerRadius",
+      "type": "number",
+      "default": 0.012,
+      "unit": "fraction of shorter comp edge",
+      "suggested": [
+        0,
+        0.04
+      ],
+      "route": "ae-do",
+      "operations": [
+        "shape.add_rect"
+      ],
+      "meaning": "Convert to pixels; portable v1 rectangles have no radius field."
+    },
+    {
+      "key": "shape.strokeWidth",
+      "type": "number",
+      "default": 0.002,
+      "unit": "fraction of shorter comp edge",
+      "suggested": [
+        0.001,
+        0.006
+      ],
+      "route": "ae-do",
+      "operations": [
+        "shape.add_stroke"
+      ],
+      "meaning": "Inspect at delivery size to avoid subpixel flicker."
+    },
+    {
+      "key": "shape.drawDuration",
+      "type": "number",
+      "default": 24,
+      "unit": "frames at reference fps",
+      "suggested": [
+        10,
+        60
+      ],
+      "route": "ae-do",
+      "operations": [
+        "shape.add_trim_paths",
+        "keyframe.apply"
+      ],
+      "meaning": "Draw-on duration; discover the trim end property after adding the operator."
+    },
+    {
+      "key": "shape.morphTopology",
+      "type": "string",
+      "default": "matched",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [
+        "shape.add_path",
+        "keyframe.apply"
+      ],
+      "meaning": "Path keys need compatible vertex count/order/winding; reconcile first.",
+      "choices": [
+        "matched",
+        "requires-rebuild"
+      ]
+    },
+    {
+      "key": "depth.mode",
+      "type": "string",
+      "default": "flat",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [
+        "transform.set",
+        "layer.create_camera"
+      ],
+      "meaning": "Flat is valid; 2.5D requires native depth/camera work outside v1.",
+      "choices": [
+        "flat",
+        "2.5d"
+      ]
+    },
+    {
+      "key": "depth.parallax",
+      "type": "number",
+      "default": 0,
+      "unit": "fraction of height",
+      "suggested": [
+        0,
+        0.04
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply"
+      ],
+      "meaning": "Target screen-space relative travel; world depth must be calibrated to the camera."
+    },
+    {
+      "key": "depth.cameraMove",
+      "type": "string",
+      "default": "locked",
+      "unit": "choice",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "layer.create_camera",
+        "keyframe.apply"
+      ],
+      "meaning": "Lock framing for reading when needed.",
+      "choices": [
+        "locked",
+        "push",
+        "pull",
+        "pan",
+        "orbit"
+      ]
+    },
+    {
+      "key": "depth.cameraTravel",
+      "type": "number",
+      "default": 0.025,
+      "unit": "fraction of scene reference depth",
+      "suggested": [
+        0,
+        0.1
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Planning value; requires a chosen scene scale and camera transform, not direct zoom input."
+    },
+    {
+      "key": "depth.focusOnText",
+      "type": "boolean",
+      "default": true,
+      "unit": "boolean",
+      "suggested": null,
+      "route": "design",
+      "operations": [
+        "property.list",
+        "property.set"
+      ],
+      "meaning": "When depth of field is used, prioritize the intended readable subject."
+    },
+    {
+      "key": "finish.motionBlur",
+      "type": "boolean",
+      "default": false,
+      "unit": "boolean",
+      "suggested": null,
+      "route": "ae-do",
+      "operations": [
+        "comp.set_props",
+        "layer.set_props"
+      ],
+      "meaning": "Both comp and relevant layer switches must be inspected/set."
+    },
+    {
+      "key": "finish.shutterAngle",
+      "type": "number",
+      "default": 180,
+      "unit": "degrees",
+      "suggested": [
+        90,
+        270
+      ],
+      "route": "ae-do",
+      "operations": [
+        "comp.set_props"
+      ],
+      "meaning": "Only meaningful when motion blur is active; inspect phase and rendering behavior."
+    },
+    {
+      "key": "finish.grain",
+      "type": "number",
+      "default": 0,
+      "unit": "normalized creative intensity",
+      "suggested": [
+        0,
+        0.12
+      ],
+      "route": "design",
+      "operations": [
+        "effect.add",
+        "effect.set_property"
+      ],
+      "meaning": "Not a plugin value; map after inspecting the installed effect."
+    },
+    {
+      "key": "finish.glow",
+      "type": "number",
+      "default": 0,
+      "unit": "normalized creative intensity",
+      "suggested": [
+        0,
+        0.2
+      ],
+      "route": "design",
+      "operations": [
+        "effect.add",
+        "effect.set_property"
+      ],
+      "meaning": "Not a plugin value; protect text contrast and highlight detail."
+    },
+    {
+      "key": "finish.shadow",
+      "type": "number",
+      "default": 0,
+      "unit": "normalized creative intensity",
+      "suggested": [
+        0,
+        0.25
+      ],
+      "route": "design",
+      "operations": [
+        "effect.add",
+        "effect.set_property"
+      ],
+      "meaning": "Specify source direction, softness and opacity in the actual effect separately."
+    },
+    {
+      "key": "finish.shake",
+      "type": "number",
+      "default": 0,
+      "unit": "fraction of height",
+      "suggested": [
+        0,
+        0.008
+      ],
+      "route": "ae-do",
+      "operations": [
+        "keyframe.apply",
+        "expression.set"
+      ],
+      "meaning": "Screen-space amplitude intent; deterministic animation and reduced-motion variant as needed."
+    },
+    {
+      "key": "rhythm.bpm",
+      "type": "number",
+      "default": 120,
+      "unit": "beats per minute",
+      "suggested": [
+        60,
+        180
+      ],
+      "route": "external",
+      "operations": [],
+      "meaning": "Optional planning grid; actual music may require measured or variable beat times."
+    },
+    {
+      "key": "rhythm.beatOffset",
+      "type": "number",
+      "default": 0,
+      "unit": "seconds",
+      "suggested": [
+        0,
+        2
+      ],
+      "route": "external",
+      "operations": [],
+      "meaning": "First measured reference beat; calculate absolute frame times."
+    },
+    {
+      "key": "rhythm.sync",
+      "type": "string",
+      "default": "none",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [
+        "marker.add_comp"
+      ],
+      "meaning": "Markers record cues; no automatic audio generation or analysis.",
+      "choices": [
+        "none",
+        "beat",
+        "word",
+        "cue"
+      ]
+    },
+    {
+      "key": "rhythm.impactLead",
+      "type": "number",
+      "default": 0,
+      "unit": "frames at reference fps",
+      "suggested": [
+        -3,
+        3
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Visual impact offset relative to measured cue: negative is before audio peak."
+    },
+    {
+      "key": "review.sampleCount",
+      "type": "number",
+      "default": 8,
+      "unit": "frames per review call",
+      "suggested": [
+        2,
+        16
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Choose event-driven times; more calls may be required."
+    },
+    {
+      "key": "review.boundaryRadius",
+      "type": "number",
+      "default": 1,
+      "unit": "frames at target fps",
+      "suggested": [
+        1,
+        3
+      ],
+      "route": "design",
+      "operations": [],
+      "meaning": "Capture neighboring frames around cuts or sudden changes."
+    },
+    {
+      "key": "review.reducedMotion",
+      "type": "boolean",
+      "default": false,
+      "unit": "boolean",
+      "suggested": null,
+      "route": "design",
+      "operations": [],
+      "meaning": "Prepare a separate calm variant or poster when requested; no CSS media query in a video."
+    },
+    {
+      "key": "review.nativeEvidence",
+      "type": "string",
+      "default": "pending",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [],
+      "meaning": "Record evidence honestly; a schema-checked example is not native proof.",
+      "choices": [
+        "pending",
+        "checked"
+      ]
+    },
+    {
+      "key": "review.playbackEvidence",
+      "type": "string",
+      "default": "pending",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [],
+      "meaning": "Only change after reviewing an actual sequence; still frames are insufficient.",
+      "choices": [
+        "pending",
+        "checked"
+      ]
+    },
+    {
+      "key": "review.artistAcceptance",
+      "type": "string",
+      "default": "pending",
+      "unit": "choice",
+      "suggested": null,
+      "route": "design",
+      "operations": [],
+      "meaning": "Only the user can supply acceptance.",
+      "choices": [
+        "pending",
+        "accepted",
+        "changes-requested"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "resolutionOrder": [
+    "catalog defaults",
+    "profile overrides",
+    "user or reference overrides"
+  ],
+  "profiles": [
+    {
+      "id": "editorial-calm",
+      "name": "Editorial calm",
+      "intent": "Spacious, stable typography with modest travel.",
+      "overrides": {}
+    },
+    {
+      "id": "product-precise",
+      "name": "Product precise",
+      "intent": "Clear UI hierarchy and short, controlled gestures.",
+      "overrides": {
+        "color.ground": "#101B2B",
+        "color.surface": "#233449",
+        "color.text": "#F3F6FA",
+        "color.muted": "#B2C2D1",
+        "color.accent": "#54D6B0",
+        "timing.entrance": 14,
+        "timing.exit": 9,
+        "timing.stagger": 2,
+        "motion.travel": 0.025,
+        "shape.cornerRadius": 0.016,
+        "finish.shadow": 0.12
+      }
+    },
+    {
+      "id": "kinetic-bold",
+      "name": "Kinetic bold",
+      "intent": "Large type and selective bursts of energy.",
+      "overrides": {
+        "color.ground": "#172136",
+        "color.surface": "#24334B",
+        "color.text": "#FFF6DC",
+        "color.muted": "#C7D2DD",
+        "color.accent": "#F1B938",
+        "type.displaySize": 0.125,
+        "type.tracking": -15,
+        "timing.entrance": 9,
+        "timing.exit": 6,
+        "timing.minimumHold": 45,
+        "motion.travel": 0.09,
+        "motion.entryInInfluence": 82,
+        "choreography.supportDelay": 3,
+        "shape.cornerRadius": 0,
+        "finish.motionBlur": true,
+        "finish.shutterAngle": 120
+      }
+    },
+    {
+      "id": "playful-tactile",
+      "name": "Playful tactile",
+      "intent": "Soft geometry with a small, decaying overshoot.",
+      "overrides": {
+        "color.ground": "#FFF1DC",
+        "color.surface": "#F5D5B0",
+        "color.text": "#2E2441",
+        "color.muted": "#685276",
+        "color.accent": "#B93959",
+        "timing.entrance": 16,
+        "timing.stagger": 4,
+        "motion.travel": 0.06,
+        "motion.anticipation": 3,
+        "motion.overshoot": 6,
+        "motion.settle": 9,
+        "motion.scaleFrom": 94,
+        "motion.rotationFrom": -3,
+        "shape.cornerRadius": 0.032
+      }
+    },
+    {
+      "id": "technical-data",
+      "name": "Technical data",
+      "intent": "Stable labels and precise quantitative motion.",
+      "overrides": {
+        "color.ground": "#EDF3F4",
+        "color.surface": "#DCE7E9",
+        "color.text": "#152D38",
+        "color.muted": "#46636B",
+        "color.accent": "#006F80",
+        "type.displaySize": 0.095,
+        "type.tracking": 10,
+        "timing.entrance": 15,
+        "timing.minimumHold": 90,
+        "motion.travel": 0.018,
+        "motion.overshoot": 0,
+        "shape.cornerRadius": 0.004,
+        "choreography.supportDelay": 6
+      }
+    },
+    {
+      "id": "cinematic-spatial",
+      "name": "Cinematic spatial",
+      "intent": "Restrained camera language with long readable holds.",
+      "overrides": {
+        "color.ground": "#10161F",
+        "color.surface": "#25313C",
+        "color.text": "#EDE5D5",
+        "color.muted": "#B6C2CA",
+        "color.accent": "#D1A56C",
+        "type.displaySize": 0.065,
+        "type.tracking": 25,
+        "timing.entrance": 30,
+        "timing.exit": 18,
+        "timing.minimumHold": 90,
+        "timing.stagger": 5,
+        "motion.travel": 0.02,
+        "depth.mode": "2.5d",
+        "depth.cameraMove": "push",
+        "depth.parallax": 0.012,
+        "finish.motionBlur": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "After Effects Motion Design"
+  short_description: "Design and review editable AE motion graphics"
+  default_prompt: "Use $after-effects-motion-design to design, animate, and review an editable After Effects composition from my brief."

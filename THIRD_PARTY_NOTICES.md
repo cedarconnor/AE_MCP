@@ -14,3 +14,11 @@ No code or prose from them has been copied into the implementation. Their exact
 revisions and license inventory appear in `docs/research/`.
 
 This is an independent derivative and is not an official Adobe or Kumo product.
+
+The motion-design skill library is original guidance and examples synthesized
+from a separate 41-repository research survey. No upstream skill bodies, scripts,
+engines, artwork, fonts or audio are vendored in that library. Source attribution,
+commit pins, detected license metadata and adoption decisions are recorded in
+`docs/research/MOTION_SKILLS_REVIEW.md` and `motion-skills-sources.json` in the same
+directory. References to other products do not make them package dependencies or
+extend this project's license to their implementations or assets.

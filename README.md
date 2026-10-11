@@ -22,6 +22,7 @@ generated from the implementation, with drift checks and validated examples.
 | [Operation reference](docs/OPERATIONS.md) | Every operation, defaults, policy flags, source links and call templates |
 | [Examples and recipes](docs/EXAMPLES.md) | Motion graphics, manual editing, keyframes, effects, rendering and MOGRT |
 | [Motion specification](docs/MOTION_SPEC.md) | Portable JSON contract, limits, presets and native animation behavior |
+| [Motion design skills](docs/SKILLS.md) | Aesthetics and animation library: 75 parameters, six style profiles, recipes and examples |
 | [Configuration](docs/CONFIGURATION.md) | All environment variables, policies, CLI, instances and timeouts |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Error codes, request recovery, capture and installation problems |
 | [Architecture](docs/ARCHITECTURE.md) | MCP responses, native bridge, persistence and trust boundaries |
@@ -86,6 +87,19 @@ workflow. No public npm publication is assumed by these instructions.
 | Delivery | Render queue, render/output templates, Essential Graphics and MOGRT operations | Codec/template/font availability and downstream rendering need verification |
 | Host control | Context, preferences, menu commands, optional resident instances | Application changes require explicit intent; policy is not an OS sandbox |
 | Recovery | Request IDs, retained outcomes, serialized dispatch, status lookup | Unknown outcomes require reconciliation; a timeout does not cancel native work |
+
+## Motion design library
+
+The bundled [motion-design skill](skills/after-effects-motion-design/SKILL.md) adds
+art direction, typography, layout, timing, easing, choreography, depth, finish and
+visual critique. It includes **75 design parameters, six style profiles and three
+motion-spec examples**, synthesized from a [41-repository review](docs/research/MOTION_SKILLS_REVIEW.md).
+
+Read it through MCP at `ae-uber://skills/after-effects-motion-design/SKILL.md`, or
+install the portable folder in your agent's skill directory. See [skill setup and
+usage](docs/SKILLS.md). Design parameters guide native operations; they do not add
+new fields to the v1 motion spec. Profile examples are schema-checked, not newly
+rendered or artist-approved.
 
 ## Tool map
 

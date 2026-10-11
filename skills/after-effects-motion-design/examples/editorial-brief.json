@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "kind": "ae-motion-design-brief",
+  "profile": "editorial-calm",
+  "intent": "A quiet editable title with one accent rule and a stable readable hold.",
+  "copy": {
+    "title": "Make room for ideas",
+    "support": "Thoughtful motion, clear meaning"
+  },
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 6
+  },
+  "parameters": {
+    "timing.entrance": 18,
+    "timing.minimumHold": 120,
+    "layout.heroY": 0.44
+  },
+  "beats": [
+    {
+      "name": "arrival",
+      "frame": 18
+    },
+    {
+      "name": "support-arrival",
+      "frame": 24
+    },
+    {
+      "name": "exit-start",
+      "frame": 156
+    },
+    {
+      "name": "end",
+      "frame": 180
+    }
+  ],
+  "implementation": {
+    "base": "editorial-title.motion.json",
+    "limitations": [
+      "v1 uses fixed vertical slide/fade and 66 percent temporal influence; design easing needs native key replacement",
+      "v1 does not create a static opaque background; add a solid separately if required"
+    ]
+  },
+  "evidence": {
+    "schema": "checked by npm run skills:check",
+    "native": "pending",
+    "frames": "pending",
+    "playback": "pending",
+    "artistAcceptance": "pending"
+  }
+}

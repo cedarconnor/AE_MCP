@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "comp": {
+    "name": "Portrait data card - fictional example",
+    "width": 1080,
+    "height": 1920,
+    "duration": 8,
+    "fps": 30,
+    "background": [
+      0.9294117647058824,
+      0.9529411764705882,
+      0.9568627450980393
+    ]
+  },
+  "layers": [
+    {
+      "key": "panel",
+      "name": "Panel",
+      "type": "rect",
+      "position": [
+        540,
+        912
+      ],
+      "color": [
+        0.8627450980392157,
+        0.9058823529411765,
+        0.9137254901960784
+      ],
+      "timing": {
+        "start": 0,
+        "in": 0.5,
+        "hold": 6.8,
+        "out": 0.7
+      },
+      "size": [
+        880,
+        850
+      ]
+    },
+    {
+      "key": "value",
+      "name": "Value",
+      "type": "text",
+      "position": [
+        540,
+        800
+      ],
+      "color": [
+        0.0,
+        0.43529411764705883,
+        0.5019607843137255
+      ],
+      "timing": {
+        "start": 0.1,
+        "in": 0.5,
+        "hold": 6.7,
+        "out": 0.7
+      },
+      "text": "42%",
+      "font": "Arial-BoldMT",
+      "fontSize": 210
+    },
+    {
+      "key": "label",
+      "name": "Label",
+      "type": "text",
+      "position": [
+        540,
+        1040
+      ],
+      "color": [
+        0.08235294117647059,
+        0.17647058823529413,
+        0.2196078431372549
+      ],
+      "timing": {
+        "start": 0.2,
+        "in": 0.5,
+        "hold": 6.6,
+        "out": 0.7
+      },
+      "text": "Example metric",
+      "font": "ArialMT",
+      "fontSize": 67
+    },
+    {
+      "key": "source",
+      "name": "Source",
+      "type": "text",
+      "position": [
+        540,
+        1160
+      ],
+      "color": [
+        0.27450980392156865,
+        0.38823529411764707,
+        0.4196078431372549
+      ],
+      "timing": {
+        "start": 0.3,
+        "in": 0.5,
+        "hold": 6.5,
+        "out": 0.7
+      },
+      "text": "Fictional data for layout only",
+      "font": "ArialMT",
+      "fontSize": 38
+    }
+  ]
+}

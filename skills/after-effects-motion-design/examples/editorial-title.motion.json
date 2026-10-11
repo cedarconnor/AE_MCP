@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "comp": {
+    "name": "Editorial title - skill example",
+    "width": 1920,
+    "height": 1080,
+    "duration": 6,
+    "fps": 30,
+    "background": [
+      0.9568627450980393,
+      0.9450980392156862,
+      0.9137254901960784
+    ]
+  },
+  "layers": [
+    {
+      "key": "accent_rule",
+      "name": "Accent Rule",
+      "type": "rect",
+      "position": [
+        960,
+        365
+      ],
+      "color": [
+        0.7686274509803922,
+        0.36470588235294116,
+        0.22745098039215686
+      ],
+      "timing": {
+        "start": 0,
+        "in": 0.6,
+        "hold": 4.6,
+        "out": 0.8
+      },
+      "size": [
+        92,
+        4
+      ]
+    },
+    {
+      "key": "title",
+      "name": "Title",
+      "type": "text",
+      "position": [
+        960,
+        475
+      ],
+      "color": [
+        0.09019607843137255,
+        0.1411764705882353,
+        0.17647058823529413
+      ],
+      "timing": {
+        "start": 0,
+        "in": 0.6,
+        "hold": 4.6,
+        "out": 0.8
+      },
+      "text": "Make room for ideas",
+      "font": "ArialMT",
+      "fontSize": 86
+    },
+    {
+      "key": "support",
+      "name": "Support",
+      "type": "text",
+      "position": [
+        960,
+        598
+      ],
+      "color": [
+        0.33725490196078434,
+        0.3843137254901961,
+        0.4196078431372549
+      ],
+      "timing": {
+        "start": 0.2,
+        "in": 0.6,
+        "hold": 4.4,
+        "out": 0.8
+      },
+      "text": "Thoughtful motion, clear meaning",
+      "font": "ArialMT",
+      "fontSize": 35
+    }
+  ]
+}

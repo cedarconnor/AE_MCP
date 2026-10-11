@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "execution": "Illustrative calls; resolve real targets and prerequisites. Never execute all calls blindly.",
+  "examples": [
+    {
+      "purpose": "Typography after layout",
+      "precondition": "Comp 42 contains a text layer named Title; remeasure and reanchor after style changes.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "text.set_style",
+          "args": {
+            "comp": 42,
+            "layer": "Title",
+            "font": "ArialMT",
+            "fontSize": 86,
+            "tracking": 0,
+            "leading": 96.32,
+            "autoLeading": false,
+            "justification": "center",
+            "fillColor": [
+              0.09,
+              0.14,
+              0.18
+            ]
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Measure text",
+      "precondition": "Comp 42 contains the intended Title text layer.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "text.measure",
+          "args": {
+            "comp": 42,
+            "layer": "Title"
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Inspect keyable properties",
+      "precondition": "Comp 42 contains Title; inspect paths before custom keys.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "property.list",
+          "args": {
+            "comp": 42,
+            "layer": "Title",
+            "property": [
+              "ADBE Transform Group"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Calm scale settle",
+      "precondition": "New Title layer, no artist keys to retain; replace removes existing Scale keys.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "keyframe.apply",
+          "args": {
+            "comp": 42,
+            "layer": "Title",
+            "property": [
+              "ADBE Transform Group",
+              "ADBE Scale"
+            ],
+            "replace": true,
+            "keys": [
+              {
+                "time": 0,
+                "value": [
+                  96,
+                  96
+                ],
+                "interp": "ease",
+                "outSpeed": 0,
+                "outInfluence": 25
+              },
+              {
+                "time": 0.6,
+                "value": [
+                  100,
+                  100
+                ],
+                "interp": "ease",
+                "inSpeed": 0,
+                "inInfluence": 70
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Record an impact cue",
+      "precondition": "Comp 42 exists; the cue does not create or move audio.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "marker.add_comp",
+          "args": {
+            "comp": 42,
+            "time": 0.6,
+            "comment": "Title arrives - measured cue"
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Comp motion blur",
+      "precondition": "User requested blur on this comp; layer switches are separate.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "comp.set_props",
+          "args": {
+            "comp": 42,
+            "props": {
+              "motionBlur": true,
+              "shutterAngle": 180
+            }
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Layer motion blur",
+      "precondition": "Comp 42 Title is the intended layer.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "layer.set_props",
+          "args": {
+            "comp": 42,
+            "layer": "Title",
+            "props": {
+              "motionBlur": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Rounded panel geometry",
+      "precondition": "Comp 42 Panel is an EMPTY shape layer with an existing Vector Group at index 1; this adds geometry.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "shape.add_rect",
+          "args": {
+            "comp": 42,
+            "layer": "Panel",
+            "groupIndex": 1,
+            "size": [
+              800,
+              176
+            ],
+            "roundness": 16
+          }
+        }
+      }
+    },
+    {
+      "purpose": "Draw-on operator",
+      "precondition": "Comp 42 Logo contains an existing native stroked path in Vector Group 1; inspect new operator before keying.",
+      "call": {
+        "name": "ae_do",
+        "arguments": {
+          "operation": "shape.add_trim_paths",
+          "args": {
+            "comp": 42,
+            "layer": "Logo",
+            "groupIndex": 1,
+            "start": 0,
+            "end": 0,
+            "offset": 0
+          }
+        }
+      }
+    }
+  ]
+}

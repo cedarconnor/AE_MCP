@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "after-effects-motion-design",
+  "title": "After Effects Motion Design",
+  "entrypoint": "SKILL.md",
+  "parameterCatalog": "references/parameters.json",
+  "profiles": "references/profiles.json",
+  "compiler": "No automatic design-parameter compiler. Use the existing motion spec and native operations as documented.",
+  "files": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "examples/editorial-brief.json",
+    "examples/editorial-title.motion.json",
+    "examples/native-edits.json",
+    "examples/portrait-data.motion.json",
+    "examples/product-lower-third.motion.json",
+    "references/ae-mapping.md",
+    "references/aesthetics.md",
+    "references/animation.md",
+    "references/depth-and-finish.md",
+    "references/direction.md",
+    "references/parameters.json",
+    "references/parameters.md",
+    "references/profiles.json",
+    "references/recipes.md",
+    "references/review.md",
+    "references/sound-and-rhythm.md",
+    "references/sources.md"
+  ]
+}

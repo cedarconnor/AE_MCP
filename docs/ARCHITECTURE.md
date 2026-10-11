@@ -130,6 +130,7 @@ captured bytes, not all frames in an animation. The manifest explicitly records
 |---|---|
 | `ae-uber://workflow` | Text/plain continuation guide |
 | `ae-uber://motion-spec-schema` | Application/json schema for version-1 specs |
+| `ae-uber://skills/after-effects-motion-design/manifest.json` | Portable skill file list; every listed file is exposed as an exact read-only resource under this prefix |
 | `motion-graphics` prompt | Required string `brief`; returns a user message combining the brief with the workflow guide |
 
 Resources and prompts guide the client; they do not perform native mutations.

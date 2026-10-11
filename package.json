@@ -33,7 +33,9 @@
     "scripts/check-docs.mjs",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "README.md"
+    "README.md",
+    "skills",
+    "scripts/check-skills.mjs"
   ],
   "type": "module",
   "main": "dist/index.js",
@@ -52,11 +54,12 @@
     "docs:tools": "npm run docs:generate",
     "docs:generate": "npm run build && node scripts/generate-reference-docs.mjs",
     "docs:check": "npm run build && node scripts/generate-reference-docs.mjs --check && node scripts/check-docs.mjs",
-    "check": "npm run typecheck && npm run typecheck:test && npm run build && npm test && npm run check:protocol && node scripts/generate-reference-docs.mjs --check && node scripts/check-docs.mjs",
+    "check": "npm run typecheck && npm run typecheck:test && npm run build && npm test && npm run check:protocol && node scripts/generate-reference-docs.mjs --check && node scripts/check-docs.mjs && node scripts/check-skills.mjs",
     "prepublishOnly": "npm run build",
     "test:live": "vitest run tests/e2e",
     "check:protocol": "node scripts/check-protocol.mjs",
-    "smoke:live": "node scripts/smoke-live.mjs"
+    "smoke:live": "node scripts/smoke-live.mjs",
+    "skills:check": "npm run build && node scripts/check-skills.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",

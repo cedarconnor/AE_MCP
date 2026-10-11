@@ -36,10 +36,11 @@ deliberately, regenerate references and repeat clean-package verification.
 | `npm run lint:fix` | Apply supported lint fixes; changes files |
 | `npm run lint:jsx` | Check generated JSX compatibility rules |
 | `npm run check:protocol` | Real stdio handshake, discovery, resources/prompt and offline plan |
+| `npm run skills:check` | Portable skill data, examples, operation mappings, links and real stdio resource delivery; no native AE writes |
 | `npm run docs:generate` | Build and regenerate source-derived Markdown/JSON references |
 | `npm run docs:tools` | Compatibility alias for complete reference generation |
 | `npm run docs:check` | Build, detect stale generated files, check guide examples/links and compare MCP schemas |
-| `npm run check` | Typechecks, build, offline tests, protocol check and documentation verification |
+| `npm run check` | Typechecks, build, offline tests, protocol, documentation and skill-library verification |
 | `npm run smoke:live` | Bounded native demo; requires an empty AE project |
 | `npm run test:live` | Inherited native integration suites; can replace projects/interrupt AE |
 | `npm pack` | Create a local distribution archive using existing built output |
@@ -114,7 +115,7 @@ npm pack
 
 `npm pack` packages existing `dist`; build/check first. The package includes
 native JSX, fixtures, examples, documentation, source used by reference links,
-documentation helper scripts and notices. Source-checkout development commands
+the portable motion-design skill, validation/helper scripts and notices. Source-checkout development commands
 still require development dependencies, tests and TypeScript configuration.
 Installing the archive as a dependency does not provide a full contributor
 checkout.

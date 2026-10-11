@@ -828,7 +828,7 @@ describe("e2e: egp / viewer / project / shape", () => {
 
   it("project.new discards the fixture last (restore happens in afterAll)", async (ctx) => {
     if (!ready) return ctx.skip();
-    const res = await o().run<{ numItems: number }>("project.new", { save: false });
+    const res = await o().run<{ numItems: number }>("project.new", { discardUnsaved: true });
     expect(res.numItems).toBe(0);
   });
 

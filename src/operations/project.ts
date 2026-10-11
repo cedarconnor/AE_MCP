@@ -3,17 +3,52 @@
 import { registerOp, jsxVal, jsxCompPreamble } from "../registry.js";
 import { UNDO_COMMAND_ID } from "./command.js";
 
+// Both project boundaries must resolve preservation before closing. The dirty
+// property is unavailable in some AE versions; populated projects then fail
+// conservatively. Untitled content is protected even if dirty reports false.
+function jsxPreserveCurrentProject(args: Record<string, unknown>): string {
+  return `
+            if (app.project) {
+                var _current = app.project;
+                var _dirty = null;
+                try { if (typeof _current.dirty === "boolean") _dirty = _current.dirty; } catch (eDirty) {}
+                if (${jsxVal(args.save === true)}) {
+                    if (!_current.file || !_current.file.fsName) return { ok: false, error: "current project has no file path — save it first (ae_save_project with a path)" };
+                    try {
+                        if (_current.save() === false) return { ok: false, error: "current project save failed; project was not replaced" };
+                    } catch (eSave) { return { ok: false, error: "current project save failed: " + AE.errText(eSave) }; }
+                    var _stillDirty = false;
+                    try { _stillDirty = _current.dirty === true; } catch (eSavedDirty) {}
+                    if (_stillDirty) return { ok: false, error: "current project still has unsaved changes after save; project was not replaced" };
+                } else if (!${jsxVal(args.discardUnsaved === true)} && (_dirty === true || (_current.numItems > 0 && (_dirty === null || !_current.file)))) {
+                    return { ok: false, error: "current project has unsaved changes (or its saved state cannot be verified); save it first, pass save=true for a project with a file path, or explicitly pass discardUnsaved=true" };
+                }
+                if (_current.close(CloseOptions.DO_NOT_SAVE_CHANGES) === false) return { ok: false, error: "current project could not be closed; project was not replaced" };
+            }
+        `;
+}
+
 registerOp({
   name: "project.open",
   category: "project",
-  description: "Open a .aep project file. Closes the current project without saving.",
+  description:
+    "Open a .aep project file. Refuses to replace unsaved work unless save=true succeeds or discardUnsaved=true is explicit.",
   params: [
     { name: "path", type: "string", description: "Absolute path to .aep file", required: true },
     {
       name: "save",
       type: "boolean",
-      description: "Save current project before closing (default false)",
+      description:
+        "Save current project before closing (requires an existing file path; default false)",
       required: false,
+      default: false,
+    },
+    {
+      name: "discardUnsaved",
+      type: "boolean",
+      description: "Explicitly discard current unsaved work (default false)",
+      required: false,
+      default: false,
     },
   ],
   // Runs OUTSIDE the dispatcher's undo group, same class as undo/redo:
@@ -25,9 +60,9 @@ registerOp({
   undoGroup: () => false,
   toJsx(args) {
     return `
-            if (${jsxVal(!!args.save)} && app.project.file) app.project.save();
             var f = new File(${jsxVal(args.path)});
             if (!f.exists) return { ok: false, error: "file not found: " + ${jsxVal(args.path)} };
+            ${jsxPreserveCurrentProject(args)}
             app.open(f);
             return { ok: true, numItems: app.project.numItems, file: app.project.file.fsName.replace(/\\\\/g,"/") };
         `;
@@ -729,12 +764,19 @@ registerOp({
   name: "project.new",
   category: "project",
   description:
-    "Create a NEW empty project (app.newProject). Closes the current project — pass save=true to save it first (only works when it has a file path). Destructive to unsaved work.",
+    "Create a NEW empty project (app.newProject). Refuses to replace unsaved work unless save=true succeeds or discardUnsaved=true is explicit.",
   params: [
     {
       name: "save",
       type: "boolean",
       description: "Save the current project before closing (default false; needs a file path)",
+      required: false,
+      default: false,
+    },
+    {
+      name: "discardUnsaved",
+      type: "boolean",
+      description: "Explicitly discard current unsaved work (default false)",
       required: false,
       default: false,
     },
@@ -747,11 +789,7 @@ registerOp({
     // (beginSuppressDialogs does not cover confirmation dialogs) — the E2E run
     // that discovered this had to be recovered with taskkill.
     return `
-            if (${jsxVal(!!args.save)}) {
-                if (app.project.file) { app.project.save(); }
-                else if (app.project.numItems > 0) { return { ok: false, error: "current project has no file path — save it first (ae_save_project with a path) or pass save=false to discard" }; }
-            }
-            app.project.close(CloseOptions.DO_NOT_SAVE_CHANGES);
+            ${jsxPreserveCurrentProject(args)}
             var _p = app.newProject();
             if (!_p) return { ok: false, error: "app.newProject returned null" };
             return { ok: true, numItems: _p.numItems };

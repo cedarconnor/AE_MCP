@@ -14,7 +14,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 import { jsxVal } from "../registry.js";
-import type { AeTransport } from "../transport/AeTransport.js";
+import type { AeTransport, EvalResult } from "../transport/AeTransport.js";
 import { decodePng } from "./png16.js";
 import { readFileSettled } from "./settled-read.js";
 
@@ -68,7 +68,7 @@ export async function measureCaptureTransfer(
   transport: AeTransport,
   key: string,
   allowRender = true,
-): Promise<CalibrationResult | { error: string }> {
+): Promise<CalibrationResult | { error: string; transportResult?: EvalResult }> {
   const cached = cache.get(key);
   if (cached) return cached;
   if (!allowRender) {
@@ -101,7 +101,7 @@ export async function measureCaptureTransfer(
         return _out;
     `;
   const result = await transport.execute({ code, label: "capture_calibration", timeoutMs: 60_000 });
-  if (!result.ok) return { error: `calibration render failed: ${result.error}` };
+  if (!result.ok) return { error: `calibration render failed: ${result.error}`, transportResult: result };
   const payload = result.result as { ok?: boolean; saved?: boolean; error?: string } | null;
   if (!payload || payload.ok !== true || payload.saved !== true) {
     return { error: `calibration failed inside AE: ${payload?.error ?? "no result"}` };

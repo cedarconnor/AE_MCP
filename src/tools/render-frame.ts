@@ -370,7 +370,8 @@ async function nativeFlow(
   if (args.analyze) await attachAnalysis(payload, frames, written, multi);
   if (args.colorManaged !== "off") {
     payload.method = "native";
-    await colorPostProcess(payload, written, transport);
+    const calibrationFailure = await colorPostProcess(payload, written, transport);
+    if (calibrationFailure) return toMcpResult(calibrationFailure);
   }
   // The sheet last, from the files as they will be viewed.
   if (args.contactSheet) {
@@ -394,7 +395,7 @@ async function colorPostProcess(
   payload: RenderFramePayload,
   written: string[],
   transport: AeTransport,
-): Promise<void> {
+): Promise<void | import('../transport/AeTransport.js').EvalResult> {
   const workingSpace = payload.workingSpace ?? "None";
   try {
     if (workingSpace === "None" || workingSpace === "") {
@@ -413,6 +414,9 @@ async function colorPostProcess(
       calibrationKey(payload.projectFile ?? null, workingSpace, payload.bitsPerChannel ?? 8),
       !readOnlyMode(),
     );
+    // A secondary host request is still a mutation. Do not hide its recovery
+    // handle behind a successful first capture and an ordinary color warning.
+    if ('error' in calib && calib.transportResult) return calib.transportResult;
     const calibFailed = "error" in calib || calib.kind === "unknown";
     const gain = !calibFailed && calib.kind === "linear" ? 1 / calib.scale : 1;
 

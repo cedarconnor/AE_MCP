@@ -31,10 +31,10 @@
 
 Files: existing upstream `src/`, `jsx/`, offline `tests/`, fixtures/build config; new `README.md`, `THIRD_PARTY_NOTICES.md`, `docs/research/*`.
 
-- [ ] Import the pinned Kumo source and tests, excluding Git metadata, upstream instruction files, generated binaries and unrelated artwork. Retain LICENSE.
-- [ ] Initialize the local repository, identity/package scripts and ignore research clones/build artifacts. Keep a recorded baseline commit.
-- [ ] Install locked dependencies without lifecycle scripts; typecheck/build and run only offline tests first.
-- [ ] Record all thirteen reviews and exact source revisions.
+- [x] Import the pinned Kumo source and tests, excluding Git metadata, upstream instruction files, generated binaries and unrelated artwork. Retain LICENSE.
+- [x] Initialize the local repository, identity/package scripts and ignore research clones/build artifacts. Keep a recorded baseline commit.
+- [x] Install locked dependencies without lifecycle scripts; typecheck/build and run only offline tests first.
+- [x] Record all thirteen reviews and exact source revisions.
 
 ### Task 2: Request claim, retained outcomes and containment
 
@@ -42,11 +42,11 @@ Files: `jsx/serve.jsx`, `src/transport/FileIpcTransport.ts`, `src/transport/AeTr
 
 Interfaces: retain existing `AeTransport.execute(EvalRequest): Promise<EvalResult>`; extend errors with optional request identity/outcome; expose a request-status lookup via an MCP tool. No caller may rerun the request during recovery.
 
-- [ ] Write failing tests for failed claim, consume/unlink race and late-response lookup; run to confirm failure.
-- [ ] Claim request files by rename before reading/executing, fail closed if ownership is unavailable, retain response/claim evidence and expose status by UUID.
-- [ ] Ensure consumed timeout reports unknown/running outcome and retains recovery identity. Pending cancellation must be distinguished from already claimed work.
-- [ ] Canonicalize output parent paths to reject symlink/junction aliases of mailbox roots; add fixture coverage.
-- [ ] Run targeted tests and typecheck; commit the completed change.
+- [x] Write failing tests for failed claim, consume/unlink race and late-response lookup; run to confirm failure.
+- [x] Claim request files by rename before reading/executing, fail closed if ownership is unavailable, retain response/claim evidence and expose status by UUID.
+- [x] Ensure consumed timeout reports unknown/running outcome and retains recovery identity. Pending cancellation must be distinguished from already claimed work.
+- [x] Canonicalize output parent paths to reject symlink/junction aliases of mailbox roots; add fixture coverage.
+- [x] Run targeted tests and typecheck; commit the completed change.
 
 ### Task 3: Motion specification and native compiler
 
@@ -54,11 +54,11 @@ Files: `src/motion/spec.ts`, `src/motion/templates.ts`, `src/motion/compile.ts`,
 
 Interfaces: export `motionSpecSchema`, `MotionSpec`, `createMotionPreset(...)`, `compileMotionSpec(spec): string` and canonical spec hashing. The compiler returns an ES3 function body yielding `{ok, compId, layers, specHash, warnings}` and creates only a new composition.
 
-- [ ] Write failing validation tests for non-finite/bounded numbers, color ranges, duplicate layer keys, invalid entrance/exit timing and hostile Unicode strings.
-- [ ] Implement version 1 spec for comp settings and editable text/rect/ellipse layers with explicit layout/timing/colors; preset generators for title/lower-third/statistic cards.
-- [ ] Implement native ES3 text/shape creation and native eased position/opacity animation; preserve new comp on partial failure with explicit created IDs and error evidence.
-- [ ] Include responsive sizing and text measurement warnings, stable IDs and native keyframe readback in build output.
-- [ ] Run tests/typecheck and commit.
+- [x] Write failing validation tests for non-finite/bounded numbers, color ranges, duplicate layer keys, invalid entrance/exit timing and hostile Unicode strings.
+- [x] Implement version 1 spec for comp settings and editable text/rect/ellipse layers with explicit layout/timing/colors; preset generators for title/lower-third/statistic cards.
+- [x] Implement native ES3 text/shape creation and native eased position/opacity animation; preserve new comp on partial failure with explicit created IDs and error evidence.
+- [x] Include responsive sizing and text measurement warnings, stable IDs and native keyframe readback in build output.
+- [x] Run tests/typecheck and commit.
 
 ### Task 4: MCP motion, QA and review workflow
 
@@ -66,18 +66,20 @@ Files: `src/tools/motion.ts`, `src/tools/index.ts`, `src/motion/qa.ts`, `src/mot
 
 Interfaces: `ae_motion_plan` creates normalized spec/hash offline; `ae_motion_build` validates/builds; `ae_motion_audit` inspects native composition facts; `ae_motion_review` captures multiple frames through existing render-frame handler and writes hash-bound manifest. Export new tools for integration into ALL_TOOLS. Prompt/resource guidance is independently authored.
 
-- [ ] Write failing tests verifying denied builds never reach transport, build errors are MCP errors, and review files bind exact frame bytes/times/spec identity.
-- [ ] Implement tools, enforce read-only and category policy, bind instance targeting, and propagate native/partial failures.
-- [ ] Register workflow prompt/resource and examples. Review records explicitly keep artist acceptance pending and describe limited QA coverage.
-- [ ] Run targeted tests and protocol discovery through a real stdio client; commit.
+- [x] Write failing tests verifying denied builds never reach transport, build errors are MCP errors, and review files bind exact frame bytes/times/spec identity.
+- [x] Implement tools, enforce read-only and category policy, bind instance targeting, and propagate native/partial failures.
+- [x] Register workflow prompt/resource and examples. Review records explicitly keep artist acceptance pending and describe limited QA coverage.
+- [x] Run targeted tests and protocol discovery through a real stdio client; commit.
 
 ### Task 5: Live acceptance, packaging and handoff
 
 Files: `scripts/smoke-live.mjs`, `scripts/check-protocol.mjs`, `docs/VALIDATION.md`, `README.md`, `docs/SETUP.md`.
 
-- [ ] Run offline suite/typechecks/build; fix actual failures before native work.
+- [x] Run offline suite/typechecks/build; fix actual failures before native work.
 - [ ] Connect to installed AE, inspect active project and scripting prerequisite, and use disposable named demo content without replacing existing work.
 - [ ] Build motion graphic, inspect native layers/keyframes, revise via stable layer ID, capture entrance/hold/exit samples, save new AEP if safe. Visually inspect captures.
-- [ ] Test packed package outside checkout with stdio initialize/list/call and verify runtime assets are included.
-- [ ] Request independent code review, fix material findings, rerun affected checks.
-- [ ] Write validation report with exact passing/untested/blocked boundaries and deliver artifact/setup links.
+- [x] Test packed package outside checkout with stdio initialize/list/call and verify runtime assets are included.
+- [x] Request independent code review, fix material findings, rerun affected checks.
+- [x] Write validation report with exact passing/untested/blocked boundaries and deliver artifact/setup links.
+
+Native acceptance is pending approval to enable AE's scripting file/network preference. See docs/VALIDATION.md; offline and packed-protocol results do not establish native or visual acceptance.

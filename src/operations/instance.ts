@@ -438,7 +438,9 @@ registerOp({
         `instance '${name}' accepted the quit but is still ticking after ${timeoutMs} ms — check it for a dialog`,
       );
     }
-    await fs.rm(dir, { recursive: true, force: true }).catch(() => {});
+    // The mailbox is also the retained request ledger. Retire through the
+    // stale heartbeat; deleting the directory loses outcomes needed to
+    // reconcile earlier timeouts, including after this name is reused.
     return { ok: true, instance: name, stopped: true, saved: !!args.save, file };
   },
 });

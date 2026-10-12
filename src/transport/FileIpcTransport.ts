@@ -243,7 +243,11 @@ export class FileIpcTransport implements AeTransport {
         result: this.toEvalResult(response, 0),
       };
     }
-    if (record.cancelled) return { requestId, state: "cancelled", mayStillRun: false };
+    // The rename into this retained file IS cancellation, not bookkeeping
+    // performed after deleting the only evidence. A pending host claim and a
+    // cancellation compete for the same source; only one can succeed.
+    if (record.cancelled || await this.fileExists(path.join(dir, `cancelled-${requestId}.json`)))
+      return { requestId, state: "cancelled", mayStillRun: false };
     const running = await this.fileExists(path.join(dir, `executing-${requestId}.json`));
     const queued = await this.fileExists(path.join(dir, `${REQUEST_PREFIX}${requestId}.json`));
     return {
@@ -257,8 +261,12 @@ export class FileIpcTransport implements AeTransport {
     await fs.mkdir(outcomesDir, { recursive: true, mode: RUNTIME_DIR_MODE });
     const dest = path.join(outcomesDir, `${id}.json`);
     const temp = `${dest}.${randomUUID()}.tmp`;
-    await fs.writeFile(temp, JSON.stringify(record), "utf8");
-    await fs.rename(temp, dest);
+    try {
+      await fs.writeFile(temp, JSON.stringify(record), "utf8");
+      await fs.rename(temp, dest);
+    } finally {
+      await this.safeUnlink(temp);
+    }
   }
 
   /** Serialize gate transitions themselves; never steal a transition on age.
@@ -497,7 +505,7 @@ export class FileIpcTransport implements AeTransport {
           // crashed, or is stuck in a modal — fail now, not at the deadline.
           const current = await readInstance(dir, now);
           if (!current.alive) {
-            const cancelled = await this.safeUnlink(requestPath);
+            const cancelled = await this.cancelRequest(requestPath);
             const outcome = cancelled
               ? "the request was cancelled before claim"
               : "cancellation could not be confirmed; the request may still execute";
@@ -526,7 +534,7 @@ export class FileIpcTransport implements AeTransport {
       await sleep(POLL_INTERVAL_MS);
     }
 
-    const reclaimed = await this.safeUnlink(requestPath);
+    const reclaimed = await this.cancelRequest(requestPath);
     const pullTimeoutMessage =
       `timeout after ${timeoutMs}ms waiting for After Effects instance '${instance.id}' to respond` +
       (reclaimed
@@ -579,7 +587,7 @@ export class FileIpcTransport implements AeTransport {
     // the lock extends that across processes (see config.ts).
     const deadline = started + timeoutMs;
     if (!(await this.acquireBusyLock(deadline, id))) {
-      await this.safeUnlink(requestPath);
+      await this.cancelRequest(requestPath);
       return failure(
         "TIMEOUT",
         `timeout after ${timeoutMs}ms waiting for After Effects to become available — ` +
@@ -654,7 +662,7 @@ export class FileIpcTransport implements AeTransport {
             // alert. Tell the two apart before launching again.
             const dialogs = await this.scanDialogs();
             if (dialogs.length > 0) {
-              const cancelled = await this.safeUnlink(requestPath);
+              const cancelled = await this.cancelRequest(requestPath);
               return dialogFailure(
                 dialogs,
                 `after ${attempts} launch attempt${attempts === 1 ? "" : "s"}; ${cancelled ? "cancelled before claim" : "cancellation unconfirmed; the request may still execute"}`,
@@ -673,7 +681,7 @@ export class FileIpcTransport implements AeTransport {
       // leaving it there is how a "failed" mutation used to get picked up by a
       // later spawn and apply itself minutes after the caller gave up. If the
       // dispatcher already consumed it this unlink is a no-op.
-      const reclaimed = await this.safeUnlink(requestPath);
+      const reclaimed = await this.cancelRequest(requestPath);
       leaveLockForRunningScript = !reclaimed;
       const pushDialogs = await this.scanDialogs();
       if (pushDialogs.length > 0) {
@@ -717,13 +725,25 @@ export class FileIpcTransport implements AeTransport {
     request: MailboxRequest,
   ): Promise<void> {
     const tmpRequestPath = path.join(dir, `.${REQUEST_PREFIX}${request.id}.json.tmp`);
-    await fs.writeFile(tmpRequestPath, serializeRequest(request), "utf8");
-    const record: OutcomeRecord = JSON.parse(
-      await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
-    );
-    record.submitted = true;
-    await this.saveOutcome(request.id, record);
-    await fs.rename(tmpRequestPath, requestPath);
+    try {
+      await fs.writeFile(tmpRequestPath, serializeRequest(request), "utf8");
+      const record: OutcomeRecord = JSON.parse(
+        await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
+      );
+      // Write intent before publication: a crash after the rename must never
+      // leave a false "never submitted" record behind a running mutation.
+      record.submitted = true;
+      await this.saveOutcome(request.id, record);
+      await fs.rename(tmpRequestPath, requestPath);
+    } catch (error) {
+      // Retaining the staging source proves it was not published. If even
+      // this rename fails, keep both the staging file and the uncertain gate
+      // for inspection; absence alone is never cancellation evidence.
+      try {
+        await fs.rename(tmpRequestPath, path.join(dir, `cancelled-${request.id}.json`));
+      } catch { /* no affirmative evidence; remain conservative */ }
+      throw error;
+    }
   }
 
   /**
@@ -790,7 +810,7 @@ export class FileIpcTransport implements AeTransport {
     } catch {
       /* already gone */
     }
-    await this.safeUnlink(requestPath);
+    await this.cancelRequest(requestPath);
     return failure(
       "NO_INSTANCE",
       "no running After Effects instance received the script: the launched AfterFX.exe started booting an " +
@@ -886,7 +906,7 @@ export class FileIpcTransport implements AeTransport {
     requestPath: string,
     started: number,
   ): Promise<EvalResult> {
-    await this.safeUnlink(requestPath);
+    await this.cancelRequest(requestPath);
     return failure(
       "TRANSPORT",
       `could not launch After Effects (${this.afterFxPath}): ${err.message}`,
@@ -942,18 +962,20 @@ export class FileIpcTransport implements AeTransport {
     }
   }
 
-  /** Unlink and report whether the file was actually there. */
+  /** Atomically cancel an unclaimed request while retaining durable proof. */
+  private async cancelRequest(p: string): Promise<boolean> {
+    try {
+      await fs.rename(p, path.join(path.dirname(p), path.basename(p).replace(/^request-/, "cancelled-")));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /** Best-effort cleanup for files that are not host requests. */
   private async safeUnlink(p: string): Promise<boolean> {
     try {
       await fs.unlink(p);
-      const match = /^request-([0-9a-f-]+)\.json$/i.exec(path.basename(p));
-      if (match && REQUEST_ID.test(match[1])) {
-        const record: OutcomeRecord = JSON.parse(
-          await fs.readFile(path.join(outcomesDir, `${match[1]}.json`), "utf8"),
-        );
-        record.cancelled = true;
-        await this.saveOutcome(match[1], record);
-      }
       return true;
     } catch {
       return false;

@@ -16,6 +16,14 @@ function tool(name: string) {
 }
 
 describe("instance argument", () => {
+  it("ae_do preserves a separate blocking request without attributing its mutation to this caller", async () => {
+    const transport = nullTransport({ ok: false, errorCode: "TIMEOUT", error: "mailbox busy",
+      requestId: "new-request", state: "cancelled", mayStillRun: false,
+      blockingRequest: { requestId: "earlier-request", state: "running", mayStillRun: true } });
+    const result = await tool("ae_do").handler({ operation: "batch.run", args: { ops: [] } }, transport);
+    expect(JSON.stringify(result.structuredContent)).toContain('"blockingRequest":{"requestId":"earlier-request"');
+    expect(JSON.stringify(result.structuredContent)).toContain('"requestId":"new-request"');
+  });
   it("is declared on every tool that talks to After Effects, and only those", () => {
     for (const t of ALL_TOOLS) {
       const declared = "instance" in t.inputShape;

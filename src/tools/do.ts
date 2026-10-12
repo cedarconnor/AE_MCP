@@ -187,6 +187,7 @@ export const doTool = defineTool({
       return errorResult(result.errorCode ?? "TRANSPORT", result.error ?? "unknown failure", {
         details: {
           operation: op.name,
+          ...(result.blockingRequest ? { blockingRequest: result.blockingRequest } : {}),
           ...(result.requestId
             ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
             : {}),

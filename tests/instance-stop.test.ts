@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import vm from "node:vm";
 import { afterAll, afterEach, beforeEach, expect, it, vi } from "vitest";
 import { HEARTBEAT_FILENAME, RUNTIME_DIR, RUNTIME_ROOT, instanceDirFor } from "../src/config.js";
 import "../src/operations/index.js";
@@ -43,4 +44,47 @@ it("stopping and reusing an instance name preserves earlier retained request res
   await heartbeat(Date.now());
   expect(await new FileIpcTransport({ instance: name }).requestStatus(id)).toEqual(before);
   expect(before).toMatchObject({ state: "completed", mayStillRun: false, result: { result: 42 } });
+});
+
+it("acknowledges the stop request before executing quit and does not claim process-exit proof", async () => {
+  const events: string[] = [];
+  let scheduled = "";
+  const app = {
+    project: { file: null, dirty: false, close() { events.push("closed"); } },
+    quit() { events.push("quit"); },
+    scheduleTask(code: string, _delay: number, repeat: boolean) {
+      if (repeat) throw new Error("Quit must not repeat");
+      scheduled = code;
+      events.push("scheduled");
+      return 123;
+    },
+  };
+  const requestId = randomUUID();
+  const transport: AeTransport = {
+    async execute(req) {
+      const result = vm.runInNewContext(`(function() { ${req.code} })()`, { app, CloseOptions: { DO_NOT_SAVE_CHANGES: 0 } });
+      events.push("reply");
+      await heartbeat(0);
+      events.push("idle");
+      if (scheduled) vm.runInNewContext(scheduled, { app });
+      return { ok: true, result, requestId, state: "completed", mayStillRun: false, error: null, errorCode: null, stack: null, logs: [], durationMs: 0 };
+    },
+  };
+  const result = await getOp("instance.stop")!.run!({ name, discardChanges: true }, transport);
+  expect(events).toEqual(["closed", "scheduled", "reply", "idle", "quit"]);
+  expect(result).toMatchObject({ ok: true, stopped: true, quitAcknowledged: true, exitConfirmed: false, requestId });
+});
+
+it("an unacknowledged quit retains its recovery metadata even if the heartbeat becomes quiet", async () => {
+  const requestId = randomUUID();
+  const transport: AeTransport = {
+    async execute() {
+      await heartbeat(0);
+      return { ok: false, result: null, requestId, state: "running", mayStillRun: true,
+        error: "quit request timed out", errorCode: "TIMEOUT", stack: null, logs: [], durationMs: 0 };
+    },
+  };
+  expect(await getOp("instance.stop")!.run!({ name }, transport)).toMatchObject({
+    ok: false, requestId, state: "running", mayStillRun: true, quitAcknowledged: false, exitConfirmed: false,
+  });
 });

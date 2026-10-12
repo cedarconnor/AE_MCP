@@ -339,7 +339,7 @@ registerOp({
   description:
     "Quit an After Effects instance by name. Refuses while the project has unsaved changes unless `save: true` " +
     "(save in place — the project must have a file) or `discardChanges: true`. Returns once the instance has " +
-    "gone quiet. Use on workers you started with instance.start; it works on any live instance, so check " +
+    "gone quiet after acknowledging a scheduled quit. stopped describes agent quietness; exitConfirmed is false because heartbeat silence does not prove process exit. Use on workers you started with instance.start; it works on any live instance, so check " +
     "instance.list before stopping one you did not start.",
   params: [
     {
@@ -399,7 +399,10 @@ registerOp({
           // Close first so quitting never asks about saving; dialogs are
           // suppressed around this call anyway.
           _proj.close(CloseOptions.DO_NOT_SAVE_CHANGES);
-          app.quit();
+          // Scheduled tasks run after this request unwinds: the response and
+          // the resident agent's idle heartbeat must be published before quit
+          // can tear down the process. Never execute quit inside a busy tick.
+          app.scheduleTask("app.quit();", 100, false);
           return { ok: true, file: _file, saved: _save };
       `,
       undoGroup: false,
@@ -407,17 +410,19 @@ registerOp({
       timeoutMs: 30_000,
     });
 
-    let file: string | null = null;
-    if (res.ok) {
-      const r = res.result as { ok: boolean; error?: string; file?: string | null };
-      if (r.ok === false) return fail(r.error ?? "refused");
-      file = r.file ?? null;
-    } else if (res.errorCode !== "TIMEOUT" && res.errorCode !== "NO_INSTANCE") {
-      // app.quit() may tear the process down before the response lands;
-      // a timeout or a vanished heartbeat is therefore not a failure here —
-      // the wait below decides. Anything else is.
-      return fail(res.error ?? "unknown failure");
+    const recovery = {
+      ...(res.requestId ? { requestId: res.requestId, state: res.state, mayStillRun: res.mayStillRun } : {}),
+      ...(res.blockingRequest ? { blockingRequest: res.blockingRequest } : {}),
+      exitConfirmed: false,
+    };
+    if (!res.ok) {
+      // Quietness cannot turn an unacknowledged request into confirmed success.
+      return { ...fail(res.error ?? "quit request was not acknowledged", { errorCode: res.errorCode ?? "TRANSPORT" }),
+        ...recovery, quitAcknowledged: false };
     }
+    const r = res.result as { ok: boolean; error?: string; file?: string | null };
+    if (r.ok === false) return { ...fail(r.error ?? "refused"), ...recovery, quitAcknowledged: false };
+    const file = r.file ?? null;
 
     const timeoutMs =
       typeof args.timeoutMs === "number" && args.timeoutMs > 0
@@ -434,14 +439,14 @@ registerOp({
       await sleep(500);
     }
     if (!gone) {
-      return fail(
-        `instance '${name}' accepted the quit but is still ticking after ${timeoutMs} ms — check it for a dialog`,
-      );
+      return { ...fail(
+        `instance '${name}' acknowledged the scheduled quit but its agent has not gone quiet after ${timeoutMs} ms — check it for a dialog`,
+      ), ...recovery, quitAcknowledged: true };
     }
     // The mailbox is also the retained request ledger. Retire through the
     // stale heartbeat; deleting the directory loses outcomes needed to
     // reconcile earlier timeouts, including after this name is reused.
-    return { ok: true, instance: name, stopped: true, saved: !!args.save, file };
+    return { ok: true, instance: name, stopped: true, quitAcknowledged: true, saved: !!args.save, file, ...recovery };
   },
 });
 

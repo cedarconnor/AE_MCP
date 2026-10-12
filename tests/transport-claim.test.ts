@@ -18,6 +18,9 @@ function host(claimFails = false, publishFails = false) {
     get exists() {
       return files.has(this.fsName);
     }
+    get modified() {
+      return Array.from(files.keys()).indexOf(this.fsName);
+    }
     open(mode: string) {
       this.mode = mode;
       return mode !== "r" || this.exists;
@@ -61,10 +64,18 @@ function host(claimFails = false, publishFails = false) {
     beginSuppressDialogs() {},
     endSuppressDialogs() {},
   };
-  const context = vm.createContext({ File, app, JSON });
+  class Folder {
+    exists = true;
+    constructor(public fsName: string) {}
+    getFiles() {
+      return Array.from(files.keys()).filter((p) => p.startsWith(this.fsName + "/request-")).map((p) => new File(p));
+    }
+  }
+  const context = vm.createContext({ File, Folder, app, JSON });
   vm.runInContext(source, context);
   const serve = () => context.AE_MCP.serveRequest(new File(request), "/mail", "/mail/log");
-  return { files, app, serve };
+  const next = () => context.AE_MCP.oldestRequestIn("/mail") as File | null;
+  return { files, app, serve, next };
 }
 describe("claim before execute", () => {
   it("fails closed if rename fails, including repeated agent ticks", () => {
@@ -79,5 +90,22 @@ describe("claim before execute", () => {
     h.serve();
     expect(h.app.executed).toBe(1);
     expect(h.files.has("/mail/executing-test.json")).toBe(true);
+  });
+
+  for (const evidence of ["executing", "response", "cancelled"])
+    it(`skips a duplicate queue head with ${evidence} evidence even when removing it would fail`, () => {
+      const h = host(true);
+      h.files.set(`/mail/${evidence}-test.json`, "{}");
+      h.files.set("/mail/request-new.json", JSON.stringify({ id: "new", code: "return 2;" }));
+      expect(h.next()?.name).toBe("request-new.json");
+      expect(h.files.has(`/mail/${evidence}-test.json`)).toBe(true);
+      expect(h.app.executed).toBe(0);
+    });
+
+  it("never executes a replayed request with retained cancellation evidence", () => {
+    const h = host();
+    h.files.set("/mail/cancelled-test.json", "{}");
+    h.serve();
+    expect(h.app.executed).toBe(0);
   });
 });

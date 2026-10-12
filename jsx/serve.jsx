@@ -76,6 +76,12 @@ AE_MCP.appendLog = function (logPath, msg) {
  * keeps a backlog fair. Not recursive: the shared mailbox and every instance
  * mailbox under instances/<id>/ are separate queues.
  */
+AE_MCP.hasRequestEvidence = function (dir, id) {
+    return (new File(dir + "/executing-" + id + ".json")).exists ||
+        (new File(dir + "/response-" + id + ".json")).exists ||
+        (new File(dir + "/cancelled-" + id + ".json")).exists;
+};
+
 AE_MCP.oldestRequestIn = function (dir) {
     try {
         var folder = new Folder(dir);
@@ -86,6 +92,10 @@ AE_MCP.oldestRequestIn = function (dir) {
         for (var i = 0; i < files.length; i++) {
             var f = files[i];
             if (!(f instanceof File)) continue;
+            var match = /^request-(.+)\.json$/.exec(f.name);
+            // A restored/replayed pending file must neither execute twice nor
+            // starve newer work. Skipping does not depend on deletion working.
+            if (match && AE_MCP.hasRequestEvidence(dir, match[1])) continue;
             if (best === null) { best = f; continue; }
             try {
                 if (f.modified < best.modified) best = f;
@@ -216,7 +226,7 @@ AE_MCP.serveRequest = function (requestFile, mailboxDir, logPath) {
     // execute. Retain the claimed input and response as the durable ledger.
     // Existing records also stop a replayed request with the same identity.
     var claimedName = "executing-" + requestId + ".json";
-    if ((new File(mailboxDir + "/" + claimedName)).exists || (new File(responsePath)).exists) return;
+    if (AE_MCP.hasRequestEvidence(mailboxDir, requestId)) return;
     try {
         if (!requestFile.rename(claimedName)) {
             appendLog("ERROR: cannot claim " + requestName + "; no code executed");

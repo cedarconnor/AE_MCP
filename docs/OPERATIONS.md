@@ -52,7 +52,7 @@ Read-only classification describes project-mutation policy, not zero filesystem/
 
 ### batch.run
 
-Execute multiple operations in a single IPC call (~400ms total instead of 400ms × N). Operations run sequentially inside ONE undo group — a single Ctrl+Z reverts the whole batch, however many ops it contained. That group is also why undo/redo children (project.undo, command.execute id 16/2035) are rejected here: call those as their own ae_do. If one fails, subsequent ops still run unless stopOnError. Results array matches input order; the response reports how many failed. Mix in read/verify children — comp.info, layer.info, render.frame — to mutate AND verify in the same call, e.g. [...mutations, { operation: 'render.frame', args: { … } }].
+Execute multiple operations in a single IPC call (~400ms total instead of 400ms × N). Operations run sequentially inside ONE undo group — a single Ctrl+Z reverts the whole batch, however many ops it contained. Operations requiring execution outside an undo group (project.open, project.new, project.undo, command.execute id 16/2035) are rejected here: call those as their own ae_do. If one fails, subsequent ops still run unless stopOnError. Results array matches input order; the response reports how many failed. Mix in read/verify children — comp.info, layer.info, render.frame — to mutate AND verify in the same call, e.g. [...mutations, { operation: 'render.frame', args: { … } }].
 
 Source: [src/operations/batch.ts](../src/operations/batch.ts). Category: `batch`. Read-only classification: **true**. Execution: **ExtendScript**.
 
@@ -2130,7 +2130,7 @@ Source: [src/operations/instance.ts](../src/operations/instance.ts). Category: `
 
 ### instance.stop
 
-Quit an After Effects instance by name. Refuses while the project has unsaved changes unless `save: true` (save in place — the project must have a file) or `discardChanges: true`. Returns once the instance has gone quiet. Use on workers you started with instance.start; it works on any live instance, so check instance.list before stopping one you did not start.
+Quit an After Effects instance by name. Refuses while the project has unsaved changes unless `save: true` (save in place — the project must have a file) or `discardChanges: true`. Returns once the instance has gone quiet after acknowledging a scheduled quit. stopped describes agent quietness; exitConfirmed is false because heartbeat silence does not prove process exit. Use on workers you started with instance.start; it works on any live instance, so check instance.list before stopping one you did not start.
 
 Source: [src/operations/instance.ts](../src/operations/instance.ts). Category: `instance`. Read-only classification: **false**. Execution: **Node-side**.
 

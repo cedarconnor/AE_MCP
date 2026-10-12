@@ -12,8 +12,8 @@ registerOp({
   description:
     "Execute multiple operations in a single IPC call (~400ms total instead of 400ms × N). " +
     "Operations run sequentially inside ONE undo group — a single Ctrl+Z reverts the whole batch, " +
-    "however many ops it contained. That group is also why undo/redo children (project.undo, " +
-    "command.execute id 16/2035) are rejected here: call those as their own ae_do. " +
+    "however many ops it contained. Operations requiring execution outside an undo group " +
+    "(project.open, project.new, project.undo, command.execute id 16/2035) are rejected here: call those as their own ae_do. " +
     "If one fails, subsequent ops still run unless stopOnError. " +
     "Results array matches input order; the response reports how many failed. " +
     "Mix in read/verify children — comp.info, layer.info, render.frame — to mutate AND verify in " +
@@ -103,7 +103,7 @@ registerOp({
         opBlocks.push(
           rejectBlock(
             i,
-            `'${op.name}' cannot run inside batch.run — the batch is one undo group and undo/redo must not run inside one. Call it as its own ae_do.`,
+            `'${op.name}' cannot run inside batch.run — this operation requires execution outside an undo group, while the batch uses one group. Call it as its own ae_do.`,
             stopOnError,
           ),
         );

@@ -4,6 +4,7 @@
 // always returning ok.
 
 import { afterEach, describe, expect, it } from "vitest";
+import vm from "node:vm";
 
 import { getOp } from "../src/registry.js";
 import "../src/operations/index.js";
@@ -16,6 +17,39 @@ afterEach(() => {
 const batch = () => getOp("batch.run")!;
 
 describe("batch.run codegen", () => {
+  for (const operation of ["project.new", "project.open"])
+    for (const stopOnError of [false, true])
+      it(`${operation} reports its ungrouped requirement and honors stopOnError=${stopOnError}`, () => {
+        const created: string[] = [];
+        const app = {
+          project: {
+            items: {
+              addComp(name: string) {
+                created.push(name);
+                return { id: 9, name };
+              },
+            },
+          },
+        };
+        const code = batch().toJsx({
+          stopOnError,
+          ops: [
+            { operation, args: operation === "project.open" ? { path: "C:/work/new.aep" } : {} },
+            {
+              operation: "comp.create",
+              args: { name: "Child", width: 1920, height: 1080, fps: 24, duration: 1 },
+            },
+          ],
+        });
+        const result = vm.runInNewContext(`(function() { ${code} })()`, { app });
+        expect(result).toMatchObject({ ok: false, failed: 1, count: 2 });
+        expect(result.results[0].error).toContain("requires execution outside an undo group");
+        expect(result.results[0].error).toContain("own ae_do");
+        expect(created).toEqual(stopOnError ? [] : ["Child"]);
+        expect(result.results[1]).toMatchObject(
+          stopOnError ? { skipped: true } : { ok: true, name: "Child" },
+        );
+      });
   it("aggregates child failures into its own ok flag", () => {
     const jsx = batch().toJsx({
       ops: [{ operation: "layer.create_null", args: { comp: "Main" } }],

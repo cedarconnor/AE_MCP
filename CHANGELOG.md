@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Retain atomic cancellation evidence for failed request publication and pending cancellation; unknown host outcomes still block replay.
+- Wait for competing mailbox owners within caller deadlines, preserve separate blocker metadata, and report dispatcher lock permission errors directly.
+- Preserve request history across instance stop/name reuse, acknowledge scheduled quit before shutdown, and report heartbeat quietness separately from process-exit confirmation.
+- Skip duplicate pending identities without starving newer work; correct batch diagnostics for operations that require execution outside an undo group.
+
 - Added an original After Effects motion-design skill based on a pinned 41-repository survey: 75 design parameters, six style profiles, focused craft references, three motion-spec examples and native-edit recipes.
 - Exposed the portable skill as 20 read-only MCP resources and linked it from the motion-graphics workflow prompt; tool and operation counts remain unchanged.
 - Added skill data, example, portability and stdio delivery checks, plus clean-package validation.

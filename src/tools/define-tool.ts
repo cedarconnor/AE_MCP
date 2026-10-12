@@ -72,6 +72,7 @@ export function toMcpResult(result: EvalResult): ToolResult {
   if (!result.ok) {
     return errorResult(result.errorCode ?? "TRANSPORT", result.error ?? "unknown failure", {
       details: {
+        ...(result.blockingRequest ? { blockingRequest: result.blockingRequest } : {}),
         ...(result.requestId
           ? { requestId: result.requestId, state: result.state, mayStillRun: result.mayStillRun }
           : {}),

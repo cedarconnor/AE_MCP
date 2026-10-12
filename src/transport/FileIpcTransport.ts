@@ -272,9 +272,9 @@ export class FileIpcTransport implements AeTransport {
   /** Serialize gate transitions themselves; never steal a transition on age.
    * A crash in this very short filesystem section requires manual inspection.
    */
-  private async withGate<T>(dir: string, action: (gate: string) => Promise<T>): Promise<T> {
+  private async withGate<T>(dir: string, action: (gate: string) => Promise<T>, waitUntil = Infinity): Promise<T> {
     const transition = path.join(dir, "pending-transition.lock");
-    const deadline = Date.now() + 1000;
+    const deadline = Math.min(Date.now() + 1000, waitUntil);
     for (;;) {
       try {
         await fs.mkdir(transition);
@@ -293,24 +293,32 @@ export class FileIpcTransport implements AeTransport {
     }
   }
 
-  private async acquireRequestGate(dir: string, id: string): Promise<RequestStatus | null> {
-    return this.withGate(dir, async (gate) => {
-      let owner: string | null = null;
-      try {
-        owner = await fs.readFile(gate, "utf8");
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-      }
-      if (owner !== null) {
-        const status = await this.requestStatus(owner);
-        if (status.mayStillRun) return status;
-        await this.releaseBusyLock(owner);
-        // Held transition prevents a second cleaner removing a newer owner.
-        await fs.unlink(gate);
-      }
-      await fs.writeFile(gate, id, { flag: "wx" });
-      return null;
-    });
+  private async acquireRequestGate(dir: string, id: string, deadline: number): Promise<
+    { acquired: true } | { acquired: false; blockingRequest?: RequestStatus }
+  > {
+    for (;;) {
+      const attempt = await this.withGate(dir, async (gate) => {
+        let owner: string | null = null;
+        try {
+          owner = await fs.readFile(gate, "utf8");
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+        }
+        if (owner !== null) {
+          const status = await this.requestStatus(owner);
+          if (status.mayStillRun) return { acquired: false as const, blockingRequest: status };
+          await this.releaseBusyLock(owner);
+          // Held transition prevents a second cleaner removing a newer owner.
+          await fs.unlink(gate);
+        }
+        if (Date.now() >= deadline) return { acquired: false as const };
+        await fs.writeFile(gate, id, { flag: "wx" });
+        return { acquired: true as const };
+      }, deadline);
+      if (attempt.acquired || Date.now() >= deadline) return attempt;
+      // Do not hold the short transition lock while waiting for host work.
+      await sleep(Math.min(POLL_INTERVAL_MS, Math.max(1, deadline - Date.now())));
+    }
   }
 
   private async releaseRequestGate(dir: string, id: string): Promise<void> {
@@ -402,22 +410,25 @@ export class FileIpcTransport implements AeTransport {
     try {
       const dir = target.mode === "pull" ? target.instance.dir : RUNTIME_DIR;
       await fs.mkdir(dir, { recursive: true });
-      const blocked = await this.acquireRequestGate(dir, request.id);
-      if (blocked)
-        return {
-          ...failure(
-            "TRANSPORT",
-            "A previous request has no terminal outcome. Query ae_request_status; do not retry the mutation.",
-          ),
-          requestId: blocked.requestId,
-          state: blocked.state,
-          mayStillRun: true,
-        };
       const record: OutcomeRecord = {
         instance: target.mode === "pull" ? target.instance.id : null,
         submitted: false,
       };
       await this.saveOutcome(request.id, record);
+      const gate = await this.acquireRequestGate(dir, request.id, started + timeoutMs);
+      if (!gate.acquired) {
+        await this.saveOutcome(request.id, { ...record, cancelled: true });
+        return {
+          ...failure(
+            "TIMEOUT",
+            "Timed out waiting for the mailbox. This request was never submitted." +
+              (gate.blockingRequest ? ` Blocking request ${gate.blockingRequest.requestId} has no terminal outcome; query ae_request_status before replaying that earlier mutation.` : ""),
+            { durationMs: Date.now() - started },
+          ),
+          ...knownStatus,
+          ...(gate.blockingRequest ? { blockingRequest: gate.blockingRequest } : {}),
+        };
+      }
       let result: EvalResult;
       knownStatus = { requestId: request.id, state: "unknown", mayStillRun: true };
       try {
@@ -831,10 +842,8 @@ export class FileIpcTransport implements AeTransport {
    * Acquire the cross-process busy lock, or give up at `deadline`.
    *
    * `open("wx")` is the atomic primitive: exactly one process can create the
-   * file. A lock whose mtime is older than BUSY_LOCK_STALE_MS lost its owner
-   * (crashed server, killed AE) and is broken by any waiter; the retry then
-   * races other waiters on the "wx", which stays safe — one wins, the rest
-   * keep waiting.
+   * file. Retained for legacy dispatcher compatibility; neither a waiter nor
+   * an old mtime can establish completion or authorize stealing the lock.
    */
   private async acquireBusyLock(deadline: number, id: string): Promise<boolean> {
     for (;;) {
@@ -849,7 +858,8 @@ export class FileIpcTransport implements AeTransport {
           await handle.close();
         }
         return true;
-      } catch {
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
         if (Date.now() >= deadline) return false;
         await sleep(POLL_INTERVAL_MS);
       }
@@ -857,13 +867,9 @@ export class FileIpcTransport implements AeTransport {
   }
 
   /**
-   * True while the lock on disk is the one this call created. A call whose
-   * event loop stalls past BUSY_LOCK_STALE_MS (a laptop suspend is enough —
-   * the staleness test is wall-clock) has its lock broken and retaken by a
-   * waiter, so neither refreshing nor releasing may touch the file blindly:
-   * refreshing would keep someone else's lock alive forever, and releasing
-   * would hand a third caller a dispatch slot while the second is still
-   * driving AE — the exact collision the lock exists to prevent.
+   * True while the lock on disk is the one this call created. Legacy clients
+   * or manual intervention may replace it; never refresh or release a newer
+   * owner's lock. Current clients never steal ownership based on age.
    */
   private async ownsBusyLock(id: string): Promise<boolean> {
     try {
@@ -874,7 +880,7 @@ export class FileIpcTransport implements AeTransport {
     }
   }
 
-  /** Touch the lock so waiters keep seeing a live owner. Best-effort. */
+  /** Refresh legacy diagnostic timestamps. Best-effort, never proof of liveness. */
   private async refreshBusyLock(id: string): Promise<void> {
     if (!(await this.ownsBusyLock(id))) return;
     const now = new Date();

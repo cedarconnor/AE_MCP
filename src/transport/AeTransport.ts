@@ -51,6 +51,8 @@ export interface EvalRequest {
 }
 
 export interface EvalResult {
+  /** Separate owner of a mailbox that prevented this request's submission. */
+  blockingRequest?: RequestStatus;
   requestId?: string;
   state?: RequestState;
   mayStillRun?: boolean;

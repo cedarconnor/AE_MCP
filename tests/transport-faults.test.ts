@@ -2,8 +2,9 @@ import { randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { afterAll, afterEach, beforeEach, expect, it, vi } from "vitest";
-import { HEARTBEAT_FILENAME, RUNTIME_DIR, RUNTIME_ROOT, instanceDirFor } from "../src/config.js";
+import { BUSY_LOCK_PATH, HEARTBEAT_FILENAME, RUNTIME_DIR, RUNTIME_ROOT, instanceDirFor } from "../src/config.js";
 import { FileIpcTransport } from "../src/transport/FileIpcTransport.js";
+import { toMcpResult } from "../src/tools/define-tool.js";
 
 vi.mock("../src/config.js", async (importOriginal) => {
   const config = await importOriginal<typeof import("../src/config.js")>();
@@ -23,6 +24,20 @@ afterEach(async () => {
   await fs.rm(RUNTIME_DIR, { recursive: true, force: true });
 });
 afterAll(async () => { await fs.rm(RUNTIME_ROOT, { recursive: true, force: true }); });
+
+async function waitForRequest() {
+  for (let attempt = 0; attempt < 200; attempt++) {
+    const file = (await fs.readdir(dir)).find((name) => name.startsWith("request-"));
+    if (file) return JSON.parse(await fs.readFile(path.join(dir, file), "utf8")) as { id: string; code: string };
+    await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+  throw new Error("No request published");
+}
+
+async function complete(id: string, result: number) {
+  await fs.rename(path.join(dir, `request-${id}.json`), path.join(dir, `executing-${id}.json`));
+  await fs.writeFile(path.join(dir, `response-${id}.json`), JSON.stringify({ id, ok: true, result, logs: [] }));
+}
 
 it("a failed request publication is recoverably cancelled and does not block the next caller", async () => {
   const rename = fs.rename.bind(fs);
@@ -84,4 +99,66 @@ it("missing request, claim and response evidence remains unknown", async () => {
   await fs.mkdir(path.join(RUNTIME_DIR, "outcomes"), { recursive: true });
   await fs.writeFile(path.join(RUNTIME_DIR, "outcomes", `${id}.json`), JSON.stringify({ instance, submitted: true }));
   expect(await createTransport().requestStatus(id)).toMatchObject({ state: "unknown", mayStillRun: true });
+});
+
+it("a second client waits for the active request and then submits its own work", async () => {
+  const first = createTransport().execute({ code: "return 1;", timeoutMs: 2500 });
+  const a = await waitForRequest();
+  const second = createTransport().execute({ code: "return 2;", timeoutMs: 2500 });
+  let secondSettled = false;
+  void second.then(() => { secondSettled = true; });
+  await new Promise((resolve) => setTimeout(resolve, 80));
+  // Finish and await all work before asserting, even on the old implementation.
+  const waited = !secondSettled;
+  await complete(a.id, 1);
+  expect(await first).toMatchObject({ ok: true, result: 1 });
+  if (!waited) {
+    await second;
+    expect(waited).toBe(true);
+    return;
+  }
+  const b = await waitForRequest();
+  expect(b.code).toBe("return 2;");
+  expect(b.id).not.toBe(a.id);
+  await complete(b.id, 2);
+  expect(await second).toMatchObject({ ok: true, result: 2 });
+});
+
+it("a waiting client's deadline cancels only its own work and preserves the blocker in MCP details", async () => {
+  const first = createTransport().execute({ code: "app.mutate();", timeoutMs: 2500 });
+  const a = await waitForRequest();
+  const started = Date.now();
+  const second = await createTransport().execute({ code: "app.otherMutation();", timeoutMs: 120 });
+  const elapsed = Date.now() - started;
+  await complete(a.id, 1);
+  await first;
+  expect(elapsed).toBeGreaterThanOrEqual(100);
+  expect(second).toMatchObject({ errorCode: "TIMEOUT", state: "cancelled", mayStillRun: false,
+    blockingRequest: { requestId: a.id, mayStillRun: true } });
+  expect(second.requestId).not.toBe(a.id);
+  expect(await createTransport().requestStatus(second.requestId!)).toMatchObject({ state: "cancelled", mayStillRun: false });
+  const mcp = toMcpResult(second);
+  expect(JSON.stringify(mcp.structuredContent)).toContain('"blockingRequest"');
+  expect((await fs.readdir(dir)).some((file) => file.startsWith("request-"))).toBe(false);
+});
+
+it("dispatcher lock permission errors are surfaced instead of being reported as contention", async () => {
+  const originalExe = process.env.AE_MCP_EXE;
+  process.env.AE_MCP_EXE = process.execPath;
+  const open = fs.open.bind(fs);
+  vi.spyOn(fs, "open").mockImplementation(async (...args: Parameters<typeof fs.open>) => {
+    if (String(args[0]) === BUSY_LOCK_PATH)
+      throw Object.assign(new Error("lock permission denied"), { code: "EACCES" });
+    return open(...args);
+  });
+  try {
+    const result = await new FileIpcTransport({ instance: null, scanDialogs: async () => [],
+      spawn: () => { throw new Error("must never launch"); } }).execute({ code: "app.mutate();", timeoutMs: 300 });
+    expect(result).toMatchObject({ errorCode: "TRANSPORT", state: "cancelled", mayStillRun: false });
+    expect(result.error).toContain("lock permission denied");
+    expect(result.error).not.toContain("another call");
+  } finally {
+    if (originalExe === undefined) delete process.env.AE_MCP_EXE;
+    else process.env.AE_MCP_EXE = originalExe;
+  }
 });

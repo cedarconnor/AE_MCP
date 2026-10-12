@@ -33,6 +33,8 @@ export interface Heartbeat {
   ticks?: number;
   served?: number;
   busy?: boolean;
+  /** Quit is scheduled; no more requests may be claimed by this session. */
+  stopping?: boolean;
   busySince?: number | null;
   lastError?: string | null;
   /** Epoch milliseconds, AE's clock — same machine as ours. */
@@ -185,7 +187,20 @@ export async function resolveTarget(
   now: number = Date.now(),
 ): Promise<TargetResolution> {
   const all = await listInstances(instancesDir, now);
-  const live = all.filter((i) => i.alive);
+  const stopping = all.filter((i) => i.heartbeat?.stopping === true);
+  const live = all.filter((i) => i.alive && !i.heartbeat?.stopping);
+  if (
+    (target === null && live.length === 0 && stopping.length > 0) ||
+    (target !== null &&
+      stopping.some((i) => matchesTarget(i, target)) &&
+      !live.some((i) => matchesTarget(i, target)))
+  ) {
+    return {
+      mode: "error",
+      message: "After Effects instance is shutting down; no new requests will be submitted.",
+      hint: "Wait for a restarted agent or explicitly address another live instance. Heartbeat silence is not proof of process exit.",
+    };
+  }
 
   if (target === null) {
     if (live.length === 0) return { mode: "push" };

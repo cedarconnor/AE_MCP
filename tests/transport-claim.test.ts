@@ -68,7 +68,9 @@ function host(claimFails = false, publishFails = false) {
     exists = true;
     constructor(public fsName: string) {}
     getFiles() {
-      return Array.from(files.keys()).filter((p) => p.startsWith(this.fsName + "/request-")).map((p) => new File(p));
+      return Array.from(files.keys())
+        .filter((p) => p.startsWith(this.fsName + "/request-"))
+        .map((p) => new File(p));
     }
   }
   const context = vm.createContext({ File, Folder, app, JSON });

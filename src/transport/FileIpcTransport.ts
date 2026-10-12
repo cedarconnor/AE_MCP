@@ -105,6 +105,12 @@ interface OutcomeRecord {
 const REQUEST_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const outcomesDir = path.join(RUNTIME_DIR, "outcomes");
 
+class RequestDeadlineError extends Error {
+  constructor() {
+    super("Request deadline expired before publication; nothing was submitted.");
+  }
+}
+
 interface DispatcherResponse {
   id: string | null;
   ok: boolean;
@@ -246,7 +252,7 @@ export class FileIpcTransport implements AeTransport {
     // The rename into this retained file IS cancellation, not bookkeeping
     // performed after deleting the only evidence. A pending host claim and a
     // cancellation compete for the same source; only one can succeed.
-    if (record.cancelled || await this.fileExists(path.join(dir, `cancelled-${requestId}.json`)))
+    if (record.cancelled || (await this.fileExists(path.join(dir, `cancelled-${requestId}.json`))))
       return { requestId, state: "cancelled", mayStillRun: false };
     const running = await this.fileExists(path.join(dir, `executing-${requestId}.json`));
     const queued = await this.fileExists(path.join(dir, `${REQUEST_PREFIX}${requestId}.json`));
@@ -272,7 +278,11 @@ export class FileIpcTransport implements AeTransport {
   /** Serialize gate transitions themselves; never steal a transition on age.
    * A crash in this very short filesystem section requires manual inspection.
    */
-  private async withGate<T>(dir: string, action: (gate: string) => Promise<T>, waitUntil = Infinity): Promise<T> {
+  private async withGate<T>(
+    dir: string,
+    action: (gate: string) => Promise<T>,
+    waitUntil = Infinity,
+  ): Promise<T> {
     const transition = path.join(dir, "pending-transition.lock");
     const deadline = Math.min(Date.now() + 1000, waitUntil);
     for (;;) {
@@ -293,28 +303,34 @@ export class FileIpcTransport implements AeTransport {
     }
   }
 
-  private async acquireRequestGate(dir: string, id: string, deadline: number): Promise<
-    { acquired: true } | { acquired: false; blockingRequest?: RequestStatus }
-  > {
+  private async acquireRequestGate(
+    dir: string,
+    id: string,
+    deadline: number,
+  ): Promise<{ acquired: true } | { acquired: false; blockingRequest?: RequestStatus }> {
     for (;;) {
-      const attempt = await this.withGate(dir, async (gate) => {
-        let owner: string | null = null;
-        try {
-          owner = await fs.readFile(gate, "utf8");
-        } catch (error) {
-          if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-        }
-        if (owner !== null) {
-          const status = await this.requestStatus(owner);
-          if (status.mayStillRun) return { acquired: false as const, blockingRequest: status };
-          await this.releaseBusyLock(owner);
-          // Held transition prevents a second cleaner removing a newer owner.
-          await fs.unlink(gate);
-        }
-        if (Date.now() >= deadline) return { acquired: false as const };
-        await fs.writeFile(gate, id, { flag: "wx" });
-        return { acquired: true as const };
-      }, deadline);
+      const attempt = await this.withGate(
+        dir,
+        async (gate) => {
+          let owner: string | null = null;
+          try {
+            owner = await fs.readFile(gate, "utf8");
+          } catch (error) {
+            if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+          }
+          if (owner !== null) {
+            const status = await this.requestStatus(owner);
+            if (status.mayStillRun) return { acquired: false as const, blockingRequest: status };
+            await this.releaseBusyLock(owner);
+            // Held transition prevents a second cleaner removing a newer owner.
+            await fs.unlink(gate);
+          }
+          if (Date.now() >= deadline) return { acquired: false as const };
+          await fs.writeFile(gate, id, { flag: "wx" });
+          return { acquired: true as const };
+        },
+        deadline,
+      );
       if (attempt.acquired || Date.now() >= deadline) return attempt;
       // Do not hold the short transition lock while waiting for host work.
       await sleep(Math.min(POLL_INTERVAL_MS, Math.max(1, deadline - Date.now())));
@@ -422,7 +438,9 @@ export class FileIpcTransport implements AeTransport {
           ...failure(
             "TIMEOUT",
             "Timed out waiting for the mailbox. This request was never submitted." +
-              (gate.blockingRequest ? ` Blocking request ${gate.blockingRequest.requestId} has no terminal outcome; query ae_request_status before replaying that earlier mutation.` : ""),
+              (gate.blockingRequest
+                ? ` Blocking request ${gate.blockingRequest.requestId} has no terminal outcome; query ae_request_status before replaying that earlier mutation.`
+                : ""),
             { durationMs: Date.now() - started },
           ),
           ...knownStatus,
@@ -437,7 +455,10 @@ export class FileIpcTransport implements AeTransport {
             ? await this.executePull(request, target.instance, started, timeoutMs)
             : await this.executePush(request, started, timeoutMs);
       } catch (error) {
-        result = failure("TRANSPORT", error instanceof Error ? error.message : String(error));
+        result = failure(
+          error instanceof RequestDeadlineError ? "TIMEOUT" : "TRANSPORT",
+          error instanceof Error ? error.message : String(error),
+        );
       }
       if (result.ok || result.errorCode === "DISPATCHER" || result.errorCode === "JSX_THROW") {
         knownStatus = {
@@ -446,8 +467,8 @@ export class FileIpcTransport implements AeTransport {
           mayStillRun: false,
         };
       }
-      // Claim-vs-cancel is an atomic filesystem race. Only a successful unlink
-      // of the unclaimed source proves this request cannot execute later.
+      // Claim-vs-cancel is an atomic filesystem race. Retained cancellation
+      // evidence proves that the unclaimed source cannot execute later.
       const saved: OutcomeRecord = JSON.parse(
         await fs.readFile(path.join(outcomesDir, `${request.id}.json`), "utf8"),
       );
@@ -493,7 +514,7 @@ export class FileIpcTransport implements AeTransport {
     const requestPath = path.join(dir, `${REQUEST_PREFIX}${request.id}.json`);
     const responsePath = path.join(dir, `${RESPONSE_PREFIX}${request.id}.json`);
     await fs.mkdir(dir, { recursive: true });
-    await this.writeRequest(dir, requestPath, request);
+    await this.writeRequest(dir, requestPath, request, started + timeoutMs);
 
     // No launcher lock or launch: the agent serves its own mailbox. The
     // durable request gate also blocks new calls after an uncertain timeout.
@@ -616,7 +637,18 @@ export class FileIpcTransport implements AeTransport {
     // call until completion is established, preventing an immediate collision.
     let leaveLockForRunningScript = false;
     try {
-      await this.writeRequest(RUNTIME_DIR, requestPath, request);
+      await this.writeRequest(RUNTIME_DIR, requestPath, request, deadline);
+      if (Date.now() >= deadline) {
+        const cancelled = await this.cancelRequest(requestPath);
+        leaveLockForRunningScript = !cancelled;
+        return failure(
+          "TIMEOUT",
+          "Request deadline expired before dispatcher launch; " +
+            (cancelled
+              ? "cancelled before claim."
+              : "cancellation unconfirmed; query ae_request_status."),
+        );
+      }
       // 3. Launch the dispatcher (launcher.ts picks the per-platform command).
       // The command returns immediately on Windows; on macOS osascript blocks
       // for the DoScript duration — either way the actual work happens inside
@@ -691,7 +723,7 @@ export class FileIpcTransport implements AeTransport {
       // 5. Timed out. Reclaim the request if it is still sitting unconsumed:
       // leaving it there is how a "failed" mutation used to get picked up by a
       // later spawn and apply itself minutes after the caller gave up. If the
-      // dispatcher already consumed it this unlink is a no-op.
+      // dispatcher already claimed it the cancellation rename cannot succeed.
       const reclaimed = await this.cancelRequest(requestPath);
       leaveLockForRunningScript = !reclaimed;
       const pushDialogs = await this.scanDialogs();
@@ -734,7 +766,9 @@ export class FileIpcTransport implements AeTransport {
     dir: string,
     requestPath: string,
     request: MailboxRequest,
+    deadline: number,
   ): Promise<void> {
+    if (Date.now() >= deadline) throw new RequestDeadlineError();
     const tmpRequestPath = path.join(dir, `.${REQUEST_PREFIX}${request.id}.json.tmp`);
     try {
       await fs.writeFile(tmpRequestPath, serializeRequest(request), "utf8");
@@ -745,14 +779,25 @@ export class FileIpcTransport implements AeTransport {
       // leave a false "never submitted" record behind a running mutation.
       record.submitted = true;
       await this.saveOutcome(request.id, record);
+      if (Date.now() >= deadline) throw new RequestDeadlineError();
       await fs.rename(tmpRequestPath, requestPath);
     } catch (error) {
-      // Retaining the staging source proves it was not published. If even
-      // this rename fails, keep both the staging file and the uncertain gate
-      // for inspection; absence alone is never cancellation evidence.
+      // Retaining the staging source proves it was not published. A Windows
+      // lock on that source may prevent both renames; the failed publication
+      // is still affirmative evidence, so retain a separate tombstone then.
+      // If neither proof can be retained, leave the uncertain gate intact.
+      const cancelledPath = path.join(dir, `cancelled-${request.id}.json`);
       try {
-        await fs.rename(tmpRequestPath, path.join(dir, `cancelled-${request.id}.json`));
-      } catch { /* no affirmative evidence; remain conservative */ }
+        await fs.rename(tmpRequestPath, cancelledPath);
+      } catch {
+        try {
+          const marker = await fs.open(cancelledPath, "wx");
+          await marker.close();
+          await this.safeUnlink(tmpRequestPath);
+        } catch {
+          /* no retained evidence; remain conservative */
+        }
+      }
       throw error;
     }
   }
@@ -847,6 +892,7 @@ export class FileIpcTransport implements AeTransport {
    */
   private async acquireBusyLock(deadline: number, id: string): Promise<boolean> {
     for (;;) {
+      if (Date.now() >= deadline) return false;
       try {
         const handle = await fs.open(BUSY_LOCK_PATH, "wx");
         try {
@@ -971,7 +1017,10 @@ export class FileIpcTransport implements AeTransport {
   /** Atomically cancel an unclaimed request while retaining durable proof. */
   private async cancelRequest(p: string): Promise<boolean> {
     try {
-      await fs.rename(p, path.join(path.dirname(p), path.basename(p).replace(/^request-/, "cancelled-")));
+      await fs.rename(
+        p,
+        path.join(path.dirname(p), path.basename(p).replace(/^request-/, "cancelled-")),
+      );
       return true;
     } catch {
       return false;

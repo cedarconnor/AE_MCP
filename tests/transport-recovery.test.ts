@@ -106,7 +106,11 @@ for (const mode of ["push", "pull"] as const)
       const blocked = await another.execute({ code: "app.mutateAgain();", timeoutMs: 50 });
       expect(blocked.ok).toBe(false);
       expect(blocked.requestId).not.toBe(requestId);
-      expect(blocked).toMatchObject({ state: "cancelled", mayStillRun: false, blockingRequest: { requestId } });
+      expect(blocked).toMatchObject({
+        state: "cancelled",
+        mayStillRun: false,
+        blockingRequest: { requestId },
+      });
       await fs.writeFile(
         path.join(dir, `response-${requestId}.json`),
         JSON.stringify({ id: requestId, ok: true, result: 42, logs: [], error: null, stack: null }),

@@ -48,7 +48,7 @@
 #include "serve.jsx"
 
 (function agentEntry() {
-    var AGENT_VERSION = 1;
+    var AGENT_VERSION = 2;
     var TICK_MS = 250;
     var HEARTBEAT_MS = 1000;
 
@@ -162,6 +162,7 @@
             served: 0,
             busy: false,
             busySince: null,
+            stopping: false,
             dir: null,
             taskId: null,
             lastHeartbeatAt: 0,
@@ -199,8 +200,9 @@
                 startedAt: state.startedAt,
                 ticks: state.ticks,
                 served: state.served,
-                busy: state.busy,
+                busy: state.busy && !state.stopping,
                 busySince: state.busySince,
+                stopping: state.stopping,
                 lastError: state.lastError,
                 ts: now
             };
@@ -209,6 +211,9 @@
         }
 
         function tick() {
+            // Acknowledging quit is terminal for that request, but must not
+            // admit another mutation before the scheduled quit task runs.
+            if (state.stopping) return;
             try {
                 state.ticks++;
                 var dir = mailboxDir() + "/instances/" + state.id;
@@ -244,6 +249,23 @@
         $.global.AE_MCP_AGENT = {
             state: state,
             tick: tick,
+            prepareQuit: function () {
+                state.stopping = true;
+                heartbeat(true);
+            },
+            cancelQuit: function () {
+                state.stopping = false;
+                heartbeat(true);
+            },
+            finishQuit: function () {
+                try {
+                    app.quit();
+                } catch (eQuit) {
+                    state.lastError = describeError(eQuit);
+                    state.stopping = false;
+                    heartbeat(true);
+                }
+            },
             /** Stop polling (mainly for tests and manual recovery). */
             stop: function () {
                 try {

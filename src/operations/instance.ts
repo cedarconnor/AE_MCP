@@ -66,6 +66,7 @@ function summarizeInstance(i: InstanceInfo) {
     id: i.id,
     alive: i.alive,
     busy: i.heartbeat?.busy ?? false,
+    stopping: i.heartbeat?.stopping ?? false,
     project: i.heartbeat?.project ?? null,
     projectName: i.heartbeat?.projectName ?? null,
     dirty: i.heartbeat?.dirty ?? null,
@@ -105,7 +106,7 @@ registerOp({
     return {
       ok: true,
       instances: instances.map(summarizeInstance),
-      live: instances.filter((i) => i.alive).map((i) => i.id),
+      live: instances.filter((i) => i.alive && !i.heartbeat?.stopping).map((i) => i.id),
       target: await describeTargetOf(transport),
     };
   },
@@ -386,6 +387,10 @@ registerOp({
       instance: name,
       label: "instance.stop",
       code: `
+          var _agent = (typeof $ !== "undefined") ? $.global.AE_MCP_AGENT : null;
+          if (!_agent || typeof _agent.prepareQuit !== "function" || typeof _agent.cancelQuit !== "function" || typeof _agent.finishQuit !== "function") {
+              return { ok: false, error: "The resident agent must be updated before safe shutdown. Restart After Effects with the updated agent; no project was closed." };
+          }
           var _save = ${jsxVal(!!args.save)};
           var _discard = ${jsxVal(!!args.discardChanges)};
           var _proj = app.project;
@@ -398,11 +403,17 @@ registerOp({
           }
           // Close first so quitting never asks about saving; dialogs are
           // suppressed around this call anyway.
-          _proj.close(CloseOptions.DO_NOT_SAVE_CHANGES);
           // Scheduled tasks run after this request unwinds: the response and
           // the resident agent's idle heartbeat must be published before quit
           // can tear down the process. Never execute quit inside a busy tick.
-          app.scheduleTask("app.quit();", 100, false);
+          _agent.prepareQuit();
+          try {
+              _proj.close(CloseOptions.DO_NOT_SAVE_CHANGES);
+              app.scheduleTask("$.global.AE_MCP_AGENT.finishQuit();", 100, false);
+          } catch (eQuit) {
+              _agent.cancelQuit();
+              throw eQuit;
+          }
           return { ok: true, file: _file, saved: _save };
       `,
       undoGroup: false,
@@ -411,17 +422,25 @@ registerOp({
     });
 
     const recovery = {
-      ...(res.requestId ? { requestId: res.requestId, state: res.state, mayStillRun: res.mayStillRun } : {}),
+      ...(res.requestId
+        ? { requestId: res.requestId, state: res.state, mayStillRun: res.mayStillRun }
+        : {}),
       ...(res.blockingRequest ? { blockingRequest: res.blockingRequest } : {}),
       exitConfirmed: false,
     };
     if (!res.ok) {
       // Quietness cannot turn an unacknowledged request into confirmed success.
-      return { ...fail(res.error ?? "quit request was not acknowledged", { errorCode: res.errorCode ?? "TRANSPORT" }),
-        ...recovery, quitAcknowledged: false };
+      return {
+        ...fail(res.error ?? "quit request was not acknowledged", {
+          errorCode: res.errorCode ?? "TRANSPORT",
+        }),
+        ...recovery,
+        quitAcknowledged: false,
+      };
     }
     const r = res.result as { ok: boolean; error?: string; file?: string | null };
-    if (r.ok === false) return { ...fail(r.error ?? "refused"), ...recovery, quitAcknowledged: false };
+    if (r.ok === false)
+      return { ...fail(r.error ?? "refused"), ...recovery, quitAcknowledged: false };
     const file = r.file ?? null;
 
     const timeoutMs =
@@ -439,14 +458,26 @@ registerOp({
       await sleep(500);
     }
     if (!gone) {
-      return { ...fail(
-        `instance '${name}' acknowledged the scheduled quit but its agent has not gone quiet after ${timeoutMs} ms — check it for a dialog`,
-      ), ...recovery, quitAcknowledged: true };
+      return {
+        ...fail(
+          `instance '${name}' acknowledged the scheduled quit but its agent has not gone quiet after ${timeoutMs} ms — check it for a dialog`,
+        ),
+        ...recovery,
+        quitAcknowledged: true,
+      };
     }
     // The mailbox is also the retained request ledger. Retire through the
     // stale heartbeat; deleting the directory loses outcomes needed to
     // reconcile earlier timeouts, including after this name is reused.
-    return { ok: true, instance: name, stopped: true, quitAcknowledged: true, saved: !!args.save, file, ...recovery };
+    return {
+      ok: true,
+      instance: name,
+      stopped: true,
+      quitAcknowledged: true,
+      saved: !!args.save,
+      file,
+      ...recovery,
+    };
   },
 });
 
